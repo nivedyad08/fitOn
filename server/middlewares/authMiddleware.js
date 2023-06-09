@@ -9,7 +9,7 @@ const checkIsUserAuthenticated = async (req, res, next) => {
     try {
       token = authorization.split(" ")[1];
       //verify token
-      const { userId } = jwt.verify(token, process.env.SECRET_KEY);
+      const { userId } = jwt.verify(token, process.env.SECRET_KEY,{});
       //Get User from Token
       req.user = await User.findById(userId);
       req.userId = userId;
@@ -22,4 +22,4 @@ const checkIsUserAuthenticated = async (req, res, next) => {
   }
 };
 
-module.exports= checkIsUserAuthenticated
+module.exports = checkIsUserAuthenticated
