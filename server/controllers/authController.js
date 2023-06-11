@@ -6,28 +6,24 @@ const moment = require("moment");
 
 // Registeration
 const register = async (req, res) => {
-  let { name, email, password, phone } = req.body;
-  let profilePic = "";
+  console.log(234234);
+  let { fisrtName, lastName, email, password, role } = req.body;
   try {
-    if (name && email && password && phone) {
+    if (fisrtName && lastName && email && password && role) {
       const isUser = await User.findOne({ email: email });
       if (isUser) {
         return res.status(400).json({ message: "User already exists !!" });
       } else {
-        if (!req.file) {
-          profilePic = "user.jpeg";
-        } else {
-          profilePic = req.file.filename;
-        }
         const newUser = User({
-          name,
+          fisrtName,
+          lastName,
           email,
           password: await bcrypt.hash(password, 10),
           phone,
           profilePic,
           isAdmin: false,
-          status : true,
-          createdAt:  moment().format("YYYY-MM-DD")
+          status: true,
+          createdAt: moment().format("YYYY-MM-DD")
         });
         const resUser = await newUser.save();
         if (resUser) {
@@ -91,6 +87,6 @@ const register = async (req, res) => {
 
 module.exports = {
   register,
-//   login,
-//   getData,
+  //   login,
+  //   getData,
 };

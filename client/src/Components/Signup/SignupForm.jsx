@@ -1,7 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from '../../config/axios'
 
 export default function SignupForm() {
+  const [input, setInput] = useState({
+    role: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+  })
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('api/auth/user/register', input)
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        alert(error.response.data.message);
+      } else {
+        alert("An error occurred. Please try again later.");
+      }
+    }
+
+  }
   return (
     <div className="md:w-8/12 lg:ml-6 lg:w-5/12">
       <div className="text-center">
@@ -14,15 +35,16 @@ export default function SignupForm() {
         <p class="text-lg font-semibold leading-relaxed text-custom-whitish">
           Who are you?
         </p>
-        <form className="space-y-6" action="#" method="POST">
+        <form className="space-y-6" onSubmit={handleSignUp}>
           <ul class="items-center py-10 w-full text-sm font-medium text-gray-900 rounded-lg sm:flex dark:bg-gray-700 dark:text-white">
             <li class="w-full">
               <div class="flex items-center pl-3">
                 <input
                   id="horizontal-list-radio-id"
                   type="radio"
-                  value=""
                   name="list-radio"
+                  value={input.role}
+                  onChange={(e) => setInput({ ...input, [e.target.name]: e.target.value })}
                   className="w-32 h-32 mx-4 focus:ring-yellow-500 dark:focus:ring-yellow-600 border-gray-300 dark:border-gray-500"
                   style={{ backgroundColor: "#414160" }}
                   checked
@@ -42,7 +64,8 @@ export default function SignupForm() {
                 <input
                   id="horizontal-list-radio-id"
                   type="radio"
-                  value=""
+                  value={input.role}
+                  onChange={(e) => setInput({ ...input, [e.target.name]: e.target.value })}
                   name="list-radio"
                   className="w-32 h-32 mx-4 bg-transparent border-gray-300 dark:border-gray-500"
                   style={{ backgroundColor: "#414160" }}
@@ -68,9 +91,11 @@ export default function SignupForm() {
               </label>
               <input
                 id="firstName"
-                name="first_name"
+                name="firstName"
                 type="text"
                 autoComplete="text"
+                value={input.firstName}
+                onChange={(e) => setInput({ ...input, [e.target.name]: e.target.value })}
                 required
                 className="block h-40 w-full rounded-md border-0 py-1.5 text-custom-whitish shadow-sm ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 style={{ backgroundColor: "#414160" }}
@@ -86,9 +111,11 @@ export default function SignupForm() {
               </label>
               <input
                 id="lastName"
-                name="last_name"
+                name="lastName"
                 type="text"
                 autoComplete="text"
+                value={input.lastName}
+                onChange={(e) => setInput({ ...input, [e.target.name]: e.target.value })}
                 required
                 className="block h-40 w-full rounded-md py-1.5 text-custom-whitish shadow-sm  
                 ring-gray-300 placeholder:text-gray-400
@@ -110,6 +137,8 @@ export default function SignupForm() {
                 name="email"
                 type="email"
                 autoComplete="email"
+                value={input.email}
+                onChange={(e) => setInput({ ...input, [e.target.name]: e.target.value })}
                 required
                 className="peer block h-40 w-full rounded-md border-0 py-1.5 text-custom-whitish shadow-sm ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
                 style={{ backgroundColor: "#414160" }}
@@ -140,6 +169,8 @@ export default function SignupForm() {
                 name="password"
                 type="password"
                 autoComplete="current-password"
+                value={input.password}
+                onChange={(e) => setInput({ ...input, [e.target.name]: e.target.value })}
                 required
                 className="block h-40 w-full rounded-md border-0 py-1.5 text-white shadow-sm ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
                 style={{ backgroundColor: "#414160" }}
