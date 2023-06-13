@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import axios from '../../config/axios'
+import { Link, useNavigate } from "react-router-dom";
+import axios from "../../config/axios";
+import { toast } from "react-toastify";
+import { USER_ROLE, PENDING_TRAINER } from "../../constants/roles";
 
 export default function SignupForm() {
   const [input, setInput] = useState({
@@ -9,20 +11,29 @@ export default function SignupForm() {
     lastName: "",
     email: "",
     password: "",
-  })
+  });
+  const navigate = useNavigate();
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('api/auth/user/register', input)
+      const response = await axios.post("api/auth/user/register", input);
+      if (response.status === 200) {
+        toast.success("User Registered Successfully");
+        const user = response.data.user;
+        if (user.role === PENDING_TRAINER) {
+          navigate(`/profile-complete/${user.firstName}/${user._id}`);
+        }else{
+          navigate('/');
+        }
+      }
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        alert(error.response.data.message);
+        toast.error(error.response.data.message);
       } else {
-        alert("An error occurred. Please try again later.");
+        toast.error("An error occurred. Please try again later");
       }
     }
-
-  }
+  };
   return (
     <div className="md:w-8/12 lg:ml-6 lg:w-5/12">
       <div className="text-center">
@@ -42,12 +53,11 @@ export default function SignupForm() {
                 <input
                   id="horizontal-list-radio-id"
                   type="radio"
+                  value={USER_ROLE}
+                  onChange={(e) => setInput({ ...input, role: e.target.value })}
                   name="list-radio"
-                  value={input.role}
-                  onChange={(e) => setInput({ ...input, [e.target.name]: e.target.value })}
                   className="w-32 h-32 mx-4 focus:ring-yellow-500 dark:focus:ring-yellow-600 border-gray-300 dark:border-gray-500"
                   style={{ backgroundColor: "#414160" }}
-                  checked
                 />
 
                 <label
@@ -64,8 +74,8 @@ export default function SignupForm() {
                 <input
                   id="horizontal-list-radio-id"
                   type="radio"
-                  value={input.role}
-                  onChange={(e) => setInput({ ...input, [e.target.name]: e.target.value })}
+                  value={PENDING_TRAINER}
+                  onChange={(e) => setInput({ ...input, role: e.target.value })}
                   name="list-radio"
                   className="w-32 h-32 mx-4 bg-transparent border-gray-300 dark:border-gray-500"
                   style={{ backgroundColor: "#414160" }}
@@ -95,9 +105,11 @@ export default function SignupForm() {
                 type="text"
                 autoComplete="text"
                 value={input.firstName}
-                onChange={(e) => setInput({ ...input, [e.target.name]: e.target.value })}
+                onChange={(e) =>
+                  setInput({ ...input, [e.target.name]: e.target.value })
+                }
                 required
-                className="block h-40 w-full rounded-md border-0 py-1.5 text-custom-whitish shadow-sm ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block h-40 w-full rounded-md border-0 py-2 px-4 text-custom-whitish shadow-sm ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 style={{ backgroundColor: "#414160" }}
               />
             </div>
@@ -115,9 +127,11 @@ export default function SignupForm() {
                 type="text"
                 autoComplete="text"
                 value={input.lastName}
-                onChange={(e) => setInput({ ...input, [e.target.name]: e.target.value })}
+                onChange={(e) =>
+                  setInput({ ...input, [e.target.name]: e.target.value })
+                }
                 required
-                className="block h-40 w-full rounded-md py-1.5 text-custom-whitish shadow-sm  
+                className="block h-40 w-full rounded-md py-2 px-4 text-custom-whitish shadow-sm  
                 ring-gray-300 placeholder:text-gray-400
                 sm:text-sm sm:leading-6"
                 style={{ backgroundColor: "#414160" }}
@@ -138,9 +152,11 @@ export default function SignupForm() {
                 type="email"
                 autoComplete="email"
                 value={input.email}
-                onChange={(e) => setInput({ ...input, [e.target.name]: e.target.value })}
+                onChange={(e) =>
+                  setInput({ ...input, [e.target.name]: e.target.value })
+                }
                 required
-                className="peer block h-40 w-full rounded-md border-0 py-1.5 text-custom-whitish shadow-sm ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                className="peer block h-40 w-full rounded-md border-0 py-2 px-4 text-custom-whitish shadow-sm ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
                 style={{ backgroundColor: "#414160" }}
               />
               <p class="mt-2 invisible peer-invalid:visible text-pink-600 text-sm">
@@ -158,7 +174,10 @@ export default function SignupForm() {
                 Password
               </label>
               <div className="text-sm">
-                <Link className="text-sm hover:text-indigo-500 font-normal text-custom-whitish">
+                <Link
+                  to="/forgot-password"
+                  className="text-sm hover:text-indigo-500 font-normal text-custom-whitish"
+                >
                   Forgot password?
                 </Link>
               </div>
@@ -170,9 +189,11 @@ export default function SignupForm() {
                 type="password"
                 autoComplete="current-password"
                 value={input.password}
-                onChange={(e) => setInput({ ...input, [e.target.name]: e.target.value })}
+                onChange={(e) =>
+                  setInput({ ...input, [e.target.name]: e.target.value })
+                }
                 required
-                className="block h-40 w-full rounded-md border-0 py-1.5 text-white shadow-sm ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                className="block h-40 w-full rounded-md py-2 px-4 border-0 py-1.5 text-white shadow-sm ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
                 style={{ backgroundColor: "#414160" }}
               />
             </div>

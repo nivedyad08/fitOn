@@ -6,20 +6,28 @@ import SignupPayment from "./Pages/Signup/SignupPayment";
 import ProfileCompletePage from "./Pages/Signup/ProfileCompletePage";
 import ForgortPasswordPage from "./Pages/Login/ForgortPasswordPage";
 import DashboardPage from "./Pages/Admin/DashboardPage";
+import ToastContainerBox from "./config/ToastContainer";
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<LoginPage />} />
-      <Route path="/forgot-password" element={<ForgortPasswordPage />} />
-      <Route path="/register" element={<SignupPage />} />
-      <Route path="/payment" element={<SignupPayment />} />
-      <Route path="/profile-complete" element={<ProfileCompletePage />} />
-      /*Admin */
-      <Route path="admin">
-        <Route path="dashboard" element={<DashboardPage />} />
-      </Route>
-    </Routes>
+    <div>
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/forgot-password" element={<ForgortPasswordPage />} />
+        <Route path="/register" element={<SignupPage />} />
+        <Route path="/profile-complete/:username/:userId" element={<ProfileCompletePage />} />
+        <Route path="/payment" element={<SignupPayment />} />
+        /*Admin */
+        <Route path="admin">
+          <Route path="dashboard" element={<DashboardPage />} />
+        </Route>
+        /*Trainer */
+        <Route path="trainer">
+          <Route path="dashboard" element={<DashboardPage />} />
+        </Route>
+      </Routes>
+      <ToastContainerBox/>
+    </div>
   );
 }
 

@@ -26,7 +26,7 @@ function LoginForm() {
                 type="email"
                 autoComplete="email"
                 required
-                className="peer block h-40 w-full rounded-md border-0 py-1.5 text-custom-whitish shadow-sm ring-gray-300 placeholder:text-gray-400 focus:ring-2 sm:text-sm sm:leading-6"
+                className="peer block h-40 py-2 px-4 w-full rounded-md border-0 py-1.5 text-custom-whitish shadow-sm ring-gray-300 placeholder:text-gray-400 focus:ring-2 sm:text-sm sm:leading-6"
                 style={{ backgroundColor: "#414160" }}
               />
               <p class="mt-2 invisible peer-invalid:visible text-pink-600 text-sm">
@@ -44,7 +44,7 @@ function LoginForm() {
                 Password
               </label>
               <div className="text-sm">
-                <Link className="text-sm hover:text-indigo-500 font-normal text-custom-whitish">
+                <Link to="/forgot-password" className="text-sm hover:text-indigo-500 font-normal text-custom-whitish">
                   Forgot password?
                 </Link>
               </div>
@@ -56,7 +56,7 @@ function LoginForm() {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="block h-40 w-full rounded-md border-0 py-1.5 text-white shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                className="block h-40 w-full py-2 px-4 rounded-md border-0 py-1.5 text-white shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6"
                 style={{ backgroundColor: "#414160" }}
               />
             </div>

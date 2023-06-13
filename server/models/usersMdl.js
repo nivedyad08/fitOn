@@ -1,13 +1,14 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema,
-ObjectId = Schema.ObjectId;
+  ObjectId = Schema.ObjectId;
+
 const userSchema = new mongoose.Schema(
   {
-    first_name: {
+    firstName: {
       type: String,
       required: true,
     },
-    last_name: {
+    lastName: {
       type: String,
       required: true,
     },
@@ -19,49 +20,50 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    phone: {
-      type: Number,
-      required: true,
-    },
     isActive: {
       type: Boolean,
-      required: true,
+      required: false,
+      default: null,
     },
     role: {
-      type: Boolean,
+      type: String,
       required: true,
+      default: null,
     },
     profilePic: {
       type: String,
       required: false,
+      default: null,
     },
     coverPhoto: {
       type: String,
       required: false,
+      default: null,
     },
     userBio: {
       type: String,
       required: false,
+      default: null,
     },
     userLocation: {
       type: String,
       required: false,
+      default: null,
     },
     deletedAt: {
       type: String,
-      required: true,
+      required: false,
+      default: null,
     },
     verificationCode: {
       type: String,
-      required: true,
+      required: false,
+      default: null,
     },
     lastPasswordResetDate: {
       type: String,
-      required: true,
-    },
-    userFavourites: {
-      type: Array,
-      required: true,
+      required: false,
+      default: null,
     },
     userFavourites: [
       {
@@ -84,9 +86,13 @@ const userSchema = new mongoose.Schema(
         createdAt: { type: String },
         updatedAt: { type: String },
       },
-    ],
+    ],  
   },
   { timestamps: true }
 );
+
+// Set the rest of the fields as null
+userSchema.set("toObject", { getters: true });
+userSchema.set("toJSON", { getters: true });
 
 module.exports = mongoose.model("users", userSchema);
