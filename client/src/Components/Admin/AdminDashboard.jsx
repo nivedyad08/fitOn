@@ -1,20 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import Cookies from "js-cookie";
 import axios from "../../config/axios";
+import { useSelector } from 'react-redux';
 
 function AdminDashboard() {
-  const data = useEffect(() => {
-    async function fetchData() {
-      // You can await here
-      const refreshToken = Cookies.get("refreshToken");
-        console.log(refreshToken);
-      const response = await axios.post("/api/auth/refresh");
-      console.log(response);
-    }
-    fetchData();
-  }, []);
+  const { userInfo } = useSelector((state) => {
+    return state.loggedUser
+  })
+  console.log(userInfo);
   return (
-    <div>AdminDashboard</div>
+    <div>Test</div>
   )
 }
 

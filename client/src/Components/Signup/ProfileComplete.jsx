@@ -3,10 +3,14 @@ import React, { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
+import { loggedUserDetails } from "../redux-toolkit/slices/userSlice";
 
 function ProfileComplete() {
+  const dispatch = useDispatch()
   const { username } = useParams();
   const navigate = useNavigate()
+
   const [userInput, setUserInput] = useState({
     userBio: "",
     userLocation: "",
@@ -41,9 +45,10 @@ function ProfileComplete() {
       formData.append("userId", "6488c890367a5d8de80cf0d1")
       const response = await axios.post("/api/auth/user/profile-complete", formData)
       if (response.status === 200) {
-        const { accessToken} = response.data
+        const { accessToken, user } = response.data
+        console.log(user);
         Cookies.set("accessToken", accessToken);
-        // dispatch(setUserDetailsSlice(response.data));
+        dispatch(loggedUserDetails(user))
         toast.success("User Profile updated Successfully");
         navigate("/trainer/dashboard")
       }
