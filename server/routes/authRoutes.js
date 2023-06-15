@@ -12,7 +12,7 @@ authRoute.post("/user/register", authController.register);
 authRoute.post("/user/profile-complete", userUpload,
     authController.profileComplete);
 authRoute.post("/refresh", authController.refresh);
-authRoute.post("/login", verifyUser, authController.login);
+authRoute.post("/user/login", authController.login);
 authRoute.post("/logout", authController.logout);
 // authRoute.get("/getuserdata", checkIsUserAuthenticated, authController.getData);
 

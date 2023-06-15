@@ -5,7 +5,7 @@ import SignupPage from "./Pages/Signup/SignupPage";
 import SignupPayment from "./Pages/Signup/SignupPayment";
 import ProfileCompletePage from "./Pages/Signup/ProfileCompletePage";
 import ForgortPasswordPage from "./Pages/Login/ForgortPasswordPage";
-import DashboardPage from "./Pages/Admin/DashboardPage";
+import AdminDashboardPage from "./Pages/Admin/AdminDashboardPage";
 import ToastContainerBox from "./config/ToastContainer";
 
 function App() {
@@ -19,11 +19,11 @@ function App() {
         <Route path="/payment" element={<SignupPayment />} />
         /*Admin */
         <Route path="admin">
-          <Route path="dashboard" element={<DashboardPage />} />
+          <Route path="dashboard" element={<AdminDashboardPage />} />
         </Route>
         /*Trainer */
         <Route path="trainer">
-          <Route path="dashboard" element={<DashboardPage />} />
+          {/* <Route path="dashboard" element={<DashboardPage />} /> */}
         </Route>
       </Routes>
       <ToastContainerBox/>
