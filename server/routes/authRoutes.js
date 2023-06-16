@@ -14,6 +14,7 @@ authRoute.post("/user/profile-complete", userUpload,
 authRoute.post("/refresh", authController.refresh);
 authRoute.post("/user/login", authController.login);
 authRoute.post("/logout", authController.logout);
-// authRoute.get("/getuserdata", checkIsUserAuthenticated, authController.getData);
+authRoute.post("/forgot-password", authController.forgotPassword);
+authRoute.post('/update/password',authController.updatePassword)
 
 module.exports = authRoute;

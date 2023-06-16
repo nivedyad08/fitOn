@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const moment = require("moment");
-
+const nodemailer = require("nodemailer")
 
 /****Registeration*****/
 const register = async (req, res) => {
@@ -123,14 +123,6 @@ const login = async (req, res) => {
   }
 };
 
-/****Logout*****/
-const logout = (req, res) => {
-  const cookies = req.cookies
-  if (!cookies?.jwt) return res.sendStatus(204) //No content
-  res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true })
-  res.json({ message: 'Cookie cleared' })
-}
-
 // Token generation
 const generateTokens = (user) => {
   const accessToken = jwt.sign(
@@ -141,7 +133,7 @@ const generateTokens = (user) => {
       }
     },
     process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: '2s' }
+    { expiresIn: '1d' }
   )
 
   const refreshToken = jwt.sign(
@@ -152,7 +144,77 @@ const generateTokens = (user) => {
   return { accessToken, refreshToken }
 }
 
-//Set refresh token as a cookie
+/****forgotPassword*****/
+const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body
+    if (email) {
+      const user = await User.findOne({ email: email })
+      if (!user)
+        return res.status(400).json({ message: "User not Found" });
+      await sendEmailVerification(user.firstName, user.lastName, email)
+      return res.status(200).json({ message: "Email has been sent" });
+    } else {
+      return res.status(400).json({ message: "Email is required" });
+    }
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+}
+
+/****Send email verification*****/
+const sendEmailVerification = async (firstname, lastname, email) => {
+  try {
+    const emailTransporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
+      auth: {
+        user: "neethus484@gmail.com",
+        pass: "zydovfiqvduvldzq"
+      }
+    });
+
+    const mailOptions = {
+      from: 'neethus484@gmail.com',
+      to: email,
+      subject: 'Forgot Password',
+      html: `<p>Hi ${ firstname } ${ lastname }, please click <a href=${ process.env.APP_URL }user/forgotPassword?email=${ email }>here</a> to create a new password.</p>`,
+    };
+
+    emailTransporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.error(error);
+      } else {
+        console.log('Email sent:', info.response);
+      }
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+/****Update password*****/
+const updatePassword = async (req, res) => {
+  try {
+    const { password, confirmPassword } = req.body
+    const { email } = req.params
+    if (!password && !confirmPassword)
+      return res.status(400).json({ message: "All fields are required" });
+    if (req.body.password == req.body.confirmPassword) {
+      const hashPassword = await bcrypt.hash(req.body.password, 10)
+      const updatePassword = await User.updateOne({ _id: req.body.id }, { $set: { password: hashPassword } })
+      res.render('login', { message: 'Password updated successfully !!!' })
+    } else {
+      res.render('change-password', { error: 'Password mismatch !!!', userId: req.body.id })
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+/****Set refresh token as a cookie*****/
+
 const setRefreshTokenCookie = (res, refreshToken) => {
   res.cookie('refreshToken', refreshToken, {
     httpOnly: true,
@@ -162,11 +224,21 @@ const setRefreshTokenCookie = (res, refreshToken) => {
   });
 }
 
+/****Logout*****/
+const logout = (req, res) => {
+  const cookies = req.cookies
+  if (!cookies?.jwt) return res.sendStatus(204) //No content
+  res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true })
+  res.json({ message: 'Cookie cleared' })
+}
+
 
 module.exports = {
   register,
   profileComplete,
   refresh,
   login,
+  forgotPassword,
+  updatePassword,
   logout
 };

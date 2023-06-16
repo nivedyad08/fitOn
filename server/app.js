@@ -23,12 +23,12 @@ app.use(cors({ origin: true, credentials: true }));
 
 //routes
 const authRoute = require("./routes/authRoutes");
+const adminRoute = require("./routes/admin/adminRoutes");
 // const userRoute = require("./routes/user/userRoutes");
-// const adminRoute = require("./routes/admin/adminRoutes");
 
 app.use("/api/auth", authRoute);
+app.use("/api/admin",adminRoute)
 // app.use("/api/user",userRoute)
-// app.use("/api/admin",adminRoute)
 //port
 const port = process.env.port || 8080;
 

@@ -1,7 +1,33 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useForm } from 'react-hook-form';
+import axios from "../../config/axios";
+import { toast } from "react-toastify";
 
 function ForgotPassword() {
+  const navigate = useNavigate()
+  const { register, handleSubmit, formState: { errors }, } = useForm({
+    defaultValues: {
+      email: ""
+    }
+  });
+  const updatePasswordHandle = async (formData) => {
+    // e.preventDefault();
+    try {
+      const response = await axios.post("api/auth/forgot-password", formData);
+      if (response.status === 200) {
+        toast.success("Email has been sent Please check the mail to update password");
+        const user = response.data.user;
+        navigate("/forgot-password/email-verification")
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("An error occurred. Please try again later");
+      }
+    }
+  }
   return (
     <div className="md:w-8/12 lg:ml-6 lg:w-5/12">
       <div className="text-center">
@@ -15,7 +41,7 @@ function ForgotPassword() {
           Forgot password?
         </h5>
         <p class="text-md text-center font-semibold leading-relaxed text-custom-whitish">Please enter your email to receive a verification code.</p>
-        <form className="space-y-6" action="#" method="POST">
+        <form onSubmit={ handleSubmit(updatePasswordHandle) }>
           <div>
             <label
               htmlFor="email"
@@ -29,13 +55,22 @@ function ForgotPassword() {
                 name="email"
                 type="email"
                 autoComplete="email"
-                required
+                { ...register("email", {
+                  required: "Email is required",
+                  validate: {
+                    maxLength: (v) =>
+                      v.length <= 50 || "The email should have at most 50 characters",
+                    matchPattern: (v) =>
+                      /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+                      "Email address must be a valid address",
+                  },
+                }) }
                 className="peer block h-40 w-full rounded-md border-0 py-1.5 text-custom-whitish shadow-sm ring-gray-300 placeholder:text-gray-400 focus:ring-2 sm:text-sm sm:leading-6"
-                style={{ backgroundColor: "#414160" }}
+                style={ { backgroundColor: "#414160" } }
               />
-              <p class="mt-2 invisible peer-invalid:visible text-pink-600 text-sm">
-                Please provide a valid email address.
-              </p>
+              { errors.email?.message && (
+                <small className="mt-2 invisible peer-invalid:visible text-pink-600 text-sm">{ errors.email.message }</small>
+              ) }
             </div>
           </div>
 
@@ -47,7 +82,7 @@ function ForgotPassword() {
         </form>
 
         <p className="mt-10 text-center text-sm text-custom-slate">
-          Back to{" "}
+          Back to{ " " }
           <Link
             to="/"
             className="font-medium leading-6 text-custom-yellow font-normal hover:text-indigo-500"

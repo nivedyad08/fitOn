@@ -1,0 +1,11 @@
+const USER_ROLE = "USER";
+const PENDING_TRAINER = "PENDING_TRAINER";
+const TRAINER_ROLE = "TRAINER";
+const ADMIN_ROLE = "ADMIN";
+
+module.exports = {
+    USER_ROLE,
+    TRAINER_ROLE,
+    PENDING_TRAINER,
+    ADMIN_ROLE
+}

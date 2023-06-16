@@ -11,7 +11,17 @@ import { toast } from "react-toastify";
 function LoginForm() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm({
+    defaultValues: {
+      newPassword: "",
+      confirmPassword: "",
+    },
+  });
   const [input, setInput] = useState({
     email: "",
     password: ""
@@ -25,14 +35,14 @@ function LoginForm() {
           const { accessToken, user } = response.data;
           Cookies.set("accessToken", accessToken);
           dispatch(loggedUserDetails(user));
-          if(user.role === USER_ROLE)
+          if (user.role === USER_ROLE)
             navigate("/user/dashboard");
-          else if(user.role === TRAINER_ROLE)
+          else if (user.role === TRAINER_ROLE)
             navigate("/trainer/dashboard");
-          else if(user.role === ADMIN_ROLE)
+          else if (user.role === ADMIN_ROLE)
             navigate("/admin/dashboard");
-          else if(user.role === PENDING_TRAINER)
-            navigate(`/profile-complete/${user.firstName}/${user._id}`);
+          else if (user.role === PENDING_TRAINER)
+            navigate(`/profile-complete/${ user.firstName }/${ user._id }`);
         }
       } catch (error) {
         if (error.response && error.response.status === 400) {
@@ -66,20 +76,24 @@ function LoginForm() {
                 name="email"
                 type="email"
                 autoComplete="email"
-                required
-                { ...register("email", { required: "Email Address is required" }) }
-                className="peer block h-40 py-2 px-4 w-full rounded-md border-0 py-1.5 text-custom-whitish shadow-sm ring-gray-300 placeholder:text-gray-400 focus:ring-2 sm:text-sm sm:leading-6"
-                style={ { backgroundColor: "#414160" } }
+                { ...register("email", {
+                  required: "Email is required"
+                }) }
+                className={ `block h-40 w-full py-2 px-4 rounded-md border-0 py-1.5 text-white shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6 ${ errors.email ? "border-red-500" : ""
+                  }` }
                 onChange={ (e) =>
                   setInput({
                     ...input,
                     email: e.target.value,
                   })
                 }
+                style={ { backgroundColor: "#414160" } }
               />
-              <p className="mt-2 text-pink-600 text-sm">
-                { errors.email && <span role="alert">{ errors.email.message }</span> }
-              </p>
+              { errors.email && (
+                <small className="mt-2 text-red-500 text-sm">
+                  { errors.email.message }
+                </small>
+              ) }
             </div>
           </div>
 
@@ -102,24 +116,29 @@ function LoginForm() {
                 id="password"
                 name="password"
                 type="password"
-                autoComplete="current-password"
-                required
-                className="block h-40 w-full py-2 px-4 rounded-md border-0 py-1.5 text-white shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6"
-                style={ { backgroundColor: "#414160" } }
+                autoComplete="new-password"
                 { ...register("password", {
                   required: "Password is required",
                   minLength: {
                     value: 6,
-                    message: "Password must be at least 8 characters long",
+                    message: "Password must be at least 6 characters long",
                   },
                 }) }
-                onChange={ (e) => setInput({
-                  ...input, password: e.target.value
-                }) }
+                className={ `block h-40 w-full py-2 px-4 rounded-md border-0 py-1.5 text-white shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6 ${ errors.password ? "border-red-500" : ""
+                  }` }
+                onChange={ (e) =>
+                  setInput({
+                    ...input,
+                    password: e.target.value,
+                  })
+                }
+                style={ { backgroundColor: "#414160" } }
               />
-              <p className="mt-2 text-pink-600 text-sm">
-                { errors.password && <span role="alert">{ errors.password.message }</span> }
-              </p>
+              { errors.password && (
+                <small className="mt-2 text-red-500 text-sm">
+                  { errors.password.message }
+                </small>
+              ) }
 
             </div>
           </div>
