@@ -7,7 +7,7 @@ const nodemailer = require("nodemailer")
 
 /****Registeration*****/
 const register = async (req, res) => {
-  let { firstName, lastName, email, password, role ,userLocation} = req.body;
+  let { firstName, lastName, email, password, role, userLocation } = req.body;
   try {
     if (firstName && lastName && email && password && role && userLocation) {
       const isUser = await User.findOne({ email: email });
@@ -21,7 +21,7 @@ const register = async (req, res) => {
           role,
           password: await bcrypt.hash(password, 10),
           userLocation,
-          isActive:true
+          isActive: true
         });
         const resUser = await newUser.save();
         if (resUser) {
@@ -43,6 +43,8 @@ const profileComplete = async (req, res) => {
   try {
     let { userBio, userLocation, userId } = req.body
     let { profilePic, coverPhoto } = req.files
+    console.log(profilePic);
+    console.log(coverPhoto);
     if (profilePic && coverPhoto && userBio && userLocation) {
       const profileImage = profilePic[0].filename;
       const coverImage = coverPhoto[0].filename;
@@ -157,7 +159,7 @@ const forgotPassword = async (req, res) => {
       }
       sendEmailVerification(user.firstName, user.lastName, email)
       return res.status(200).json({ message: "Email sent successfully !!" });
-      
+
     } else {
       return res.status(400).json({ message: "Email is required" });
     }

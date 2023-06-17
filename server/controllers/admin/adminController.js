@@ -1,6 +1,7 @@
 const User = require("../../models/usersMdl");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
+const moment = require("moment");
 const { USER_ROLE, TRAINER_ROLE, ADMIN_ROLE, PENDING_TRAINER } = require("../../constants/roles")
 
 const users = async (req, res) => {
@@ -31,26 +32,25 @@ const trainers = async (req, res) => {
   }
 };
 
-const deleteUser = async (req, res) => {
+const deleteUsers = async (req, res) => {
   try {
-    if (!req.params.userId) {
-      return res.status(400).json({ message: "Invalid entry" });
-    }
-    const userDelete = User.findOneAndUpdate(
-      { _id: req.params.userId },
-      { $set: { isActive: false, deletedAt: moment().format("YYYY-MM-DD"), } }
+    console.log(67890);
+    const userEmails = req.body
+    const usersDelete = await User.updateMany(
+      { email: { $in: userEmails } },
+      { $set: { isActive: false, deletedAt: moment().format("YYYY-MM-DD") } }
     );
-    if (!userDelete) {
+    if (!usersDelete) {
       return res.status(400).json({ message: "Something went wrong" });
     }
     return res.status(200).json({ message: "User deleted successfully !!" });
   } catch (error) {
-    return res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({ message: error.message });
   }
 };
 
 module.exports = {
   users,
   trainers,
-  deleteUser
+  deleteUsers
 }

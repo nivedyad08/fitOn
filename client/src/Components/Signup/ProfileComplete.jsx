@@ -8,7 +8,7 @@ import { loggedUserDetails } from "../redux-toolkit/slices/userSlice";
 
 function ProfileComplete() {
   const dispatch = useDispatch();
-  const { username } = useParams();
+  const { username, userId } = useParams();
   const navigate = useNavigate();
 
   const [userInput, setUserInput] = useState({
@@ -33,6 +33,7 @@ function ProfileComplete() {
   const handleProfileComplete = async (e) => {
     e.preventDefault();
     try {
+      console.log(userId);
       const formData = new FormData();
       if (selectedProfilePic) {
         formData.append("profilePic", selectedProfilePic);
@@ -42,7 +43,7 @@ function ProfileComplete() {
       }
       formData.append("userBio", userInput.userBio);
       formData.append("userLocation", userInput.userLocation);
-      formData.append("userId", "6488c890367a5d8de80cf0d1");
+      formData.append("userId", userId);
       const response = await axios.post(
         "/api/auth/user/profile-complete",
         formData
@@ -52,7 +53,7 @@ function ProfileComplete() {
         Cookies.set("accessToken", accessToken);
         dispatch(loggedUserDetails(user));
         toast.success("User Profile updated Successfully");
-        navigate("/trainer/dashboard");
+        navigate("/payment");
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {

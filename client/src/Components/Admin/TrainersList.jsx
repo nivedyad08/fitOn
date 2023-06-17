@@ -4,6 +4,19 @@ import axios from "../../config/axios"
 import { TRAINER_ROLE, PENDING_TRAINER } from "../../constants/roles"
 
 const TrainersList = () => {
+    const [selectedRows, setSelectedRows] = useState([]);
+
+    const handleCheckBoxClick = (email) => {
+        setSelectedRows((prevSelectedRows) => {
+            if (prevSelectedRows.includes(email)) {
+                // Remove the email from selectedRows if it is already present
+                return prevSelectedRows.filter((row) => row !== email);
+            } else {
+                // Add the email to selectedRows if it is not present
+                return [...prevSelectedRows, email];
+            }
+        });
+    };
     const columns = useMemo(
         () => [
             {
@@ -19,7 +32,7 @@ const TrainersList = () => {
                             <input
                                 type="checkbox"
                                 className="w-20"
-                                checked={ row.isSelected }
+                                onChange={ () => handleCheckBoxClick(row.original.email) }
                             />
                         ),
                     },
@@ -69,7 +82,8 @@ const TrainersList = () => {
     }, []);
     return (
         <div className="App">
-            <Table columns={ columns } data={ data } />
+            <Table columns={ columns } data={ data } handleCheckBoxClick={ handleCheckBoxClick }
+                selectedRows={ selectedRows } />
         </div>
     );
 }
