@@ -14,7 +14,8 @@ const verifyJWt = (req, res, next) => {
         (err, decoded) => {
             if (err) return res.status(403).json({ message: 'You are not authenticated' })
             req.user = decoded.UserInfo.userId
-            req.roles = decoded.UserInfo.role
+            req.roles = decoded.UserInfo.roles
+            console.log(req.roles);
             next()
         }
     )

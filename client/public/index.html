@@ -15,6 +15,19 @@
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <script src="https://www.paypal.com/sdk/js?client-id=AYMWyUZAbRfkEeGTxojf8UDbJY35KzilX2_XcmNg
+    ecKX5hQvChitiXn7WHdTOpdxZcNB7bguab7dJIxM
+    &currency=USD">
+    // If the payment has been made
+      if (paid) {
+        return <div>Payment successful.!</div>;
+      }
+
+      // If any error occurs
+      if (error) {
+        return <div>Error Occurred in processing payment.! Please try again.</div>;
+      }
+  </script>
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.

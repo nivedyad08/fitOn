@@ -1,16 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
 import GroupIcon from '@mui/icons-material/Group';
 import StarIcon from '@mui/icons-material/Star';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const Sidebar = () => {
     const [isOpen, setIsOpen] = React.useState(false);
     const toggleSidebar = () => {
         setIsOpen(!isOpen);
     };
+    const location = useLocation()
+
+    useEffect(() => {
+        const { pathname } = location
+    }, [location])
     return (
         <aside
             className={ `${ isOpen ? 'w-1/12' : 'w-2/12' } sidebar-blue text-white flex-shrink-0 transition-all duration-300 relative` }
@@ -56,27 +61,27 @@ const Sidebar = () => {
                 <ul className="p-4 ml-20">
                     <li className="mb-2 flex items-center">
                         <SpaceDashboardIcon className="mr-6 text-[#7D7E93]" style={ { fontSize: "medium" } } />
-                        <Link to="/admin/dashboard" className="block leading-10 text-[#7D7E93] hover:text-white">Dashboard</Link>
+                        <Link to="/admin/dashboard" className={ `block leading-10  hover:text-white ${ location.pathname === '/admin/dashboard' ? "text-white" : "text-[#7D7E93]" }` }>Dashboard</Link>
                     </li>
 
                     <li className="mb-2 flex items-center">
                         <GroupIcon className="mr-6 text-[#7D7E93]" style={ { fontSize: "medium" } } />
-                        <Link to="/admin/users" className="block leading-10 text-[#7D7E93] hover:text-white">Manage Users</Link>
+                        <Link to="/admin/users" className={ `block leading-10  hover:text-white ${ location.pathname === '/admin/users' ? "text-white" : "text-[#7D7E93]" }` }>Manage Users</Link>
                     </li>
 
                     <li className="mb-2 flex items-center">
                         <StarIcon className="mr-6 text-[#7D7E93]" style={ { fontSize: "medium" } } />
-                        <Link to="/admin/trainers" className="block leading-10 text-[#7D7E93] hover:text-white">Manage Trainers</Link>
+                        <Link to="/admin/trainers" className={ `block leading-10  hover:text-white ${ location.pathname === '/admin/trainers' ? "text-white" : "text-[#7D7E93]" }` }>Manage Trainers</Link>
                     </li>
 
                     <li className="mb-2 flex items-center">
                         <FitnessCenterIcon className="mr-6 text-[#7D7E93]" style={ { fontSize: "medium" } } />
-                        <Link to="/admin/workouts" className="block leading-10 text-[#7D7E93] hover:text-white">Manage Workouts</Link>
+                        <Link to="/admin/workouts" className={ `block leading-10  hover:text-white ${ location.pathname === '/admin/workouts' ? "text-white" : "text-[#7D7E93]" }` }>Manage Workouts</Link>
                     </li>
 
                     <li className="mb-2 flex items-center">
                         <ReceiptLongIcon className="mr-6 text-[#7D7E93]" style={ { fontSize: "medium" } } />
-                        <Link to="/admin/transactions" className="block leading-10 text-[#7D7E93] hover:text-white">Manage Transactions</Link>
+                        <Link to="/admin/transactions" className={ `block leading-10  hover:text-white ${ location.pathname === '/admin/transactions' ? "text-white" : "text-[#7D7E93]" }` }>Manage Transactions</Link>
                     </li>
                 </ul>
             </nav>

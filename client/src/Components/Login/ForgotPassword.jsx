@@ -12,22 +12,23 @@ function ForgotPassword() {
     }
   });
   const updatePasswordHandle = async (formData) => {
-    // e.preventDefault();
     try {
       const response = await axios.post("api/auth/forgot-password", formData);
-      if (response.status === 200) {
-        toast.success("Email has been sent Please check the mail to update password");
-        const user = response.data.user;
-        navigate("/forgot-password/email-verification")
+      if (response && response.status === 200) {
+        toast.success("Email has been sent. Please check the email to update your password");
+        navigate("/forgot-password/email-verification");
       }
     } catch (error) {
+      console.log(error);
       if (error.response && error.response.status === 400) {
         toast.error(error.response.data.message);
       } else {
         toast.error("An error occurred. Please try again later");
       }
     }
-  }
+  };
+
+
   return (
     <div className="md:w-8/12 lg:ml-6 lg:w-5/12">
       <div className="text-center">

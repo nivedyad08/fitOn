@@ -7,9 +7,9 @@ const nodemailer = require("nodemailer")
 
 /****Registeration*****/
 const register = async (req, res) => {
-  let { firstName, lastName, email, password, role } = req.body;
+  let { firstName, lastName, email, password, role ,userLocation} = req.body;
   try {
-    if (firstName && lastName && email && password && role) {
+    if (firstName && lastName && email && password && role && userLocation) {
       const isUser = await User.findOne({ email: email });
       if (isUser) {
         return res.status(400).json({ message: "User already exists !!" });
@@ -20,6 +20,8 @@ const register = async (req, res) => {
           email,
           role,
           password: await bcrypt.hash(password, 10),
+          userLocation,
+          isActive:true
         });
         const resUser = await newUser.save();
         if (resUser) {
@@ -150,10 +152,12 @@ const forgotPassword = async (req, res) => {
     const { email } = req.body
     if (email) {
       const user = await User.findOne({ email: email })
-      if (!user)
+      if (!user) {
         return res.status(400).json({ message: "User not Found" });
-      await sendEmailVerification(user.firstName, user.lastName, email)
-      return res.status(200).json({ message: "Email has been sent" });
+      }
+      sendEmailVerification(user.firstName, user.lastName, email)
+      return res.status(200).json({ message: "Email sent successfully !!" });
+      
     } else {
       return res.status(400).json({ message: "Email is required" });
     }
@@ -164,51 +168,55 @@ const forgotPassword = async (req, res) => {
 
 /****Send email verification*****/
 const sendEmailVerification = async (firstname, lastname, email) => {
-  try {
-    const emailTransporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 587,
-      auth: {
-        user: "neethus484@gmail.com",
-        pass: "zydovfiqvduvldzq"
-      }
-    });
+  return new Promise((resolve, reject) => {
+    try {
+      const emailTransporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 587,
+        auth: {
+          user: "neethus484@gmail.com",
+          pass: "zydovfiqvduvldzq"
+        }
+      });
 
-    const mailOptions = {
-      from: 'neethus484@gmail.com',
-      to: email,
-      subject: 'Forgot Password',
-      html: `<p>Hi ${ firstname } ${ lastname }, please click <a href=${ process.env.APP_URL }user/forgotPassword?email=${ email }>here</a> to create a new password.</p>`,
-    };
+      const mailOptions = {
+        from: 'neethus484@gmail.com',
+        to: email,
+        subject: 'Forgot Password',
+        html: `<p>Hi ${ firstname } ${ lastname }, please click <a href=${ process.env.APP_URL }user/forgotPassword?email=${ email }>here</a> to create a new password.</p>`,
+      };
 
-    emailTransporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.error(error);
-      } else {
-        console.log('Email sent:', info.response);
-      }
-    });
-  } catch (error) {
-    console.error(error);
-  }
+      emailTransporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          reject("Failed to send email");
+        } else {
+          resolve("Email sent successfully");
+        }
+      });
+    } catch (error) {
+      console.error(error);
+      reject("Failed to send email");
+    }
+  });
 };
+
 
 /****Update password*****/
 const updatePassword = async (req, res) => {
+  console.log(657890);
   try {
-    const { password, confirmPassword } = req.body
-    const { email } = req.params
-    if (!password && !confirmPassword)
+    const { newPassword, confirmPassword, email } = req.body
+    if (!newPassword || !confirmPassword || !email)
       return res.status(400).json({ message: "All fields are required" });
-    if (req.body.password == req.body.confirmPassword) {
-      const hashPassword = await bcrypt.hash(req.body.password, 10)
-      const updatePassword = await User.updateOne({ _id: req.body.id }, { $set: { password: hashPassword } })
-      res.render('login', { message: 'Password updated successfully !!!' })
+    if (newPassword === confirmPassword) {
+      const hashPassword = await bcrypt.hash(newPassword, 10)
+      const updatePassword = await User.updateOne({ email: email }, { $set: { newPassword: hashPassword } })
+      res.status(200).json({ message: 'Password updated successfully !!!' })
     } else {
-      res.render('change-password', { error: 'Password mismatch !!!', userId: req.body.id })
+      res.status(400).json({ error: 'Password mismatch !!!' })
     }
   } catch (error) {
-    console.log(error);
+    return res.status(400).json({ message: error.message });
   }
 }
 

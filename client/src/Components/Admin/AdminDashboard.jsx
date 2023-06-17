@@ -11,23 +11,7 @@ function AdminDashboard() {
   })
   return (
     <>
-      <div className="flex h-screen">
-        {/* Sidebar */ }
-        <Sidebar />
-
-        {/* Content */ }
-        <div className="flex-grow">
-          {/* Header */ }
-          <Header />
-          {/* Body */ }
-          <div className="p-4">
-            {/* Add your main content here */ }
-            <h1>Dashboard</h1>
-          </div>
-        </div>
-      </div>
-
-
+      <h1>Dashboard</h1>
     </>
   )
 }

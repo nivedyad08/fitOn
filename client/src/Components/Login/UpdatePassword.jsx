@@ -1,10 +1,14 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "../../config/axios";
 import { toast } from "react-toastify";
 
 const UpdatePassword = () => {
+    const navigate = useNavigate()
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const email = searchParams.get('email');
     const {
         register,
         handleSubmit,
@@ -14,39 +18,28 @@ const UpdatePassword = () => {
         defaultValues: {
             newPassword: "",
             confirmPassword: "",
+            email:email
         },
     });
 
     const newPassword = watch("newPassword");
 
     const onSubmit = async (data) => {
-        // Handle form submission with updated password
-        console.log(data);
-
-        // if (data) {
-        //     try {
-        //         const response = await axios.post("/api/auth/user/login", input);
-        //         if (response.status === 200) {
-        //             const { accessToken, user } = response.data;
-        //             Cookies.set("accessToken", accessToken);
-        //             dispatch(loggedUserDetails(user));
-        //             if (user.role === USER_ROLE)
-        //                 navigate("/user/dashboard");
-        //             else if (user.role === TRAINER_ROLE)
-        //                 navigate("/trainer/dashboard");
-        //             else if (user.role === ADMIN_ROLE)
-        //                 navigate("/admin/dashboard");
-        //             else if (user.role === PENDING_TRAINER)
-        //                 navigate(`/profile-complete/${ user.firstName }/${ user._id }`);
-        //         }
-        //     } catch (error) {
-        //         if (error.response && error.response.status === 400) {
-        //             toast.error(error.response.data.message);
-        //         } else {
-        //             toast.error("An error occurred. Please try again later");
-        //         }
-        //     }
-        // }
+        if (data) {
+            try {
+                const response = await axios.post("/api/auth/update/password", data);
+                if (response.status === 200) {
+                    toast.success("Password updated successfully!! Login with the new password");
+                    navigate("/");
+                }
+            } catch (error) {
+                if (error.response && error.response.status === 400) {
+                    toast.error(error.response.data.message);
+                } else {
+                    toast.error("An error occurred. Please try again later");
+                }
+            }
+        }
     };
 
     return (
@@ -125,6 +118,7 @@ const UpdatePassword = () => {
                             ) }
                         </div>
                     </div>
+                    <input type="hidden" name="email" id="email" value={ email } />
                     <div>
                         <button
                             className="rounded-lg h-40 w-full mt-10 bg-custom-yellow rounded-lg text-sm px-5 py-2.5 text-center font-medium focus:outline-none text-white"
