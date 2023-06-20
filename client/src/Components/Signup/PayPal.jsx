@@ -1,38 +1,51 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef, useEffect } from "react";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import axios from "../../config/axios"
 
-const PayPal = () => {
-    const paypal = useRef()
+const Paypal = () =>{
+    const paypal = useRef();
+    const navigate = useNavigate();
+    const user = useSelector((state) => state.loggedUser.userInfo)
+
     useEffect(() => {
-        window.paypal.Buttons({
-            createOrder: (data, actions, err) => {
-                return actions.order.create({
-                    intent: "CAPTURE",
-                    registration: [
-                        {
-                            description: "Welcome to Fiton",
-                            amount: {
-                                currency_code:"USD",
-                                value :1000.00
-                            }
-
-                        }
-                    ]
-                })
-            },
-            onApprove:async(data,actions)=>{
-                const order = await actions.order.capture();
-                console.log(order);
-            },
-            onError:(err)=>{
-                console.log(err);
-            }
-        }).render(paypal.current)
+        window.paypal
+            .Buttons({
+                createOrder: (data, actions, err) => {
+                    return actions.order.create({
+                        intent: "CAPTURE",
+                        purchase_units: [
+                            {
+                                description: "New Regsitration",
+                                amount: {
+                                    currency_code: "USD",
+                                    value: 1000.0,
+                                },
+                            },
+                        ],
+                    });
+                },
+                onApprove: async (data, actions) => {
+                    const order = await actions.order.capture();
+                    if (order.status === "COMPLETED") {
+                        // const updateUser = axios.post(`/api/admin/payment-update/${user._id}`)
+                        toast.success("Payment completed successfully")
+                        navigate("/")
+                    }
+                    console.log(order);
+                },
+                onError: (err) => {
+                    console.log(err);
+                },
+            })
+            .render(paypal.current);
     }, []);
-    return (
-        <div>
-            <div ref={ paypal }></div>
-        </div>
-    );
-}
 
-export default PayPal;
+    return paypal;
+//     return (
+//         <div>
+//             <div ref={ paypal }></div>
+//         </div>
+//     );
+}

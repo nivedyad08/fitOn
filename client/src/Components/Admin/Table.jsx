@@ -34,6 +34,7 @@ const Table = ({ columns, data, handleCheckBoxClick, selectedRows }) => {
             const response = await axios.post("/api/admin/delete/users", selectedRows)
             if (response.status === 200) {
                 toast.success("User Deleted Successfully");
+                
             }
         }catch (error) {
         if (error.response && error.response.status === 400) {

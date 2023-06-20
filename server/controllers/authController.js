@@ -41,11 +41,9 @@ const register = async (req, res) => {
 /****Profile Complete*****/
 const profileComplete = async (req, res) => {
   try {
-    let { userBio, userLocation, userId } = req.body
+    let { userBio , userId } = req.body
     let { profilePic, coverPhoto } = req.files
-    console.log(profilePic);
-    console.log(coverPhoto);
-    if (profilePic && coverPhoto && userBio && userLocation) {
+    if (profilePic && coverPhoto && userBio) {
       const profileImage = profilePic[0].filename;
       const coverImage = coverPhoto[0].filename;
       if (!userId) {
@@ -53,7 +51,7 @@ const profileComplete = async (req, res) => {
       }
       const user = await User.findOne({ _id: userId })
       const updateProfileUpdate = await User.findOneAndUpdate({ _id: userId },
-        { $set: { profilePic: profileImage, coverPhoto: coverImage, userBio, userLocation, isActive: true } }, { new: true })
+        { $set: { profilePic: profileImage, coverPhoto: coverImage, userBio, isActive: true } }, { new: true })
       if (!updateProfileUpdate) {
         return res.status(400).json({ message: "User not found !!" });
       }
@@ -69,6 +67,11 @@ const profileComplete = async (req, res) => {
     console.error(error);
     return res.status(500).json({ message: "Internal server error" });
   }
+}
+
+const paymentUpdate = ()=>{
+  const {userId } = req.params;
+  console.log(userId);
 }
 
 /****Refresh Token*****/
@@ -250,5 +253,6 @@ module.exports = {
   login,
   forgotPassword,
   updatePassword,
+  paymentUpdate,
   logout
 };

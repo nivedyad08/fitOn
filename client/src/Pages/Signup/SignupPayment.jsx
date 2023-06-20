@@ -1,13 +1,57 @@
-import React from "react";
-import Payment from "../../Components/Signup/Payment";
+import React, { useRef, useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import axios from "../../config/axios";
 import Slider from "../../Components/Slider";
+import Payment from "../../Components/Signup/Payment";
 
 function SignupPayment() {
+  const paypal = useRef();
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.loggedUser.userInfo);
+  const [checkout, setCheckOut] = useState(false);
+
+  useEffect(() => {
+    if (checkout) {
+      window.paypal
+        .Buttons({
+          createOrder: (data, actions, err) => {
+            return actions.order.create({
+              intent: "CAPTURE",
+              purchase_units: [
+                {
+                  description: "New Registration",
+                  amount: {
+                    currency_code: "USD",
+                    value: 1000.0,
+                  },
+                },
+              ],
+            });
+          },
+          onApprove: async (data, actions) => {
+            const order = await actions.order.capture();
+            if (order.status === "COMPLETED") {
+              // const updateUser = axios.post(`/api/admin/payment-update/${user._id}`);
+              toast.success("Payment completed successfully");
+              navigate("/");
+            }
+            console.log(order);
+          },
+          onError: (err) => {
+            console.log(err);
+          },
+        })
+        .render(paypal.current);
+    }
+  }, [checkout]);
+
   return (
     <section className="h-screen custom-blue">
       <div className="container h-full px-6 py-24">
         <div className="g-6 flex h-full flex-wrap justify-center lg:justify-between">
-          <Payment />
+          <Payment ref={ paypal } checkout={checkout} setCheckOut={setCheckOut} />
           <Slider img="Full-Body-Workout.png" />
         </div>
       </div>

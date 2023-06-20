@@ -18,8 +18,8 @@ function LoginForm() {
     watch,
   } = useForm({
     defaultValues: {
-      newPassword: "",
-      confirmPassword: "",
+      email :"",
+      password:""
     },
   });
   const [input, setInput] = useState({
@@ -75,7 +75,6 @@ function LoginForm() {
                 id="email"
                 name="email"
                 type="email"
-                autoComplete="email"
                 { ...register("email", {
                   required: "Email is required"
                 }) }
@@ -116,7 +115,6 @@ function LoginForm() {
                 id="password"
                 name="password"
                 type="password"
-                autoComplete="new-password"
                 { ...register("password", {
                   required: "Password is required",
                   minLength: {
