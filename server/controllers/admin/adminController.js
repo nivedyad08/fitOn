@@ -32,18 +32,18 @@ const trainers = async (req, res) => {
   }
 };
 
-const deleteUsers = async (req, res) => {
+const changeStatus = async (req, res) => {
   try {
-    console.log(67890);
-    const userEmails = req.body
-    const usersDelete = await User.updateMany(
-      { email: { $in: userEmails } },
-      { $set: { isActive: false, deletedAt: moment().format("YYYY-MM-DD") } }
+    const { userId } = req.params
+    const user = await User.findById(userId)
+    const newStatus = !user.isActive
+    const updateStatus = await User.findByIdAndUpdate(userId,
+      { isActive: newStatus, deletedAt: newStatus ? moment().format("YYYY-MM-DD") : null }
     );
-    if (!usersDelete) {
+    if (!updateStatus) {
       return res.status(400).json({ message: "Something went wrong" });
     }
-    return res.status(200).json({ message: "User deleted successfully !!" });
+    return res.status(200).json({ message: "Status changed successfully !!" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -52,5 +52,5 @@ const deleteUsers = async (req, res) => {
 module.exports = {
   users,
   trainers,
-  deleteUsers
+  changeStatus
 }

@@ -1,9 +1,11 @@
 const User = require("../models/usersMdl");
+const Transaction = require("../models/transactionMdl");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const moment = require("moment");
 const nodemailer = require("nodemailer")
+const { TRAINER_ROLE } = require("../constants/roles")
 
 /****Registeration*****/
 const register = async (req, res) => {
@@ -41,7 +43,7 @@ const register = async (req, res) => {
 /****Profile Complete*****/
 const profileComplete = async (req, res) => {
   try {
-    let { userBio , userId } = req.body
+    let { userBio, userId } = req.body
     let { profilePic, coverPhoto } = req.files
     if (profilePic && coverPhoto && userBio) {
       const profileImage = profilePic[0].filename;
@@ -69,9 +71,30 @@ const profileComplete = async (req, res) => {
   }
 }
 
-const paymentUpdate = ()=>{
-  const {userId } = req.params;
-  console.log(userId);
+const paymentUpdate = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { transactionId } = req.body;
+    const user = await User.findById(userId)
+    if (!userId)
+      return res.status(400).json({ message: "User not found !!" });
+    const userRoleUpdate = await User.findByIdAndUpdate(userId, {
+      role: TRAINER_ROLE
+    })
+    const newTransaction = await Transaction({
+      userId,
+      role: TRAINER_ROLE,
+      adminAmount: 1000.00,
+
+    }).save()
+    if (newTransaction) {
+      return res
+        .status(200)
+        .json({ message: "Payment recieved", user: user });
+    }
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
 }
 
 /****Refresh Token*****/

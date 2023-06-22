@@ -24,6 +24,9 @@ code {
 .bg-custom-yellow {
   background-color: #D9A900;
 }
+.border-custom-yellow {
+  border-color: #D9A900 !important;
+}
 .text-custom-yellow {
   color: #D9A900;
 }

@@ -48,7 +48,7 @@ const Payment = forwardRef(function ({ checkout, setCheckOut }, ref) {
                 </li>
               </ul>
               <div class="-mt-2 p-2 lg:mt-0 lg:w-full lg:max-w-md lg:flex-shrink-0">
-                <div class="rounded-2xl bg-custom-yellow py-10 text-center ring-1 ring-inset ring-gray-900/5 lg:flex lg:flex-col lg:justify-center lg:py-16">
+                <div class="rounded-2xl border-2 border-yellow-500 py-10 text-center ring-1 ring-inset ring-gray-900/5 lg:flex lg:flex-col lg:justify-center lg:py-16">
                   <div class="mx-auto max-w-xs px-8">
                     <p class="text-base font-semibold text-white">Pay once, own it forever</p>
                     <p class="mt-6 flex items-baseline justify-center gap-x-2">
@@ -72,6 +72,15 @@ const Payment = forwardRef(function ({ checkout, setCheckOut }, ref) {
                   </div>
                 </div>
               </div>
+              <p className="mt-10 text-center text-sm text-custom-slate">
+                Already registered ?{ " " }
+                <Link
+                  to="/"
+                  className="font-medium leading-6 text-custom-yellow font-normal hover:text-indigo-500"
+                >
+                  Login
+                </Link>
+              </p>
             </div>
           </div>
         </div>

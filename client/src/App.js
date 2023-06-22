@@ -22,7 +22,7 @@ function App() {
         <Route path="/user/forgotPassword" element={ <UpdatePasswordPage /> } />
         <Route path="/register" element={ <SignupPage /> } />
         <Route path="/profile-complete/:username/:userId" element={ <ProfileCompletePage /> } />
-        <Route path="/payment" element={ <SignupPayment /> } />
+        <Route path="/payment/:userId" element={ <SignupPayment /> } />
         /*Admin */
         <Route element={ <AdminAuth /> }>
           <Route path="/admin/*" element={ <AdminRoute /> } />

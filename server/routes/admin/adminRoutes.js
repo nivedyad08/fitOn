@@ -13,10 +13,10 @@ adminRoute.get(
     verifyUser,
     adminController.trainers
 );
-adminRoute.post(
-    "/delete/users",
+adminRoute.put(
+    "/change-user-status/:userId",
     verifyUser,
-    adminController.deleteUsers
+    adminController.changeStatus
   );
 
 module.exports = adminRoute;

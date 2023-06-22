@@ -53,7 +53,7 @@ function ProfileComplete() {
         Cookies.set("accessToken", accessToken);
         dispatch(loggedUserDetails(user));
         toast.success("User Profile updated Successfully");
-        navigate("/payment");
+        navigate(`/payment/${user._id}`);
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {

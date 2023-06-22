@@ -31,13 +31,24 @@ function SignupPayment() {
             });
           },
           onApprove: async (data, actions) => {
-            const order = await actions.order.capture();
-            if (order.status === "COMPLETED") {
-              // const updateUser = axios.post(`/api/admin/payment-update/${user._id}`);
-              toast.success("Payment completed successfully");
-              navigate("/");
+            try {
+              const order = await actions.order.capture();
+              const transactionId = order.id
+              console.log(order);
+              if (order.status === "COMPLETED") {
+                const updateUserPayment = await axios.post(`/api/auth/user/payment-update/${ user._id }`, { transactionId: transactionId });
+                if (updateUserPayment.status === 200) {
+                  toast.success("Payment completed successfully");
+                  navigate("/");
+                }
+              }
+            } catch (error) {
+              if (error.response && error.response.status === 400) {
+                toast.error(error.response.data.message);
+              } else {
+                toast.error("An error occurred. Please try again later");
+              }
             }
-            console.log(order);
           },
           onError: (err) => {
             console.log(err);
@@ -48,10 +59,10 @@ function SignupPayment() {
   }, [checkout]);
 
   return (
-    <section className="h-screen custom-blue">
+    <section className="custom-blue">
       <div className="container h-full px-6 py-24">
         <div className="g-6 flex h-full flex-wrap justify-center lg:justify-between">
-          <Payment ref={ paypal } checkout={checkout} setCheckOut={setCheckOut} />
+          <Payment ref={ paypal } checkout={ checkout } setCheckOut={ setCheckOut } />
           <Slider img="Full-Body-Workout.png" />
         </div>
       </div>
