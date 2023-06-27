@@ -18,7 +18,7 @@ const Sidebar = () => {
     }, [location])
     return (
         <aside
-            className={ `${ isOpen ? 'w-1/12' : 'w-2/12' } sidebar-blue text-white flex-shrink-0 transition-all duration-300 relative` }
+            className={ `${ isOpen ? 'w-1/12' : 'w-2/12' } custom-dark-blue text-white flex-shrink-0 transition-all duration-300 relative` }
         >
             {/* Toggle Button */ }
             <button

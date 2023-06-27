@@ -1,21 +1,21 @@
 const express = require("express");
 const adminRoute = express();
 const adminController = require("../../controllers/admin/adminController");
-const verifyUser = require("../../middlewares/verifyJWT");
+const isAdmin   = require("../../middlewares/isAdmin")
 
 adminRoute.get(
     "/users",
-    verifyUser,
+    isAdmin,
     adminController.users
 );
 adminRoute.get(
     "/trainers",
-    verifyUser,
+    isAdmin,
     adminController.trainers
 );
 adminRoute.put(
     "/change-user-status/:userId",
-    verifyUser,
+    isAdmin,
     adminController.changeStatus
   );
 

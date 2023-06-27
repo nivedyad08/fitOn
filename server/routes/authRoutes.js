@@ -1,7 +1,6 @@
 const express = require("express");
 const authRoute = express();
 const authController = require("../controllers/authController");
-const verifyUser = require("../middlewares/verifyJWT");
 const userImageUpload = require("../config/multer").userImageUpload;
 const userUpload = userImageUpload.fields([
     { name: "profilePic", maxCount: 1 },

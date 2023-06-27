@@ -24,8 +24,14 @@ code {
 .bg-custom-yellow {
   background-color: #D9A900;
 }
-.border-custom-yellow {
+.border-custom-yellow{
   border-color: #D9A900 !important;
+}
+.custom-yellow {
+  background-color: #D9A900 !important;
+}
+.custom-light-blue{
+  background-color: #414160;
 }
 .text-custom-yellow {
   color: #D9A900;
@@ -39,6 +45,12 @@ code {
 .text-custom-whitish {
   color: #CBCCD4;
 }
-.sidebar-blue{
+.custom-dark-blue{
   background-color: #111225;
+}
+.custom-blue-shade1{
+  background-color: #414160;
+}
+.custom-blue-grey{
+  background-color: #7D7E93;
 }
