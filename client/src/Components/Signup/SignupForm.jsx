@@ -1,48 +1,37 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../../config/axios";
-import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { USER_ROLE, PENDING_TRAINER, TRAINER_ROLE } from "../../constants/roles";
+import { USER_ROLE, PENDING_TRAINER } from "../../constants/roles";
 
 export default function SignupForm() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-  } = useForm({
-    defaultValues: {
-      role: "",
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      userLocation: "",
-    },
+  const [input, setInput] = useState({
+    role: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    userLocation:""
   });
-  const { firstName, lastName, email, password, userLocation } = watch(["firstName", "lastName", "email", "password", "userLocation"])
-
   const navigate = useNavigate();
-  const onSubmit = async (data) => {
-    if (data) {
-      try {
-        const response = await axios.post("api/auth/user/register", data);
-        if (response.status === 200) {
-          toast.success("User Registered Successfully");
-          const user = response.data.user;
-          if (user.role === PENDING_TRAINER) {
-            navigate(`/profile-complete/${ user.firstName }/${ user._id }`);
-          } else {
-            navigate('/');
-          }
-        }
-      } catch (error) {
-        if (error.response && error.response.status === 400) {
-          toast.error(error.response.data.message);
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("api/auth/user/register", input);
+      if (response.status === 200) {
+        toast.success("User Registered Successfully");
+        const user = response.data.user;
+        if (user.role === PENDING_TRAINER) {
+          navigate(`/profile-complete/${ user.firstName }/${ user._id }`);
         } else {
-          toast.error("An error occurred. Please try again later");
+          navigate('/');
         }
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("An error occurred. Please try again later");
       }
     }
   };
@@ -58,16 +47,16 @@ export default function SignupForm() {
         <p class="text-lg font-semibold leading-relaxed text-custom-whitish">
           Who are you?
         </p>
-        <form className="space-y-6" onSubmit={ handleSubmit(onSubmit) }>
+        <form className="space-y-6" onSubmit={ handleSignUp }>
           <ul class="items-center py-10 w-full text-sm font-medium text-gray-900 rounded-lg sm:flex dark:bg-gray-700 dark:text-white">
             <li class="w-full">
               <div class="flex items-center pl-3">
                 <input
                   id="horizontal-list-radio-id"
                   type="radio"
-                  name="role"
                   value={ USER_ROLE }
-                  { ...register("role", { required: "Role is required" }) }
+                  onChange={ (e) => setInput({ ...input, role: e.target.value }) }
+                  name="list-radio"
                   className="w-32 h-32 mx-4 focus:ring-yellow-500 dark:focus:ring-yellow-600 border-gray-300 dark:border-gray-500"
                   style={ { backgroundColor: "#414160" } }
                 />
@@ -86,10 +75,9 @@ export default function SignupForm() {
                 <input
                   id="horizontal-list-radio-id"
                   type="radio"
-                  name="role"
                   value={ PENDING_TRAINER }
-                  { ...register("role", { required: "Role is required" }) }
-
+                  onChange={ (e) => setInput({ ...input, role: e.target.value }) }
+                  name="list-radio"
                   className="w-32 h-32 mx-4 bg-transparent border-gray-300 dark:border-gray-500"
                   style={ { backgroundColor: "#414160" } }
                 />
@@ -108,7 +96,7 @@ export default function SignupForm() {
             <div class="relative mb-6" data-te-input-wrapper-init>
               <label
                 htmlFor="firstName"
-                className="block text-sm font-medium leading-6 text-white"
+                className="block text-sm font-medium leading-6 text-white font-normal"
               >
                 First Name
               </label>
@@ -117,28 +105,20 @@ export default function SignupForm() {
                 name="firstName"
                 type="text"
                 autoComplete="text"
-                { ...register("firstName", {
-                  required: "First Name is required",
-                  pattern: {
-                    value: /^[A-Za-z]+$/i,
-                    message: "Name should only contain letters",
-                  },
-                }) }
-                className={ `block h-40 w-full py-2 px-4 rounded-md border-0 text-white shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6 ${ errors.firstName ? "border-red-500" : ""
-                  }` }
+                value={ input.firstName }
+                onChange={ (e) =>
+                  setInput({ ...input, [e.target.name]: e.target.value })
+                }
+                required
+                className="block h-40 w-full rounded-md border-0 py-2 px-4 text-custom-whitish shadow-sm ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 style={ { backgroundColor: "#414160" } }
               />
-              { errors.firstName && (
-                <small className="mt-2 text-red-500 text-sm">
-                  { errors.firstName.message }
-                </small>
-              ) }
             </div>
 
             <div class="relative mb-6" data-te-input-wrapper-init>
               <label
                 htmlFor="lastName"
-                className="block text-sm font-medium leading-6 text-white"
+                className="block text-sm font-medium leading-6 text-white font-normal"
               >
                 Last Name
               </label>
@@ -147,28 +127,22 @@ export default function SignupForm() {
                 name="lastName"
                 type="text"
                 autoComplete="text"
-                { ...register("lastName", {
-                  required: "Last Name is required",
-                  pattern: {
-                    value: /^[A-Za-z]+$/i,
-                    message: "Name should only contain letters",
-                  },
-                }) }
-                className={ `block h-40 w-full py-2 px-4 rounded-md border-0 text-white shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6 ${ errors.lastName ? "border-red-500" : ""
-                  }` }
+                value={ input.lastName }
+                onChange={ (e) =>
+                  setInput({ ...input, [e.target.name]: e.target.value })
+                }
+                required
+                className="block h-40 w-full rounded-md py-2 px-4 text-custom-whitish shadow-sm  
+                ring-gray-300 placeholder:text-gray-400
+                sm:text-sm sm:leading-6"
                 style={ { backgroundColor: "#414160" } }
               />
-              { errors.lastName && (
-                <small className="mt-2 text-red-500 text-sm">
-                  { errors.lastName.message }
-                </small>
-              ) }
             </div>
           </div>
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium leading-6 text-white"
+              className="block text-sm font-medium leading-6 text-white font-normal"
             >
               Email address
             </label>
@@ -178,22 +152,17 @@ export default function SignupForm() {
                 name="email"
                 type="email"
                 autoComplete="email"
-                { ...register("email", {
-                  required: "Email is required",
-                  pattern: {
-                    value: /^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/,
-                    message: "Email does'nt match",
-                  },
-                }) }
-                className={ `block h-40 w-full py-2 px-4 rounded-md border-0 text-white shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6 ${ errors.email ? "border-red-500" : ""
-                  }` }
+                value={ input.email }
+                onChange={ (e) =>
+                  setInput({ ...input, [e.target.name]: e.target.value })
+                }
+                required
+                className="peer block h-40 w-full rounded-md border-0 py-2 px-4 text-custom-whitish shadow-sm ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
                 style={ { backgroundColor: "#414160" } }
               />
-              { errors.email && (
-                <small className="mt-2 text-red-500 text-sm">
-                  { errors.email.message }
-                </small>
-              ) }
+              <p class="mt-2 invisible peer-invalid:visible text-pink-600 text-sm">
+                Please provide a valid email address.
+              </p>
             </div>
           </div>
 
@@ -220,27 +189,19 @@ export default function SignupForm() {
                 name="password"
                 type="password"
                 autoComplete="current-password"
-                { ...register("password", {
-                  required: "Password must be strong",
-                  pattern: {
-                    value: /((?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])(?=.{8,}))/i,
-                    message: "Password must be strong",
-                  },
-                }) }
-                className={ `block h-40 w-full py-2 px-4 rounded-md border-0 text-white shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6 ${ errors.password ? "border-red-500" : ""
-                  }` }
+                value={ input.password }
+                onChange={ (e) =>
+                  setInput({ ...input, [e.target.name]: e.target.value })
+                }
+                required
+                className="block h-40 w-full rounded-md py-2 px-4 border-0 py-1.5 text-white shadow-sm ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
                 style={ { backgroundColor: "#414160" } }
               />
-              { errors.password && (
-                <small className="mt-2 text-red-500 text-sm">
-                  { errors.password.message }
-                </small>
-              ) }
             </div>
             <div class="relative mb-6" data-te-input-wrapper-init>
               <label
-                htmlFor="userLocation"
-                className="block text-sm font-medium leading-6 text-white"
+                htmlFor="lastName"
+                className="block text-sm font-medium leading-6 text-white font-normal"
               >
                 Location
               </label>
@@ -248,27 +209,22 @@ export default function SignupForm() {
                 id="userLocation"
                 name="userLocation"
                 type="text"
-                { ...register("userLocation", {
-                  required: "Location is required",
-                  pattern: {
-                    value: /^[A-Za-z]+$/i,
-                    message: "Location should only contain letters",
-                  },
-                }) }
-                className={ `block h-40 w-full py-2 px-4 rounded-md border-0 text-white shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6 ${ errors.userLocation ? "border-red-500" : ""
-                  }` }
+                autoComplete="text"
+                value={ input.userLocation }
+                onChange={ (e) =>
+                  setInput({ ...input, [e.target.name]: e.target.value })
+                }
+                required
+                className="block h-40 w-full rounded-md py-2 px-4 text-custom-whitish shadow-sm  
+                ring-gray-300 placeholder:text-gray-400
+                sm:text-sm sm:leading-6"
                 style={ { backgroundColor: "#414160" } }
               />
-              { errors.userLocation && (
-                <small className="mt-2 text-red-500 text-sm">
-                  { errors.userLocation.message }
-                </small>
-              ) }
             </div>
           </div>
 
           <div>
-            <button class="rounded-lg h-40 w-full mt-10 bg-custom-yellow text-sm px-5 py-2.5 text-center font-medium focus:outline-none text-white">
+            <button class="rounded-lg h-40 w-full mt-10 bg-custom-yellow rounded-lg text-sm px-5 py-2.5 text-center font-medium focus:outline-none text-white">
               CREATE ACCOUNT
             </button>
           </div>
@@ -278,7 +234,7 @@ export default function SignupForm() {
           Already registered ?{ " " }
           <Link
             to="/"
-            className="font-medium leading-6 text-custom-yellow hover:text-indigo-500"
+            className="font-medium leading-6 text-custom-yellow font-normal hover:text-indigo-500"
           >
             Login
           </Link>

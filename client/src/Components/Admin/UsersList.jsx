@@ -1,15 +1,40 @@
 import React, { useMemo, useState, useEffect } from "react";
 import Table from "./Table";
 import axios from "../../config/axios";
-import { Switch } from "@mui/material";
 
 const UsersList = () => {
-   const columns = useMemo(
+  const [selectedRows, setSelectedRows] = useState([]);
+
+  const handleCheckBoxClick = (email) => {
+    setSelectedRows((prevSelectedRows) => {
+      if (prevSelectedRows.includes(email)) {
+        // Remove the email from selectedRows if it is already present
+        return prevSelectedRows.filter((row) => row !== email);
+      } else {
+        // Add the email to selectedRows if it is not present
+        return [...prevSelectedRows, email];
+      }
+    });
+  };
+
+  const columns = useMemo(
     () => [
       {
         // Second group columns
         Header: "Users",
         columns: [
+          {
+            id: "checkbox",
+            Header: "",
+            accessor: "email",
+            Cell: ({ row }) => (
+              <input
+                type="checkbox"
+                className="w-20"
+                onChange={() => handleCheckBoxClick(row.original.email)}
+              />
+            ),
+          },
           {
             Header: "First Name",
             accessor: "firstName",
@@ -29,26 +54,15 @@ const UsersList = () => {
           {
             Header: "Status",
             accessor: "isActive",
-            Cell: ({ value, row }) => {
-              const [isChecked, setIsChecked] = useState(
-                value
-              );
-              const handleUserStatus = async (e) => {
-                setIsChecked(!isChecked);
-
-                const response = await axios.put(
-                  `/api/admin/change-user-status/${ row.original._id }`
-                );
-                alert(response.data.message);
-              };
-              return (
-                <div style={ { display: "flex", flexDirection: "row" } }>
-                  <Switch
-                    color="success"
-                    checked={ isChecked }
-                    onChange={ handleUserStatus }
-                  />
-                </div>
+            Cell: ({ value }) => {
+              return value === true ? (
+                <span className="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
+                  Active
+                </span>
+              ) : (
+                <span className="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">
+                  Inactive
+                </span>
               );
             },
           },
@@ -73,8 +87,10 @@ const UsersList = () => {
   return (
     <div className="App">
       <Table
-        columns={ columns }
-        data={ data }
+        columns={columns}
+        data={data}
+        handleCheckBoxClick={handleCheckBoxClick}
+        selectedRows={selectedRows}
       />
     </div>
   );

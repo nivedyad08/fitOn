@@ -3,7 +3,6 @@ import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
 import GroupIcon from '@mui/icons-material/Group';
 import StarIcon from '@mui/icons-material/Star';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
-import CategoryIcon from '@mui/icons-material/Category';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -19,7 +18,7 @@ const Sidebar = () => {
     }, [location])
     return (
         <aside
-            className={ `${ isOpen ? 'w-1/12' : 'w-2/12' } custom-dark-blue text-white flex-shrink-0 transition-all duration-300 relative` }
+            className={ `${ isOpen ? 'w-1/12' : 'w-2/12' } sidebar-blue text-white flex-shrink-0 transition-all duration-300 relative` }
         >
             {/* Toggle Button */ }
             <button
@@ -63,11 +62,6 @@ const Sidebar = () => {
                     <li className="mb-2 flex items-center">
                         <SpaceDashboardIcon className="mr-6 text-[#7D7E93]" style={ { fontSize: "medium" } } />
                         <Link to="/admin/dashboard" className={ `block leading-10  hover:text-white ${ location.pathname === '/admin/dashboard' ? "text-white" : "text-[#7D7E93]" }` }>Dashboard</Link>
-                    </li>
-
-                    <li className="mb-2 flex items-center">
-                        <CategoryIcon className="mr-6 text-[#7D7E93]" style={ { fontSize: "medium" } } />
-                        <Link to="/admin/categories" className={ `block leading-10  hover:text-white ${ location.pathname === '/admin/categories' ? "text-white" : "text-[#7D7E93]" }` }>Manage Categories</Link>
                     </li>
 
                     <li className="mb-2 flex items-center">

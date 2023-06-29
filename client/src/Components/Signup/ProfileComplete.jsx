@@ -53,7 +53,7 @@ function ProfileComplete() {
         Cookies.set("accessToken", accessToken);
         dispatch(loggedUserDetails(user));
         toast.success("User Profile updated Successfully");
-        navigate(`/payment/${user._id}`);
+        navigate("/payment");
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
@@ -187,7 +187,7 @@ function ProfileComplete() {
               ></textarea>
             </div>
           </div>
-          {/* <div>
+          <div>
             <div className="flex items-center justify-between">
               <label
                 htmlFor="password"
@@ -213,7 +213,7 @@ function ProfileComplete() {
                 style={ { backgroundColor: "#414160" } }
               />
             </div>
-          </div> */}
+          </div>
           <div>
             <button className="rounded-lg h-40 w-full mt-10 bg-custom-yellow rounded-lg text-sm px-5 py-2.5 text-center font-medium focus:outline-none text-white">
               COMPLETE

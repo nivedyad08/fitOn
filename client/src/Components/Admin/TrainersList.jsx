@@ -2,9 +2,21 @@ import React, { useMemo, useState, useEffect } from "react";
 import Table from "./Table";
 import axios from "../../config/axios"
 import { TRAINER_ROLE, PENDING_TRAINER } from "../../constants/roles"
-import { Switch } from "@mui/material";
 
 const TrainersList = () => {
+    const [selectedRows, setSelectedRows] = useState([]);
+
+    const handleCheckBoxClick = (email) => {
+        setSelectedRows((prevSelectedRows) => {
+            if (prevSelectedRows.includes(email)) {
+                // Remove the email from selectedRows if it is already present
+                return prevSelectedRows.filter((row) => row !== email);
+            } else {
+                // Add the email to selectedRows if it is not present
+                return [...prevSelectedRows, email];
+            }
+        });
+    };
     const columns = useMemo(
         () => [
             {
@@ -12,6 +24,18 @@ const TrainersList = () => {
                 Header: "Trainers",
                 // Second group columns
                 columns: [
+                    {
+                        id: "checkbox",
+                        Header: "",
+                        accessor: "",
+                        Cell: ({ row }) => (
+                            <input
+                                type="checkbox"
+                                className="w-20"
+                                onChange={ () => handleCheckBoxClick(row.original.email) }
+                            />
+                        ),
+                    },
                     {
                         Header: "First Name",
                         accessor: "firstName",
@@ -38,28 +62,9 @@ const TrainersList = () => {
                     {
                         Header: "Status",
                         accessor: "isActive",
-                        Cell: ({ value, row }) => {
-                            const [isChecked, setIsChecked] = useState(
-                                value
-                            );
-                            const handleUserStatus = async (e) => {
-                                setIsChecked(!isChecked);
-
-                                const response = await axios.put(
-                                    `/api/admin/change-user-status/${ row.original._id }`
-                                );
-                                alert(response.data.message);
-                            };
-                            return (
-                                <div style={ { display: "flex", flexDirection: "row" } }>
-                                    <Switch
-                                        color="success"
-                                        checked={ isChecked }
-                                        onChange={ handleUserStatus }
-                                    />
-                                </div>
-                            );
-                        },
+                        Cell: ({ value }) => {
+                            return value === true ? <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Active</span> : <span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">Inactive</span>
+                        }
                     },
                 ],
             },
@@ -77,7 +82,8 @@ const TrainersList = () => {
     }, []);
     return (
         <div className="App">
-            <Table columns={ columns } data={ data }  />
+            <Table columns={ columns } data={ data } handleCheckBoxClick={ handleCheckBoxClick }
+                selectedRows={ selectedRows } />
         </div>
     );
 }
