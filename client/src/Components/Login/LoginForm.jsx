@@ -18,19 +18,16 @@ function LoginForm() {
     watch,
   } = useForm({
     defaultValues: {
-      email :"",
-      password:""
+      email: "",
+      password: ""
     },
   });
-  const [input, setInput] = useState({
-    email: "",
-    password: ""
-  })
 
+  const { email, password } = watch(["email", "password"])
   const onSubmit = async (data) => {
-    if (data) {
-      try {
-        const response = await axios.post("/api/auth/user/login", input);
+    try {
+      if (data) {
+        const response = await axios.post("/api/auth/user/login", data);
         if (response.status === 200) {
           const { accessToken, user } = response.data;
           Cookies.set("accessToken", accessToken);
@@ -44,12 +41,12 @@ function LoginForm() {
           else if (user.role === PENDING_TRAINER)
             navigate(`/profile-complete/${ user.firstName }/${ user._id }`);
         }
-      } catch (error) {
-        if (error.response && error.response.status === 400) {
-          toast.error(error.response.data.message);
-        } else {
-          toast.error("An error occurred. Please try again later");
-        }
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("An error occurred. Please try again later");
       }
     }
   };
@@ -66,7 +63,7 @@ function LoginForm() {
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium leading-6 text-white font-normal"
+              className="block text-sm font-medium leading-6 text-white"
             >
               Email address
             </label>
@@ -74,18 +71,15 @@ function LoginForm() {
               <input
                 id="email"
                 name="email"
-                type="email"
                 { ...register("email", {
-                  required: "Email is required"
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/,
+                    message: "Email does'nt match",
+                  },
                 }) }
-                className={ `block h-40 w-full py-2 px-4 rounded-md border-0 py-1.5 text-white shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6 ${ errors.email ? "border-red-500" : ""
+                className={ `block h-40 w-full py-2 px-4 rounded-md border-0 text-white shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6 ${ errors.email ? "border-red-500" : ""
                   }` }
-                onChange={ (e) =>
-                  setInput({
-                    ...input,
-                    email: e.target.value,
-                  })
-                }
                 style={ { backgroundColor: "#414160" } }
               />
               { errors.email && (
@@ -100,7 +94,7 @@ function LoginForm() {
             <div className="flex items-center justify-between">
               <label
                 htmlFor="password"
-                className="block text-sm font-medium leading-6 text-custom-whitish font-normal"
+                className="block text-sm font-medium leading-6 text-custom-whitish"
               >
                 Password
               </label>
@@ -122,14 +116,8 @@ function LoginForm() {
                     message: "Password must be at least 6 characters long",
                   },
                 }) }
-                className={ `block h-40 w-full py-2 px-4 rounded-md border-0 py-1.5 text-white shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6 ${ errors.password ? "border-red-500" : ""
+                className={ `block h-40 w-full py-2 px-4 rounded-md border-0 text-white shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6 ${ errors.password ? "border-red-500" : ""
                   }` }
-                onChange={ (e) =>
-                  setInput({
-                    ...input,
-                    password: e.target.value,
-                  })
-                }
                 style={ { backgroundColor: "#414160" } }
               />
               { errors.password && (
@@ -142,7 +130,7 @@ function LoginForm() {
           </div>
 
           <div>
-            <button class="rounded-lg h-40 w-full mt-10 bg-custom-yellow rounded-lg text-sm px-5 py-2.5 text-center font-medium focus:outline-none text-white">
+            <button class="rounded-lg h-40 w-full mt-10 bg-custom-yellow text-sm px-5 py-2.5 text-center font-medium focus:outline-none text-white">
               LOGIN
             </button>
           </div>
@@ -152,7 +140,7 @@ function LoginForm() {
           Don’t have an account ?{ " " }
           <Link
             to="/register"
-            className="font-medium leading-6 text-custom-yellow font-normal hover:text-indigo-500"
+            className="font-medium leading-6 text-custom-yellow hover:text-indigo-500"
           >
             Signup
           </Link>

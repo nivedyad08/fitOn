@@ -4,7 +4,7 @@ import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie';
 import { useSelector, useDispatch } from 'react-redux';
-import { logoutUser } from "../redux-toolkit/slices/userSlice"
+import { logoutUser } from "./redux-toolkit/slices/userSlice"
 
 const user = {
     name: 'Tom Cook',
@@ -45,8 +45,8 @@ export default function Example() {
             Cookies.remove("accessToken")
             dispatch(logoutUser)
             navigate("/")
-        }else if(id === "account"){
-            navigate("/account")
+        } else if (id === "account") {
+            navigate("/trainer/account")
         }
     }
     return (
@@ -128,7 +128,7 @@ export default function Example() {
                                                                     } }
                                                                     className={ classNames(
                                                                         active ? 'bg-gray-100' : '',
-                                                                        'block px-8 py-2 text-sm text-gray-700 cursor-pointer'
+                                                                        'block px-8 py-8 text-sm text-gray-700 cursor-pointer'
                                                                     ) }
                                                                 >
                                                                     { item.name }

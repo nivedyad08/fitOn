@@ -1,4 +1,5 @@
 const User = require("../../models/usersMdl");
+const Category = require("../../models/categoriesMdl");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
 const moment = require("moment");
@@ -52,5 +53,5 @@ const changeStatus = async (req, res) => {
 module.exports = {
   users,
   trainers,
-  changeStatus
+  changeStatus,
 }

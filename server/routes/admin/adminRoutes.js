@@ -1,7 +1,8 @@
 const express = require("express");
 const adminRoute = express();
 const adminController = require("../../controllers/admin/adminController");
-const isAdmin   = require("../../middlewares/isAdmin")
+const categoryController = require("../../controllers/admin/categoryController");
+const isAdmin = require("../../middlewares/isAdmin")
 
 adminRoute.get(
     "/users",
@@ -17,6 +18,10 @@ adminRoute.put(
     "/change-user-status/:userId",
     isAdmin,
     adminController.changeStatus
-  );
+);
+adminRoute.get("/categories", isAdmin, categoryController.categories)
+adminRoute.post("/add-category", isAdmin, categoryController.addCategory)
+adminRoute.post("/update-category", isAdmin, categoryController.updateCategory)
+adminRoute.put("/category/change-status", isAdmin, categoryController.changeStatus)
 
 module.exports = adminRoute;

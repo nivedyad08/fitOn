@@ -108,7 +108,7 @@ export default function SignupForm() {
             <div class="relative mb-6" data-te-input-wrapper-init>
               <label
                 htmlFor="firstName"
-                className="block text-sm font-medium leading-6 text-white font-normal"
+                className="block text-sm font-medium leading-6 text-white"
               >
                 First Name
               </label>
@@ -124,7 +124,7 @@ export default function SignupForm() {
                     message: "Name should only contain letters",
                   },
                 }) }
-                className={ `block h-40 w-full py-2 px-4 rounded-md border-0 py-1.5 text-white shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6 ${ errors.firstName ? "border-red-500" : ""
+                className={ `block h-40 w-full py-2 px-4 rounded-md border-0 text-white shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6 ${ errors.firstName ? "border-red-500" : ""
                   }` }
                 style={ { backgroundColor: "#414160" } }
               />
@@ -138,7 +138,7 @@ export default function SignupForm() {
             <div class="relative mb-6" data-te-input-wrapper-init>
               <label
                 htmlFor="lastName"
-                className="block text-sm font-medium leading-6 text-white font-normal"
+                className="block text-sm font-medium leading-6 text-white"
               >
                 Last Name
               </label>
@@ -154,7 +154,7 @@ export default function SignupForm() {
                     message: "Name should only contain letters",
                   },
                 }) }
-                className={ `block h-40 w-full py-2 px-4 rounded-md border-0 py-1.5 text-white shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6 ${ errors.lastName ? "border-red-500" : ""
+                className={ `block h-40 w-full py-2 px-4 rounded-md border-0 text-white shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6 ${ errors.lastName ? "border-red-500" : ""
                   }` }
                 style={ { backgroundColor: "#414160" } }
               />
@@ -168,7 +168,7 @@ export default function SignupForm() {
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium leading-6 text-white font-normal"
+              className="block text-sm font-medium leading-6 text-white"
             >
               Email address
             </label>
@@ -185,7 +185,7 @@ export default function SignupForm() {
                     message: "Email does'nt match",
                   },
                 }) }
-                className={ `block h-40 w-full py-2 px-4 rounded-md border-0 py-1.5 text-white shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6 ${ errors.email ? "border-red-500" : ""
+                className={ `block h-40 w-full py-2 px-4 rounded-md border-0 text-white shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6 ${ errors.email ? "border-red-500" : ""
                   }` }
                 style={ { backgroundColor: "#414160" } }
               />
@@ -227,7 +227,7 @@ export default function SignupForm() {
                     message: "Password must be strong",
                   },
                 }) }
-                className={ `block h-40 w-full py-2 px-4 rounded-md border-0 py-1.5 text-white shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6 ${ errors.password ? "border-red-500" : ""
+                className={ `block h-40 w-full py-2 px-4 rounded-md border-0 text-white shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6 ${ errors.password ? "border-red-500" : ""
                   }` }
                 style={ { backgroundColor: "#414160" } }
               />
@@ -240,7 +240,7 @@ export default function SignupForm() {
             <div class="relative mb-6" data-te-input-wrapper-init>
               <label
                 htmlFor="userLocation"
-                className="block text-sm font-medium leading-6 text-white font-normal"
+                className="block text-sm font-medium leading-6 text-white"
               >
                 Location
               </label>
@@ -255,7 +255,7 @@ export default function SignupForm() {
                     message: "Location should only contain letters",
                   },
                 }) }
-                className={ `block h-40 w-full py-2 px-4 rounded-md border-0 py-1.5 text-white shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6 ${ errors.userLocation ? "border-red-500" : ""
+                className={ `block h-40 w-full py-2 px-4 rounded-md border-0 text-white shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6 ${ errors.userLocation ? "border-red-500" : ""
                   }` }
                 style={ { backgroundColor: "#414160" } }
               />
@@ -268,7 +268,7 @@ export default function SignupForm() {
           </div>
 
           <div>
-            <button class="rounded-lg h-40 w-full mt-10 bg-custom-yellow rounded-lg text-sm px-5 py-2.5 text-center font-medium focus:outline-none text-white">
+            <button class="rounded-lg h-40 w-full mt-10 bg-custom-yellow text-sm px-5 py-2.5 text-center font-medium focus:outline-none text-white">
               CREATE ACCOUNT
             </button>
           </div>
@@ -278,7 +278,7 @@ export default function SignupForm() {
           Already registered ?{ " " }
           <Link
             to="/"
-            className="font-medium leading-6 text-custom-yellow font-normal hover:text-indigo-500"
+            className="font-medium leading-6 text-custom-yellow hover:text-indigo-500"
           >
             Login
           </Link>

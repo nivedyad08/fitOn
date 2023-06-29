@@ -1,6 +1,23 @@
-import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 export default function AddWorkout() {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        watch,
+    } = useForm({
+        defaultValues: {
+            workoutTitle: "",
+            description: "",
+            lastName: "",
+            email: "",
+            password: "",
+            userLocation: "",
+        },
+    });
+    const { firstName, lastName, email, password, userLocation } = watch(["firstName", "lastName", "email", "password", "userLocation"])
     return (
         <div className='max-w-7xl w-5/6 mx-auto py-20'>
             <form className='custom-blue p-20 rounded-md'>
@@ -41,7 +58,7 @@ export default function AddWorkout() {
                             </div>
 
                             <div className="sm:col-span-3">
-                                <label htmlFor="first-name" className="block text-sm font-lg leading-6 text-custom-whitish">
+                                <label htmlFor="category" className="block text-sm font-lg leading-6 text-custom-whitish">
                                     Workout Category
                                 </label>
                                 <div className="mt-2">

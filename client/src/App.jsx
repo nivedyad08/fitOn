@@ -13,12 +13,14 @@ import AdminAuth from "./Auth/AdminAuth";
 import TrainerAuth from "./Auth/TrainerAuth";
 import TrainerRoute from "./Routes/TrainerRoute";
 import errorPage from "./Pages/errorPage";
+import UserAuth from "./Auth/UserAuth";
+import UserRoute from "./Routes/UserRoute";
 
 function App() {
   return (
     <div>
       <Routes>
-        <Route path="/*" element={ <errorPage /> } />
+        {/* <Route path="/*" element={ <errorPage /> } /> */}
         <Route path="/" element={ <LoginPage /> } />
         <Route path="/forgot-password" element={ <ForgortPasswordPage /> } />
         <Route path="/forgot-password/email-verification" element={ <EmailVerification /> } />
@@ -33,6 +35,10 @@ function App() {
         /*Trainer */
         <Route element={ <TrainerAuth /> }>
           <Route path="/trainer/*" element={ <TrainerRoute /> } />
+        </Route>
+        /*User */
+        <Route element={ <UserAuth /> }>
+          <Route path="/user/*" element={ <UserRoute /> } />
         </Route>
       </Routes>
       <ToastContainerBox />

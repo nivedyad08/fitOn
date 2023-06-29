@@ -1,15 +1,15 @@
 import Cookies from "js-cookie"
 import { useSelector } from "react-redux";
 import { Navigate, Outlet, useLocation } from "react-router-dom"
-import { ADMIN_ROLE } from "../constants/roles"
+import { USER_ROLE } from "../constants/roles"
 
-function AdminAuth() {
+function UserAuth() {
+    const userToken = Cookies.get("accessToken")
     const user = useSelector((state) => state.loggedUser.userInfo)
-    const adminToken = Cookies.get("accessToken")
     const location = useLocation();
     return (
-        adminToken && user.role === ADMIN_ROLE ? <Outlet /> : <Navigate to="/" state={ { from: location } } replace />
+        userToken && user.role === USER_ROLE ? <Outlet /> : <Navigate to="/" state={ { from: location } } replace />
     )
 }
 
-export default AdminAuth;
+export default UserAuth;
