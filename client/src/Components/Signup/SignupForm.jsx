@@ -120,7 +120,7 @@ export default function SignupForm() {
                 { ...register("firstName", {
                   required: "First Name is required",
                   pattern: {
-                    value: /^[A-Za-z]+$/i,
+                    value: /^(?=.*\S)[A-Za-z\s]+$/i,
                     message: "Name should only contain letters",
                   },
                 }) }
@@ -150,7 +150,7 @@ export default function SignupForm() {
                 { ...register("lastName", {
                   required: "Last Name is required",
                   pattern: {
-                    value: /^[A-Za-z]+$/i,
+                    value: /^(?=.*\S)[A-Za-z\s]+$/i,
                     message: "Name should only contain letters",
                   },
                 }) }
@@ -201,7 +201,7 @@ export default function SignupForm() {
             <div className="flex items-center justify-between">
               <label
                 htmlFor="password"
-                className="block text-sm font-medium leading-6 text-custom-whitish font-normal"
+                className="block text-sm font-medium leading-6 text-custom-whitish"
               >
                 Password
               </label>

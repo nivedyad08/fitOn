@@ -58,7 +58,7 @@ const UpdatePassword = () => {
                     <div>
                         <label
                             htmlFor="newPassword"
-                            className="block text-sm font-medium leading-6 text-white font-normal"
+                            className="block text-sm font-medium leading-6 text-white"
                         >
                             New Password
                         </label>

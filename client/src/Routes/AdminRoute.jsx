@@ -10,7 +10,7 @@ import Categories from '../Components/Admin/Category/Categories';
 const AdminRoute = () => {
     return (
         <>
-            <div className="flex h-screen">
+            <div className="flex h-full">
                 {/* Sidebar */ }
                 <Sidebar />
                 <div className="flex-grow">

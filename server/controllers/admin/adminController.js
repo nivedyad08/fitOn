@@ -1,5 +1,6 @@
 const User = require("../../models/usersMdl");
 const Category = require("../../models/categoriesMdl");
+const Level = require("../../models/levelsMdl");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
 const moment = require("moment");
@@ -50,8 +51,18 @@ const changeStatus = async (req, res) => {
   }
 };
 
+const levels = async (req, res) => {
+  try {
+    const levels = await Level.find({status:true})
+    return res.status(200).json({ levels:levels });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+}
+
 module.exports = {
   users,
   trainers,
   changeStatus,
+  levels
 }

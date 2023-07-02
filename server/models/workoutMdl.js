@@ -15,23 +15,19 @@ const workoutSchema = new mongoose.Schema(
         description: {
             type: String,
             required: true,
-            default: null,
         },
-        categoryId: {
-            type: String,
+        category: {
+            type: ObjectId,
             required: true,
         },
         difficultyLevel: {
-            type: String,
+            type: ObjectId,
             required: true,
         },
-        videoUrl: {
+        video: {
             type: String,
             required: false,
-        },
-        videoName: {
-            type: String,
-            required: true,
+            default:null
         },
         thumbnailImage: {
             type: String,
@@ -39,27 +35,18 @@ const workoutSchema = new mongoose.Schema(
         },
         totalDuration: {
             type: String,
-            required: true,
+            required: false,
+            default:0
         },
         viewers: {
             type: Number,
             required: false,
             default:0
         },
-        isDeleted:{
+        status:{
             type: Boolean,
-            required: false,
-            default:false
-        },
-        deletedBy:{
-            type: Boolean,
-            required: false,
-            default:false
-        },
-        deletedAt:{
-            type: String,
-            required: false,
-            default:false
+            required: true,
+            default:true
         },
     },
     { timestamps: true }

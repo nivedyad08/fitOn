@@ -4,8 +4,12 @@ const Schema = mongoose.Schema,
 
 const difficultyLevelSchema = new mongoose.Schema(
     {
-        levelText: {
+        level: {
             type: String,
+            required: true,
+        },
+        status: {
+            type: Boolean,
             required: true,
         },
     },

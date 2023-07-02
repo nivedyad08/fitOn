@@ -33,7 +33,6 @@ function ProfileComplete() {
   const handleProfileComplete = async (e) => {
     e.preventDefault();
     try {
-      console.log(userId);
       const formData = new FormData();
       if (selectedProfilePic) {
         formData.append("profilePic", selectedProfilePic);
@@ -166,7 +165,7 @@ function ProfileComplete() {
             <div className="flex items-center justify-between">
               <label
                 htmlFor="password"
-                className="block text-sm font-medium leading-6 text-custom-whitish font-normal"
+                className="block text-sm font-medium leading-6 text-custom-whitish"
               >
                 Bio
               </label>
@@ -225,7 +224,7 @@ function ProfileComplete() {
           Already registered ?{ " " }
           <Link
             to="/"
-            className="font-medium leading-6 text-custom-yellow font-normal hover:text-indigo-500"
+            className="font-medium leading-6 text-custom-yellow hover:text-indigo-500"
           >
             Login
           </Link>

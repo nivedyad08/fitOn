@@ -1,12 +1,20 @@
 const express = require("express");
 const trainerRoute = express();
-const trainerController = require("../../controllers/trainer/TrainerController");
-const isTrainer   = require("../../middlewares/isTrainer")
+const workoutController = require("../../controllers/trainer/workoutController");
+const isTrainer = require("../../middlewares/isTrainer")
+const upload = require("../../config/multer").workoutVideoUpload
+const workoutUpload = require("../../config/multer").workoutVideoUpload
+const thumbnailUpload = require("../../config/multer").userImageUpload;
 
-trainerRoute.post(
-    "/add-workout",
-    isTrainer,
-    trainerController.addWorkout
-);
+trainerRoute.get('/workouts', isTrainer, workoutController.workouts);
 
-module.exports =  trainerRoute
+trainerRoute.post('/add-workout', isTrainer, thumbnailUpload.single('thumbnailImage'), workoutController.addWorkout);
+
+trainerRoute.post('/upload-workout-video', isTrainer,  workoutUpload.fields([
+  {
+    name: "videos",
+    maxCount: 5,
+  },
+]), workoutController.uploadWorkoutVideo);
+
+module.exports = trainerRoute
