@@ -1,16 +1,16 @@
 import React from 'react';
 
-const PopularWorkouts = () => {
+const TrainersList = () => {
     return (
         <>
             <div className="flex space-x-10 mt-24">
-                <h1 className="text-xl font-semibold text-white">Popular Workouts</h1>
+                <h1 className="text-xl font-semibold text-white">Trainers</h1>
             </div>
             <div className="flex space-x-10 mt-20 justify-center">
                 <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-24 sm:grid-cols-1">
                     <a href="/services">
                         <div className="w-full bg-white shadow-lg rounded-lg overflow-hidden">
-                            <img src="https://blog.nasm.org/hubfs/workouts-for-beginners.jpg" alt="Service" className="w-full h-full object-cover object-center" />
+                            <img src="https://blog.nasm.org/hubfs/workouts-for-beginners.jpg" alt="Service" className="w-full h-full object-cover" />
                         </div>
                     </a>
                     <a href="/services">
@@ -34,4 +34,4 @@ const PopularWorkouts = () => {
     );
 }
 
-export default PopularWorkouts;
+export default TrainersList;

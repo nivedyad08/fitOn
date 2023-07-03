@@ -4,14 +4,9 @@ import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie';
 import { useSelector, useDispatch } from 'react-redux';
-import { logoutUser } from "./redux-toolkit/slices/userSlice"
+import { logoutUser } from "../redux-toolkit/slices/userSlice"
 
-const user = {
-    name: 'Tom Cook',
-    email: 'tom@example.com',
-    imageUrl:
-        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-}
+
 const navigation = [
     { name: 'Dashboard', href: '/trainer/dashboard', current: false },
     { name: 'Workouts', href: '/trainer/workouts', current: false },
@@ -26,7 +21,8 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function Example() {
+export default function Header() {
+    const user = useSelector((state) => state.loggedUser.userInfo)
     const location = useLocation()
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -84,7 +80,7 @@ export default function Example() {
                                     </div>
                                 </div>
                                 <div className="hidden md:block">
-                                    <div className="ml-4 flex items-center md:ml-6 px-20">
+                                    <div className="ml-4 flex items-center md:ml-6 px-20 gap-20">
                                         <button type="button" class="inline-flex items-center px-20 py-10 text-sm font-medium text-white border border-gray-200 rounded-md hover:text-yellow-600" onClick={ () => navigate("/trainer/add-workout") }>
                                             <svg aria-hidden="true" class="w-10 h-10 mr-6 fill-current" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M10 2a1 1 0 01 1 1v6h6a1 1 0 110 2h-6v6a1 1 0 11-2 0v-6H3a1 1 0 110-2h6V3a1 1 0 011-1z" />
@@ -105,7 +101,7 @@ export default function Example() {
                                             <div>
                                                 <Menu.Button className="flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                                     <span className="sr-only">Open user menu</span>
-                                                    <img className="h-30 w-30 rounded-full object-cover" src={ user.imageUrl } alt="" />
+                                                    <img className="h-30 w-30 rounded-full object-cover" src={ `http://localhost:8080/user/${ user.profilePic }` } alt="" />
                                                 </Menu.Button>
                                             </div>
                                             <Transition
@@ -174,7 +170,7 @@ export default function Example() {
                             <div className="border-t border-gray-700 pb-3 pt-4">
                                 <div className="flex items-center px-5">
                                     <div className="flex-shrink-0">
-                                        <img className="h-10 w-10 rounded-full" src={ user.imageUrl } alt="" />
+                                        <img className="h-10 w-10 rounded-full" src={ `http://localhost:8080/user/${ user.profilePic }` } alt="" />
                                     </div>
                                     <div className="ml-3">
                                         <div className="text-base font-medium leading-none text-white">{ user.name }</div>

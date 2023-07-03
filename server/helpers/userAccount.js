@@ -1,28 +1,77 @@
 const User = require("../models/usersMdl");
+const bcrypt = require("bcrypt");
 
-const updateUser = async (details, images) => {
+const updateUserDetails = async (req, res) => {
     try {
-        const { firstName, lastName, userBio, userLocation, userId, profileImage ,coverImage} = details
-        const user = await User.findById(userId)
-        if (!user)
-            return res.status(400).json({ message: "Invalid user" });
-        if (images !== null) {
-            let { profilePic, coverPhoto } = images
-            const profileImage = profilePic[0].filename;
-            const coverImage = coverPhoto[0].filename;
+        const { firstName, lastName, userBio, userLocation } = req.body;
+        const { userId } = req.query;
+        const userDetails = await User.findById(userId);
+        if (!userId) {
+            return res.status(400).json({ message: "Invalid User" });
         }
-        const update = User.findByIdAndUpdate(userId, {
+        let profilePic = userDetails.profilePic
+        let coverPhoto = userDetails.coverPhoto
+
+        if (req.files && req.files.profilePic) {
+            profilePic = req.files.profilePic[0].filename
+        }
+        if (req.files && req.files.coverPhoto) {
+            coverPhoto = req.files.coverPhoto[0].filename
+        }
+        const updateResult = await User.findByIdAndUpdate(userId, {
             firstName,
             lastName,
             userBio,
             userLocation,
-            profilePic: profileImage,
-            coverPhoto: coverImage
-        },{new:true})
-        if (!update)
-            return res.status(400).json({ message: "Profile not updated" });
-        return res.status(200).json({ user: update});
+            profilePic,
+            coverPhoto,
+        });
+        if (!updateResult) {
+            return res.status(400).json({ message: "User not updated !!" });
+        }
+        const user = await User.findById(userId);
+        return res.status(200).json({ user });
     } catch (error) {
         return res.status(400).json({ message: error.message });
     }
+};
+
+//Change Password
+const updateUserPassword = async (req, res) => {
+    const { newPassword, confirmPassword, currentPassword } = req.body;
+    const { userId } = req.query;
+
+    try {
+        if (!newPassword || !confirmPassword || !currentPassword) {
+            return res.status(400).json({ message: "All fields are required!" });
+        }
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(400).json({ message: "Invalid User" });
+        }
+
+        const passwordMatch = await bcrypt.compare(currentPassword, user.password);
+        if (!passwordMatch) {
+            return res.status(400).json({ message: "Current password doesn't match" });
+        }
+
+        if (newPassword !== confirmPassword) {
+            return res.status(400).json({ message: "New password and confirm password do not match" });
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        await User.findByIdAndUpdate(userId, {
+            password: hashedPassword,
+        });
+
+        return res.status(200).json({ message: "Password updated successfully" });
+    } catch (error) {
+        return res.status(400).json({ message: error.message });
+    }
+};
+
+module.exports = {
+    updateUserDetails,
+    updateUserPassword
 }

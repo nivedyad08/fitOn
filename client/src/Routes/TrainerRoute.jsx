@@ -1,12 +1,12 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import Header from '../Components/Header';
 import AddWorkout from '../Components/Trainer/Workouts/AddWorkout';
 import Dashboard from '../Components/Trainer/Dashboard/Dashboard';
 import Account from '../Components/MyAccount/Account';
 import WorkoutList from '../Components/Trainer/Workouts/WorkoutList';
 import ViewWorkout from '../Components/Trainer/Workouts/ViewWorkout';
 import EditWorkout from '../Components/Trainer/Workouts/EditWorkout';
+import Header from '../Components/Trainer/Header';
 
 const TrainerRoute = () => {
     return (

@@ -17,7 +17,7 @@ trainerRoute.get('/workouts', isTrainer, workoutController.workouts);
 
 trainerRoute.post('/add-workout', isTrainer, thumbnailUpload.single('thumbnailImage'), workoutController.addWorkout);
 
-trainerRoute.post('/upload-workout-video', isTrainer,  workoutUpload.fields([
+trainerRoute.post('/upload-workout-video', isTrainer, workoutUpload.fields([
   {
     name: "videos",
     maxCount: 5,
@@ -27,7 +27,8 @@ trainerRoute.post('/upload-workout-video', isTrainer,  workoutUpload.fields([
 trainerRoute.put('/delete-workout', isTrainer, workoutController.deleteWorkout);
 trainerRoute.post('/edit-workout', isTrainer, workoutController.editWorkout);
 
-trainerRoute.post('/edit-user-details', isTrainer, trainerController.editUser);
+trainerRoute.post('/edit-user-details', isTrainer, userUpload, trainerController.editUser);
+trainerRoute.post('/change/password', isTrainer, trainerController.changePassword);
 
 
 module.exports = trainerRoute

@@ -1,23 +1,18 @@
 const User = require("../../models/usersMdl");
-const userUpdate = require("../../helpers/userAccount")
-const editUser = async (req, res) => {
-    try {
-        const details = req.body
-        let images = {}
-        if (req.files) {
-            images = req.files
-        }
-        const update = await userUpdate(details, images)
-        console.log(update);
-        if (!update)
-            return res.status(400).json({ message: "User not updated !!" });
-        return res.status(200).json({ message: "User Profile updated successfully", user: user });
-    } catch (error) {
+const updateUserDetails = require("../../helpers/userAccount").updateUserDetails
+const updateUserPassword = require("../../helpers/userAccount").updateUserPassword
 
-    }
-}
+const editUser = async (req, res) => {
+    const userDetailsEdit = await updateUserDetails(req, res)
+};
+
+//Change Password
+const changePassword = async (req, res) => {
+    const updatePassword = await updateUserPassword(req, res)
+};
 
 
 module.exports = {
-    editUser
-}
+    editUser,
+    changePassword
+};

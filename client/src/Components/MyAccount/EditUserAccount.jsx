@@ -1,12 +1,12 @@
 import axios from "../../config/axios";
 import React, { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { loggedUserDetails } from "../redux-toolkit/slices/userSlice";
 import { useForm } from "react-hook-form";
 
 const EditUserAccount = () => {
+    const dispatch = useDispatch()
     const user = useSelector((state) => state.loggedUser.userInfo)
     const {
         register,
@@ -44,16 +44,18 @@ const EditUserAccount = () => {
     const onSubmit = async (data) => {
         try {
             if (data) {
-                console.log(data);
                 const formData = new FormData();
                 // Append form fields to formData
                 formData.append("firstName", data.firstName);
                 formData.append("lastName", data.lastName);
-                formData.append("coverPhoto", data.coverPhoto[0]);
-                formData.append("profilePic", data.profilePic[0]);
-
+                formData.append("userLocation", data.userLocation);
+                formData.append("userBio", data.userBio);
+                formData.append("coverPhoto", selectedCoverPic);
+                formData.append("profilePic", selectedProfilePic);
                 const response = await axios.post(`api/trainer/edit-user-details?userId=${ user._id }`, formData)
+                console.log(response);
                 if (response.status === 200) {
+                    dispatch(loggedUserDetails(response.data.user));
                     toast.success("User details updated successfully");
                 }
             }
@@ -66,7 +68,8 @@ const EditUserAccount = () => {
         }
     }
     return (
-        <form className='custom-blue px-10 py-6 rounded-md max-w-md mx-auto' onSubmit={ handleSubmit(onSubmit) }>
+        <form className='custom-blue px-10 py-6 rounded-md max-w-md mx-auto' onSubmit={ handleSubmit(onSubmit) }
+            enctype="multipart/form-data">
             <div className="space-y-2">
                 <div className="border-b border-gray-900/10 pb-12">
                     <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -199,7 +202,7 @@ const EditUserAccount = () => {
                                     htmlFor="dropzone-file"
                                     className={ `flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 ${ showCoverImage
                                         ? "h-auto"
-                                        : "dark:hover:bg-gray-800 dark:bg-gray-700"
+                                        : "dark:hover:bg-gray-800 dark:bg-gray-700 h-auto"
                                         }` }
                                 >
                                     { showCoverImage ? (
@@ -251,7 +254,7 @@ const EditUserAccount = () => {
                                         name="coverPhoto"
                                         className="hidden"
                                         { ...register("coverPhoto", {
-                                            required: "Image is required",
+                                            required: user.coverPhoto ? false : "Cover pic is required",
                                         }) }
                                         onChange={ handleCoverPhotoChange }
                                     />
@@ -288,7 +291,7 @@ const EditUserAccount = () => {
                                 <input class="block w-full text-sm h-30 text-gray-900 rounded-lg cursor-pointer custom-blue-shade1 dark:text-gray-400 focus:outline-none dark:bg-gray-700 placeholder-gray-500 placeholder-opacity-10"
                                     id="file_input" type="file"
                                     { ...register("profilePic", {
-                                        required: "Profile pic is required",
+                                        required: user.profilePic ? false : "Profile pic is required",
                                     }) }
                                     onChange={ handleProfilePicChange }
                                 />
