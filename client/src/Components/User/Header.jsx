@@ -9,11 +9,10 @@ import { logoutUser } from "../redux-toolkit/slices/userSlice"
 
 const navigation = [
     { name: 'Dashboard', href: '/user/dashboard', current: false },
-    { name: 'Workouts', href: '/user/workouts', current: false },
     { name: 'Sessions', href: '/user/sessions', current: false },
 ]
 const userNavigation = [
-    { name: 'My Account', href: '', id: 'account' },
+    { name: 'My Account', href: '#', id: 'account' },
     { name: 'Sign out', href: '#', id: 'signout' },
 ]
 
@@ -41,7 +40,7 @@ export default function Header() {
             dispatch(logoutUser)
             navigate("/")
         } else if (id === "account") {
-            navigate("/trainer/account")
+            navigate("/user/account")
         }
     }
     return (

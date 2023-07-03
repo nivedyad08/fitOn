@@ -5,7 +5,7 @@ const Schema = mongoose.Schema,
 const workoutSchema = new mongoose.Schema(
     {
         trainerId: {
-            type: String,
+            type: ObjectId,
             required: true,
         },
         workoutTitle: {

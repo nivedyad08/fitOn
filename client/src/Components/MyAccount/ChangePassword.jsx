@@ -55,10 +55,6 @@ const ChangePassword = () => {
                                     placeholder='Enter your Current Password'
                                     { ...register("currentPassword", {
                                         required: "Current password is required",
-                                        pattern: {
-                                            value: /((?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])(?=.{8,}))/i,
-                                            message: "Enter valid password",
-                                        },
                                     }) }
                                     className={ `block h-40 w-full rounded-md border-0 py-1.5 text-gray-200  ring-inset placeholder-gray-500 pl-4 placeholder-opacity-100  custom-blue-shade1 sm:text-sm sm:leading-6 ${ errors.currentPassword ? "border-red-500" : ""
                                         }` }

@@ -1,5 +1,6 @@
 const User = require("../models/usersMdl");
 const bcrypt = require("bcrypt");
+const moment = require("moment");
 
 const updateUserDetails = async (req, res) => {
     try {
@@ -63,6 +64,7 @@ const updateUserPassword = async (req, res) => {
         const hashedPassword = await bcrypt.hash(newPassword, 10);
         await User.findByIdAndUpdate(userId, {
             password: hashedPassword,
+            lastPasswordResetDate:moment().format("YYYY-MM-DD")
         });
 
         return res.status(200).json({ message: "Password updated successfully" });

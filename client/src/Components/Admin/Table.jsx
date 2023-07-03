@@ -29,7 +29,7 @@ const Table = ({ columns, data, selectedRows }) => {
 
     const handleFilterChange = e => {
         const value = e.target.value || undefined;
-        setFilter('firstName', value);
+        setFilter('workoutTitle', value);
         setFilterInput(value);
     };
 

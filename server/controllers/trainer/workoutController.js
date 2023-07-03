@@ -8,6 +8,7 @@ const moment = require("moment");
 const mongoose = require('mongoose');
 const { USER_ROLE, TRAINER_ROLE, ADMIN_ROLE, PENDING_TRAINER } = require("../../constants/roles")
 
+const ObjectId = mongoose.Types.ObjectId
 
 const addWorkout = async (req, res) => {
     try {
@@ -53,7 +54,7 @@ const workouts = async (req, res) => {
     try {
         const { userId } = req.query
         const workouts = await Workout.aggregate([
-            { $match: { status: true, trainerId: userId } },
+            { $match: { status: true, trainerId: new ObjectId(userId) } },
             {
                 $lookup: {
                     from: "categories",

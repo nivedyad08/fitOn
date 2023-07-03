@@ -65,7 +65,7 @@ const Payment = forwardRef(function ({ checkout, setCheckOut }, ref) {
                           setCheckOut(true);
                         } }
                       >
-                        Get access
+                        Proceed to payment
                       </a>
                     ) }
                     <p class="mt-6 text-xs leading-5 text-white">Invoices and receipts available</p>

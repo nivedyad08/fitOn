@@ -38,8 +38,10 @@ function LoginForm() {
             navigate("/trainer/dashboard");
           else if (user.role === ADMIN_ROLE)
             navigate("/admin/dashboard");
-          else if (user.role === PENDING_TRAINER)
+          else if (user.role === PENDING_TRAINER && !user.userBio)
             navigate(`/profile-complete/${ user.firstName }/${ user._id }`);
+          else
+            navigate(`/payment/${ user._id }`);
         }
       }
     } catch (error) {

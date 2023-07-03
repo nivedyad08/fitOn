@@ -25,7 +25,7 @@ const workouts = async (req, res) => {
                     from: "users",
                     localField: "trainerId",
                     foreignField: "_id",
-                    as: "user",
+                    as: "trainer",
                 },
             },
         ]);
