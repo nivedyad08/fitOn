@@ -1,8 +1,72 @@
-import React from 'react';
+import axios from "../../config/axios";
+import React, { useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { loggedUserDetails } from "../redux-toolkit/slices/userSlice";
+import { useForm } from "react-hook-form";
 
 const EditUserAccount = () => {
+    const user = useSelector((state) => state.loggedUser.userInfo)
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        watch,
+    } = useForm({
+        defaultValues: {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            userBio: user.userBio,
+            userLocation: user.userLocation,
+            coverPhoto: user.coverPhoto,
+            profilePic: user.profilePic,
+        },
+    });
+    const { firstName, lastName, email, coverPhoto, profilePic, userBio, userLocation } = watch(["firstName", "lastName", "email", "coverPhoto", "profilePic", "userBio", "userLocation"])
+    const [selectedProfilePic, setProfilePic] = useState("");
+    const [showProfileImage, setProfileImage] = useState("");
+
+    const [selectedCoverPic, setCoverPic] = useState("");
+    const [showCoverImage, setCoverImage] = useState("");
+
+    const handleProfilePicChange = (e) => {
+        setProfilePic(e.target.files[0]);
+        setProfileImage(URL.createObjectURL(e.target.files[0]));
+    };
+
+    const handleCoverPhotoChange = (e) => {
+        setCoverPic(e.target.files[0]);
+        setCoverImage(URL.createObjectURL(e.target.files[0]));
+    };
+
+    const onSubmit = async (data) => {
+        try {
+            if (data) {
+                console.log(data);
+                const formData = new FormData();
+                // Append form fields to formData
+                formData.append("firstName", data.firstName);
+                formData.append("lastName", data.lastName);
+                formData.append("coverPhoto", data.coverPhoto[0]);
+                formData.append("profilePic", data.profilePic[0]);
+
+                const response = await axios.post(`api/trainer/edit-user-details?userId=${ user._id }`, formData)
+                if (response.status === 200) {
+                    toast.success("User details updated successfully");
+                }
+            }
+        } catch (error) {
+            if (error.response && error.response.status === 400) {
+                toast.error(error.response.data.message);
+            } else {
+                toast.error("An error occurred. Please try again later");
+            }
+        }
+    }
     return (
-        <form className='custom-blue px-10 py-6 rounded-md max-w-md mx-auto'>
+        <form className='custom-blue px-10 py-6 rounded-md max-w-md mx-auto' onSubmit={ handleSubmit(onSubmit) }>
             <div className="space-y-2">
                 <div className="border-b border-gray-900/10 pb-12">
                     <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -14,10 +78,21 @@ const EditUserAccount = () => {
                                 <input
                                     id="firstName"
                                     name="firstName"
-                                    placeholder='Enter your First Name'
-                                    className="block h-40 w-full rounded-md border-0 py-1.5 text-gray-200  ring-inset placeholder-gray-500 pl-4 placeholder-opacity-100  custom-blue-shade1 sm:text-sm sm:leading-6"
-                                    defaultValue={ '' }
+                                    { ...register("firstName", {
+                                        required: "First name is required",
+                                        pattern: {
+                                            value: /^(?=.*\S)[A-Za-z\s\d!@#$%^&*()_+=\-[\]{};':"\\|,.<>/?]+$/i,
+                                            message: "Title should only contain letters",
+                                        },
+                                    }) }
+                                    className={ `block h-40 w-full rounded-md border-0 py-1.5 text-gray-200  ring-inset placeholder-gray-500 pl-4 placeholder-opacity-100  custom-blue-shade1 sm:text-sm sm:leading-6 ${ errors.firstName ? "border-red-500" : ""
+                                        }` }
                                 />
+                                { errors.firstName && (
+                                    <small className="mt-2 text-red-500 text-sm">
+                                        { errors.firstName.message }
+                                    </small>
+                                ) }
                             </div>
                         </div>
 
@@ -29,10 +104,21 @@ const EditUserAccount = () => {
                                 <input
                                     id="lastName"
                                     name="lastName"
-                                    placeholder='Enter your lastName'
-                                    className="block h-40 w-full rounded-md border-0 py-1.5 text-gray-200  ring-inset placeholder-gray-500 pl-4 placeholder-opacity-100  custom-blue-shade1 sm:text-sm sm:leading-6"
-                                    defaultValue={ '' }
+                                    { ...register("lastName", {
+                                        required: "First name is required",
+                                        pattern: {
+                                            value: /^(?=.*\S)[A-Za-z\s\d!@#$%^&*()_+=\-[\]{};':"\\|,.<>/?]+$/i,
+                                            message: "Title should only contain letters",
+                                        },
+                                    }) }
+                                    className={ `block h-40 w-full rounded-md border-0 py-1.5 text-gray-200  ring-inset placeholder-gray-500 pl-4 placeholder-opacity-100  custom-blue-shade1 sm:text-sm sm:leading-6 ${ errors.lastName ? "border-red-500" : ""
+                                        }` }
                                 />
+                                { errors.lastName && (
+                                    <small className="mt-2 text-red-500 text-sm">
+                                        { errors.lastName.message }
+                                    </small>
+                                ) }
                             </div>
                         </div>
 
@@ -44,8 +130,9 @@ const EditUserAccount = () => {
                                 <input
                                     id="email"
                                     name="email"
-                                    className="block h-40 w-full rounded-md border-0 py-1.5 text-gray-200  ring-inset placeholder-gray-500 pl-4 placeholder-opacity-100  custom-blue-shade1 sm:text-sm sm:leading-6"
-                                    value="Disabled readonly input" disabled readonly
+                                    disabled readonly
+                                    className="block h-40 w-full rounded-md border-0 py-1.5 text-gray-400  ring-inset pl-4 placeholder-opacity-100  custom-blue-shade1 sm:text-sm sm:leading-6"
+                                    defaultValue={ user.email }
                                 />
                             </div>
                         </div>
@@ -56,12 +143,23 @@ const EditUserAccount = () => {
                             </label>
                             <div className="mt-2">
                                 <input
-                                    id="location"
-                                    name="location"
-                                    placeholder='Enter your location'
-                                    className="block h-40 w-full rounded-md border-0 py-1.5 text-gray-200  ring-inset placeholder-gray-500 pl-4 placeholder-opacity-100  custom-blue-shade1 sm:text-sm sm:leading-6"
-                                    defaultValue={ '' }
+                                    id="userLocation"
+                                    name="userLocation"
+                                    { ...register("userLocation", {
+                                        required: "Location is required",
+                                        pattern: {
+                                            value: /^(?=.*\S)[A-Za-z\s\d!@#$%^&*()_+=\-[\]{};':"\\|,.<>/?]+$/i,
+                                            message: "Title should only contain letters",
+                                        },
+                                    }) }
+                                    className={ `block h-40 w-full rounded-md border-0 py-1.5 text-gray-200  ring-inset placeholder-gray-500 pl-4 placeholder-opacity-100  custom-blue-shade1 sm:text-sm sm:leading-6 ${ errors.userLocation ? "border-red-500" : ""
+                                        }` }
                                 />
+                                { errors.userLocation && (
+                                    <small className="mt-2 text-red-500 text-sm">
+                                        { errors.userLocation.message }
+                                    </small>
+                                ) }
                             </div>
                         </div>
 
@@ -71,28 +169,97 @@ const EditUserAccount = () => {
                             </label>
                             <div className="mt-2">
                                 <textarea
-                                    id="bio"
-                                    name="bio"
+                                    id="userBio"
+                                    name="userBio"
                                     rows={ 4 }
-                                    placeholder='Enter your bio'
-                                    className="block w-full rounded-md border-0 py-1.5 text-gray-200  ring-inset placeholder-gray-500 pl-4 placeholder-opacity-100  custom-blue-shade1 sm:text-sm sm:leading-6"
-                                    defaultValue={ '' }
+                                    { ...register("userBio", {
+                                        required: "Bio is required",
+                                        pattern: {
+                                            value: /^(?=.*\S)[A-Za-z\s\d!@#$%^&*()_+=\-[\]{};':"\\|,.<>/?]+$/i,
+                                            message: "Title should only contain letters",
+                                        },
+                                    }) }
+                                    className={ `block h-40 w-full rounded-md border-0 py-1.5 text-gray-200  ring-inset placeholder-gray-500 pl-4 placeholder-opacity-100  custom-blue-shade1 sm:text-sm sm:leading-6 ${ errors.userBio ? "border-red-500" : ""
+                                        }` }
                                 />
+                                { errors.userBio && (
+                                    <small className="mt-2 text-red-500 text-sm">
+                                        { errors.userBio.message }
+                                    </small>
+                                ) }
                             </div>
                         </div>
 
                         <div className="col-span-full">
-                            <label htmlFor="cover-photo" className="block text-sm font-lg leading-6 text-custom-whitish">Thumbnail Image
+                            <label htmlFor="cover-photo" className="block text-sm font-lg leading-6 text-custom-whitish">Cover Photo
                             </label>
 
-                            <div class="flex items-center justify-center w-full">
-                                <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 rounded-lg cursor-pointer custom-blue-shade1 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                                    <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                        <svg aria-hidden="true" class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-                                        <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                            <div className="flex items-center justify-center w-full">
+                                <label
+                                    htmlFor="dropzone-file"
+                                    className={ `flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 ${ showCoverImage
+                                        ? "h-auto"
+                                        : "dark:hover:bg-gray-800 dark:bg-gray-700"
+                                        }` }
+                                >
+                                    { showCoverImage ? (
+                                        <div className="h-full">
+                                            <img
+                                                className="h-full w-full"
+                                                id="selected-image"
+                                                src={ showCoverImage }
+                                                alt="Selected Image"
+                                            />
+                                        </div>
+                                    ) : (
+                                        <div className="h-full">
+                                            <img
+                                                className="h-full w-full"
+                                                id="selected-image"
+                                                src={ `http://localhost:8080/user/${ user.coverPhoto }` }
+                                                alt="Selected Image"
+                                            />
+                                        </div>
+                                    ) }
+                                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                        <svg
+                                            aria-hidden="true"
+                                            className="w-10 h-10 mb-3 text-gray-400"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth="2"
+                                                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                                            ></path>
+                                        </svg>
+                                        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                                            <span className="font-semibold">Click to upload</span> or drag
+                                            and drop
+                                        </p>
+                                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                                            SVG, PNG, JPG or GIF (MAX. 800x400px)
+                                        </p>
                                     </div>
-                                    <input id="dropzone-file" type="file" class="hidden" />
+                                    <input
+                                        id="dropzone-file"
+                                        type="file"
+                                        name="coverPhoto"
+                                        className="hidden"
+                                        { ...register("coverPhoto", {
+                                            required: "Image is required",
+                                        }) }
+                                        onChange={ handleCoverPhotoChange }
+                                    />
+                                    { errors.coverPhoto && (
+                                        <small className="mt-2 text-red-500 text-sm">
+                                            { errors.coverPhoto.message }
+                                        </small>
+                                    ) }
                                 </label>
                             </div>
 
@@ -103,10 +270,33 @@ const EditUserAccount = () => {
                             <div className="flex items-center gap-x-6">
                                 <label htmlFor="cover-photo" className="block text-sm font-lg leading-6 text-custom-whitish">Profile Image
                                 </label>
-                                <img className="h-60 w-60 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
+                                { showProfileImage ? (
+                                    <img
+                                        className="h-96 w-96 object-cover rounded-full"
+                                        src={ showProfileImage }
+                                        alt="Current profile photo"
+                                    />
+                                ) : (
+                                    <img
+                                        className="h-96 w-96 object-cover rounded-full"
+                                        src={ `http://localhost:8080/user/${ user.profilePic }` }
+                                        alt="Current profile photo"
+                                    />
+                                ) }
                             </div>
                             <div className="mt-2 ">
-                                <input class="block w-full text-sm h-30 text-gray-900 rounded-lg cursor-pointer custom-blue-shade1 dark:text-gray-400 focus:outline-none dark:bg-gray-700 placeholder-gray-500 placeholder-opacity-10" id="file_input" type="file" />
+                                <input class="block w-full text-sm h-30 text-gray-900 rounded-lg cursor-pointer custom-blue-shade1 dark:text-gray-400 focus:outline-none dark:bg-gray-700 placeholder-gray-500 placeholder-opacity-10"
+                                    id="file_input" type="file"
+                                    { ...register("profilePic", {
+                                        required: "Profile pic is required",
+                                    }) }
+                                    onChange={ handleProfilePicChange }
+                                />
+                                { errors.profilePic && (
+                                    <small className="mt-2 text-red-500 text-sm">
+                                        { errors.profilePic.message }
+                                    </small>
+                                ) }
                             </div>
                         </div>
                     </div>

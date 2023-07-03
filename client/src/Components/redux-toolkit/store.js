@@ -3,6 +3,7 @@ import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
 
 import userSlice from "./slices/userSlice"
+import workoutSlice from "./slices/workoutSlice"
 
 const persistConfig = {
     key: 'root',
@@ -10,6 +11,7 @@ const persistConfig = {
 }
 const rootReducer = combineReducers({
     loggedUser: userSlice,
+    workoutDetails: workoutSlice
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 

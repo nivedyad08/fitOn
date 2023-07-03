@@ -1,5 +1,6 @@
 const User = require("../../models/usersMdl");
 const Category = require("../../models/categoriesMdl");
+const Workout = require("../../models/workoutMdl");
 const Level = require("../../models/levelsMdl");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
@@ -60,9 +61,10 @@ const levels = async (req, res) => {
   }
 }
 
+
 module.exports = {
   users,
   trainers,
   changeStatus,
-  levels
+  levels,
 }

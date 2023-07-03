@@ -33,7 +33,6 @@ export default function Example() {
     const pathname = location.pathname
     useEffect(() => {
         navigation.map((item) => {
-            console.log(pathname);
             if (item.href === pathname) {
                 item.current = true
             }

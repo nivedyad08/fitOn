@@ -1,28 +1,35 @@
 import React, { useState } from 'react';
-import { useFilters, useTable } from 'react-table';
+import { useFilters, usePagination, useTable } from 'react-table';
 
 const Table = ({ columns, data, selectedRows }) => {
     const {
-        getTableProps, // table props from react-table
-        getTableBodyProps, // table body props from react-table
-        headerGroups, // headerGroups, if your table has groupings
-        rows, // rows for the table based on the data passed
-        prepareRow, // Prepare the row (this function needs to be called for each row before getting the row props)
-        setFilter
-    } = useTable({
-        columns,
-        data
-    },
-        useFilters
+        getTableProps,
+        getTableBodyProps,
+        headerGroups,
+        page, // Instead of using 'rows', we will use 'page' for pagination
+        prepareRow,
+        setFilter,
+        canPreviousPage,
+        canNextPage,
+        nextPage,
+        previousPage,
+        pageOptions,
+        state: { pageIndex },
+    } = useTable(
+        {
+            columns,
+            data,
+            initialState: { pageIndex: 0 ,pageSize:6}, // Initialize the pageIndex to 0
+        },
+        useFilters,
+        usePagination // Add usePagination hook
     );
 
-    // Create a state
     const [filterInput, setFilterInput] = useState('');
 
-    // Update the state when input changes
     const handleFilterChange = e => {
         const value = e.target.value || undefined;
-        setFilter("firstName", value); // Update the show.name filter. Now our table will filter and show only the rows which have a matching value
+        setFilter('firstName', value);
         setFilterInput(value);
     };
 
@@ -35,11 +42,11 @@ const Table = ({ columns, data, selectedRows }) => {
                         onChange={ handleFilterChange }
                         placeholder="Search name"
                         className="p-2 py-10 border border-white-300 rounded-md mr-4"
-                        style={ { width: '80%' } } // Increase width by setting the 'width' inline style
+                        style={ { width: '80%' } }
                     />
 
                     <div>
-                        {/* <button className="bg-green-500 text-white px-4 py-2 rounded-md ml-2">Download Report</button> */}
+                        {/* <button className="bg-green-500 text-white px-4 py-2 rounded-md ml-2">Download Report</button> */ }
                     </div>
                 </div>
                 <table { ...getTableProps() } className="min-w-full divide-y divide-gray-200 mt-10">
@@ -58,7 +65,7 @@ const Table = ({ columns, data, selectedRows }) => {
                         )) }
                     </thead>
                     <tbody { ...getTableBodyProps() }>
-                        { rows.map(row => {
+                        { page.map(row => {
                             prepareRow(row);
                             return (
                                 <tr { ...row.getRowProps() } className="hover:bg-gray-50">
@@ -75,6 +82,38 @@ const Table = ({ columns, data, selectedRows }) => {
                         }) }
                     </tbody>
                 </table>
+
+                {/* Pagination */ }
+                <div className="mt-4 flex justify-between items-center">
+                    <div className="flex items-center">
+                        <button
+                            onClick={ () => previousPage() }
+                            disabled={ !canPreviousPage }
+                            className={ `${ canPreviousPage
+                                    ? 'bg-blue-500 hover:bg-blue-700'
+                                    : 'bg-gray-300 pointer-events-none'
+                                } text-white px-4 py-2 rounded-md mr-2` }
+                        >
+                            Previous
+                        </button>
+                        <button
+                            onClick={ () => nextPage() }
+                            disabled={ !canNextPage }
+                            className={ `${ canNextPage
+                                    ? 'bg-blue-500 hover:bg-blue-700'
+                                    : 'bg-gray-300 pointer-events-none'
+                                } text-white px-4 py-2 rounded-md` }
+                        >
+                            Next
+                        </button>
+                    </div>
+                    <div>
+                        Page{ ' ' }
+                        <strong>
+                            { pageIndex + 1 } of { pageOptions.length }
+                        </strong>
+                    </div>
+                </div>
             </div>
         </div>
     );

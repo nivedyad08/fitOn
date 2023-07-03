@@ -38,7 +38,6 @@ const uploadWorkoutVideo = async (req, res) => {
     try {
         const { workoutId } = req.query
         const { videos } = req.files
-        console.log(videos[0].filename);
         if (!workoutId && !videos)
             return res.status(400).json({ message: "Something went wrong" });
         const uploadVideo = await Workout.findByIdAndUpdate(workoutId, { video: videos[0].filename })
@@ -72,7 +71,6 @@ const workouts = async (req, res) => {
                 },
             },
         ]);
-        console.log("workouts=>", workouts);
         if (workouts) {
             return res.status(200).json({ workouts });
         }
@@ -81,13 +79,50 @@ const workouts = async (req, res) => {
     }
 }
 
+const deleteWorkout = async (req, res) => {
+    try {
+        const { workoutId } = req.query
+        if (!workoutId)
+            return res.status(400).json({ message: "Invalid request" });
+        const deleteWorkout = await Workout.findByIdAndUpdate(workoutId, { status: false })
+        if (!deleteWorkout)
+            return res.status(400).json({ message: "Workout cant be deleted" });
+        return res.status(200).json({ message: "Workout deleted successfully" });
+    } catch (error) {
+        return res.status(400).json({ message: error.message });
+    }
+}
 
+const editWorkout = async (req, res) => {
+    try {
+        const { workoutId } = req.query
+        const { workoutTitle, description, category, difficultyLevel } = req.body
+        if (req.file) {
+            const thumbnail = req.file
+        }
+        const workoutProduct = await Workout.findOneAndUpdate(
+            workoutId,
+            {
+                workoutTitle,
+                description,
+                category,
+                difficultyLevel,
+                thumbnailImage: thumbnail.filename
+            },
+        );
 
-
-
+        if (!workoutProduct)
+            return res.status(400).json({ message: "Something went wrong" });
+        return res.status(200).json({ message: "Workout updated successfully !!" });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
 
 module.exports = {
     addWorkout,
     uploadWorkoutVideo,
-    workouts
+    workouts,
+    deleteWorkout,
+    editWorkout
 }

@@ -186,35 +186,8 @@ function ProfileComplete() {
               ></textarea>
             </div>
           </div>
-          {/* <div>
-            <div className="flex items-center justify-between">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium leading-6 text-custom-whitish font-normal"
-              >
-                Location
-              </label>
-            </div>
-            <div className="mt-2">
-              <input
-                id="location"
-                name="userLocation"
-                type="text"
-                required
-                value={ userInput.userLocation }
-                onChange={ (e) =>
-                  setUserInput({
-                    ...userInput,
-                    [e.target.name]: e.target.value,
-                  })
-                }
-                className="block h-40 w-full rounded-md border-0 py-1.5 text-white shadow-sm ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
-                style={ { backgroundColor: "#414160" } }
-              />
-            </div>
-          </div> */}
           <div>
-            <button className="rounded-lg h-40 w-full mt-10 bg-custom-yellow rounded-lg text-sm px-5 py-2.5 text-center font-medium focus:outline-none text-white">
+            <button className="rounded-lg h-40 w-full mt-10 bg-custom-yellow text-sm px-5 py-2.5 text-center font-medium focus:outline-none text-white">
               COMPLETE
             </button>
           </div>

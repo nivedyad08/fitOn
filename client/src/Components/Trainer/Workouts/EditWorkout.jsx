@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
+import { useSelector } from 'react-redux';
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import axios from "../../../config/axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
 
-export default function AddWorkout() {
+const EditWorkout = () => {
+    const workout = useSelector((state) => state.workoutDetails.workoutInfo)
     const [categories, setCategories] = useState([])
     const [levels, setLevels] = useState([])
     useEffect(() => {
@@ -30,7 +31,6 @@ export default function AddWorkout() {
             }
         })
     }, []);
-
     const navigate = useNavigate();
     const {
         register,
@@ -39,12 +39,12 @@ export default function AddWorkout() {
         watch,
     } = useForm({
         defaultValues: {
-            workoutTitle: "",
-            description: "",
-            category: "",
-            difficultyLevel: "",
-            thumbnailImage: "",
-            video: "",
+            workoutTitle: workout.workoutTitle,
+            description: workout.description,
+            category: workout.category,
+            difficultyLevel: workout.difficultyLevel,
+            thumbnailImage: workout.thumbnailImage,
+            video: workout.video,
         },
     });
     const { workoutTitle, description, category, difficultyLevel, thumbnailImage, videos } = watch(["workoutTitle", "description", "category", "difficultyLevel", "thumbnailImage", "videos"])
@@ -61,6 +61,7 @@ export default function AddWorkout() {
         setThumbnailePic(e.target.files[0]);
         setThumbnaileImage(URL.createObjectURL(e.target.files[0]));
     };
+
     const user = useSelector((state) => state.loggedUser.userInfo)
     const onSubmit = async (data) => {
         try {
@@ -102,7 +103,7 @@ export default function AddWorkout() {
             <form className='custom-blue p-20 rounded-md' onSubmit={ handleSubmit(onSubmit) }>
                 <div className="space-y-12">
                     <div className="border-b border-gray-900/10 pb-12">
-                        <h2 className="text-2xl font-semibold leading-10 text-white">ADD NEW WORKOUT</h2>
+                        <h2 className="text-2xl font-semibold leading-10 text-white">EDIT WORKOUT</h2>
                         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                             <div className="col-span-full mt-10">
                                 <label htmlFor="workoutTitle" className="block text-sm font-lg leading-6 text-custom-whitish">
@@ -165,14 +166,13 @@ export default function AddWorkout() {
                                     <select
                                         id="category"
                                         name="category"
-                                        autoComplete="category-name"
                                         { ...register("category", {
                                             required: "Category is required",
                                         }) }
                                         className={ `block w-full h-40 custom-blue-shade1 rounded-md border-0 py-3 text-gray-200 shadow-sm placeholder-gray-500 pl-4 placeholder-opacity-10 sm:text-sm sm:leading-6 ${ errors.category ? "border-red-500" : ""
                                             }` }
+                                        defaultValue={ workout.category }
                                     >
-                                        <option>Select Category</option>
                                         { categories.map((category, i) => (
                                             <option key={ i } value={ category._id }>{ category.name }</option>
                                         )) }
@@ -199,8 +199,8 @@ export default function AddWorkout() {
                                         }) }
                                         className={ `block w-full h-40 custom-blue-shade1 rounded-md border-0 py-3 text-gray-200 shadow-sm placeholder-gray-500 pl-4 placeholder-opacity-10 sm:text-sm sm:leading-6 ${ errors.difficultyLevel ? "border-red-500" : ""
                                             }` }
+                                        defaultValue={ workout.difficultyLevel }
                                     >
-                                        <option>Select Level</option>
                                         { levels.map((level, i) => (
                                             <option key={ i } value={ level._id }>{ level.name }</option>
                                         )) }
@@ -225,7 +225,7 @@ export default function AddWorkout() {
                                 ) : (
                                     <img
                                         className="h-96 w-96 object-cover "
-                                        src="/images/user-plceholder.png"
+                                        src={ `http://localhost:8080/user/${ workout.thumbnailImage }` }
                                         alt="Current profile photo"
                                     />
                                 ) }
@@ -262,14 +262,15 @@ export default function AddWorkout() {
                                             : `Image size: ${ imageSize }KB. ${ errors.thumbnailImage.message }` }
                                     </small>
                                 ) : "" }
-
-
                             </div>
 
                             <div className="col-span-full">
                                 <label htmlFor="cover-photo" className="block text-sm font-lg leading-6 text-custom-whitish">Upload Workout Video
                                 </label>
                                 <div className="mt-2 ">
+                                    <video class="h-96" controls>
+                                        <source src={ `http://localhost:8080/workouts/${ workout.video }` } type="video/mp4" />
+                                    </video>
                                     <input
                                         type="file"
                                         name="videos"
@@ -314,10 +315,12 @@ export default function AddWorkout() {
                         type="submit"
                         className="rounded-md custom-yellow px-20 py-8 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
-                        Save
+                        Update
                     </button>
                 </div>
             </form>
         </div>
     )
 }
+
+export default EditWorkout;

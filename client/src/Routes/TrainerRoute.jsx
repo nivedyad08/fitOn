@@ -5,6 +5,8 @@ import AddWorkout from '../Components/Trainer/Workouts/AddWorkout';
 import Dashboard from '../Components/Trainer/Dashboard/Dashboard';
 import Account from '../Components/MyAccount/Account';
 import WorkoutList from '../Components/Trainer/Workouts/WorkoutList';
+import ViewWorkout from '../Components/Trainer/Workouts/ViewWorkout';
+import EditWorkout from '../Components/Trainer/Workouts/EditWorkout';
 
 const TrainerRoute = () => {
     return (
@@ -19,6 +21,8 @@ const TrainerRoute = () => {
                             <Route path="dashboard" element={ <Dashboard /> } />
                             <Route path="add-workout" element={ <AddWorkout /> } />
                             <Route path="workouts" element={ <WorkoutList /> } />
+                            <Route path="workout/:workoutId" element={ <ViewWorkout /> } />
+                            <Route path="edit/:workoutId" element={ <EditWorkout /> } />
                             <Route path="account" element={ <Account /> } />
                         </Routes>
                     </div>

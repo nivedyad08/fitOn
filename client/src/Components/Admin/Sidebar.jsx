@@ -12,14 +12,16 @@ const Sidebar = () => {
     const toggleSidebar = () => {
         setIsOpen(!isOpen);
     };
-    const location = useLocation()
+    const location = useLocation();
 
     useEffect(() => {
-        const { pathname } = location
-    }, [location])
+        const { pathname } = location;
+    }, [location]);
+
     return (
         <aside
-            className={ `${ isOpen ? 'w-1/12' : 'w-2/12' } custom-dark-blue text-white flex-shrink-0 transition-all duration-300 relative` }
+            className={ `custom-dark-blue text-white flex-shrink-0 transition-all duration-300 relative ${ isOpen ? 'w-4/5 sm:w-2/12' : 'w-2/12'
+                }` }
         >
             {/* Toggle Button */ }
             <button
@@ -61,39 +63,77 @@ const Sidebar = () => {
             <nav className="flex-grow">
                 <ul className="p-4 ml-20">
                     <li className="mb-2 flex items-center">
-                        <SpaceDashboardIcon className="mr-6 text-[#7D7E93]" style={ { fontSize: "medium" } } />
-                        <Link to="/admin/dashboard" className={ `block leading-10  hover:text-white ${ location.pathname === '/admin/dashboard' ? "text-white" : "text-[#7D7E93]" }` }>Dashboard</Link>
+                        <SpaceDashboardIcon
+                            className="mr-6 text-[#7D7E93]"
+                            style={ { fontSize: 'medium' } }
+                        />
+                        <Link
+                            to="/admin/dashboard"
+                            className={ `block leading-10  hover:text-white ${ location.pathname === '/admin/dashboard' ? 'text-white' : 'text-[#7D7E93]'
+                                }` }
+                        >
+                            Dashboard
+                        </Link>
                     </li>
 
                     <li className="mb-2 flex items-center">
-                        <CategoryIcon className="mr-6 text-[#7D7E93]" style={ { fontSize: "medium" } } />
-                        <Link to="/admin/categories" className={ `block leading-10  hover:text-white ${ location.pathname === '/admin/categories' ? "text-white" : "text-[#7D7E93]" }` }>Manage Categories</Link>
+                        <CategoryIcon className="mr-6 text-[#7D7E93]" style={ { fontSize: 'medium' } } />
+                        <Link
+                            to="/admin/categories"
+                            className={ `block leading-10  hover:text-white ${ location.pathname === '/admin/categories' ? 'text-white' : 'text-[#7D7E93]'
+                                }` }
+                        >
+                            Manage Categories
+                        </Link>
                     </li>
 
                     <li className="mb-2 flex items-center">
-                        <GroupIcon className="mr-6 text-[#7D7E93]" style={ { fontSize: "medium" } } />
-                        <Link to="/admin/users" className={ `block leading-10  hover:text-white ${ location.pathname === '/admin/users' ? "text-white" : "text-[#7D7E93]" }` }>Manage Users</Link>
+                        <GroupIcon className="mr-6 text-[#7D7E93]" style={ { fontSize: 'medium' } } />
+                        <Link
+                            to="/admin/users"
+                            className={ `block leading-10  hover:text-white ${ location.pathname === '/admin/users' ? 'text-white' : 'text-[#7D7E93]'
+                                }` }
+                        >
+                            Manage Users
+                        </Link>
                     </li>
 
                     <li className="mb-2 flex items-center">
-                        <StarIcon className="mr-6 text-[#7D7E93]" style={ { fontSize: "medium" } } />
-                        <Link to="/admin/trainers" className={ `block leading-10  hover:text-white ${ location.pathname === '/admin/trainers' ? "text-white" : "text-[#7D7E93]" }` }>Manage Trainers</Link>
+                        <StarIcon className="mr-6 text-[#7D7E93]" style={ { fontSize: 'medium' } } />
+                        <Link
+                            to="/admin/trainers"
+                            className={ `block leading-10  hover:text-white ${ location.pathname === '/admin/trainers' ? 'text-white' : 'text-[#7D7E93]'
+                                }` }
+                        >
+                            Manage Trainers
+                        </Link>
                     </li>
 
                     <li className="mb-2 flex items-center">
-                        <FitnessCenterIcon className="mr-6 text-[#7D7E93]" style={ { fontSize: "medium" } } />
-                        <Link to="/admin/workouts" className={ `block leading-10  hover:text-white ${ location.pathname === '/admin/workouts' ? "text-white" : "text-[#7D7E93]" }` }>Manage Workouts</Link>
+                        <FitnessCenterIcon className="mr-6 text-[#7D7E93]" style={ { fontSize: 'medium' } } />
+                        <Link
+                            to="/admin/workouts"
+                            className={ `block leading-10  hover:text-white ${ location.pathname === '/admin/workouts' ? 'text-white' : 'text-[#7D7E93]'
+                                }` }
+                        >
+                            Manage Workouts
+                        </Link>
                     </li>
 
                     <li className="mb-2 flex items-center">
-                        <ReceiptLongIcon className="mr-6 text-[#7D7E93]" style={ { fontSize: "medium" } } />
-                        <Link to="/admin/transactions" className={ `block leading-10  hover:text-white ${ location.pathname === '/admin/transactions' ? "text-white" : "text-[#7D7E93]" }` }>Manage Transactions</Link>
+                        <ReceiptLongIcon className="mr-6 text-[#7D7E93]" style={ { fontSize: 'medium' } } />
+                        <Link
+                            to="/admin/transactions"
+                            className={ `block leading-10  hover:text-white ${ location.pathname === '/admin/transactions' ? 'text-white' : 'text-[#7D7E93]'
+                                }` }
+                        >
+                            Manage Transactions
+                        </Link>
                     </li>
                 </ul>
             </nav>
-
         </aside>
     );
-}
+};
 
 export default Sidebar;
