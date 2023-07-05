@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useFilters, usePagination, useTable } from 'react-table';
+import { useFilters, usePagination, useTable, useGlobalFilter } from 'react-table';
 
 const Table = ({ columns, data, selectedRows }) => {
     const {
@@ -14,23 +14,24 @@ const Table = ({ columns, data, selectedRows }) => {
         nextPage,
         previousPage,
         pageOptions,
-        state: { pageIndex },
+        state: { pageIndex ,globalFilter},
+        setGlobalFilter,
     } = useTable(
         {
             columns,
             data,
-            initialState: { pageIndex: 0 ,pageSize:6}, // Initialize the pageIndex to 0
+            initialState: { pageIndex: 0, pageSize: 6 }, // Initialize the pageIndex to 0
         },
         useFilters,
-        usePagination // Add usePagination hook
+        useGlobalFilter,
+        usePagination,
     );
 
     const [filterInput, setFilterInput] = useState('');
 
     const handleFilterChange = e => {
         const value = e.target.value || undefined;
-        setFilter('workoutTitle', value);
-        setFilterInput(value);
+        setGlobalFilter(value)
     };
 
     return (
@@ -38,7 +39,7 @@ const Table = ({ columns, data, selectedRows }) => {
             <div className="p-4">
                 <div className="flex items-center mb-4 mt-20 justify-between">
                     <input
-                        value={ filterInput }
+                        value={ globalFilter || ''}
                         onChange={ handleFilterChange }
                         placeholder="Search name"
                         className="p-2 py-10 border border-white-300 rounded-md mr-4"
@@ -90,8 +91,8 @@ const Table = ({ columns, data, selectedRows }) => {
                             onClick={ () => previousPage() }
                             disabled={ !canPreviousPage }
                             className={ `${ canPreviousPage
-                                    ? 'bg-blue-500 hover:bg-blue-700'
-                                    : 'bg-gray-300 pointer-events-none'
+                                ? 'bg-blue-500 hover:bg-blue-700'
+                                : 'bg-gray-300 pointer-events-none'
                                 } text-white px-4 py-2 rounded-md mr-2` }
                         >
                             Previous
@@ -100,8 +101,8 @@ const Table = ({ columns, data, selectedRows }) => {
                             onClick={ () => nextPage() }
                             disabled={ !canNextPage }
                             className={ `${ canNextPage
-                                    ? 'bg-blue-500 hover:bg-blue-700'
-                                    : 'bg-gray-300 pointer-events-none'
+                                ? 'bg-blue-500 hover:bg-blue-700'
+                                : 'bg-gray-300 pointer-events-none'
                                 } text-white px-4 py-2 rounded-md` }
                         >
                             Next

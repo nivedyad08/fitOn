@@ -49,7 +49,7 @@ const WorkoutList = () => {
                     },
                     {
                         Header: "Status",
-                        accessor: "isActive",
+                        accessor: "status",
                         Cell: ({ value, row }) => {
                             const [isChecked, setIsChecked] = useState(
                                 value

@@ -17,7 +17,7 @@ const Header = () => {
     const handleLogout = () => {
         Cookies.remove("accessToken")
         dispatch(logoutUser)
-        navigate("/")
+        navigate("/login")
     }
     return (
         <header className="sidebar-blue text-white h-48 flex-end items-center px-6">

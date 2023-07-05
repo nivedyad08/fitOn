@@ -15,13 +15,15 @@ import TrainerRoute from "./Routes/TrainerRoute";
 import errorPage from "./Pages/errorPage";
 import UserAuth from "./Auth/UserAuth";
 import UserRoute from "./Routes/UserRoute";
+import LandingPage from "./Pages/Landing/LandingPage";
 
 function App() {
   return (
     <div>
       <Routes>
         {/* <Route path="/*" element={ <errorPage /> } /> */}
-        <Route path="/" element={ <LoginPage /> } />
+        <Route path="/" element={ <LandingPage /> } />
+        <Route path="/login" element={ <LoginPage /> } />
         <Route path="/forgot-password" element={ <ForgortPasswordPage /> } />
         <Route path="/forgot-password/email-verification" element={ <EmailVerification /> } />
         <Route path="/user/forgotPassword" element={ <UpdatePasswordPage /> } />

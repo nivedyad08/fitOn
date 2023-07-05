@@ -68,26 +68,27 @@ const EditWorkout = () => {
             if (data) {
                 const formData = new FormData();
                 // Append form fields to formData
-                console.log(data.description);
+                console.log(data);
                 formData.append("workoutTitle", data.workoutTitle);
                 formData.append("description", data.description);
                 formData.append("category", data.category);
                 formData.append("difficultyLevel", data.difficultyLevel);
                 formData.append("thumbnailImage", data.thumbnailImage[0]);
 
-                const response = await axios.post(`api/trainer/add-workout?trainerId=${ user._id }`, formData)
-                if (response.status === 200) {
-                    const formVideoData = new FormData();
-                    const workoutId = response.data.workout._id
-                    for (let key in videoFile) {
-                        formVideoData.append("videos", videoFile[key]);
-                    }
-                    const upload = await axios.post(`api/trainer/upload-workout-video?workoutId=${ workoutId }`, formVideoData)
-                    if (upload.status === 200) {
-                        toast.success("Workout added successfully");
-                        navigate("/trainer/workouts");
-                    }
-                }
+                const response = await axios.post(`api/trainer/edit-workout?workoutId=${ workout._id }`, formData)
+                console.log(response);
+                // if (response.status === 200) {
+                //     const formVideoData = new FormData();
+                //     const workoutId = response.data.workout._id
+                //     for (let key in videoFile) {
+                //         formVideoData.append("videos", videoFile[key]);
+                //     }
+                //     const upload = await axios.post(`api/trainer/upload-workout-video?workoutId=${ workoutId }`, formVideoData)
+                //     if (upload.status === 200) {
+                //         toast.success("Workout added successfully");
+                //         navigate("/trainer/workouts");
+                //     }
+                // }
             }
         } catch (error) {
             if (error.response && error.response.status === 400) {
@@ -166,14 +167,15 @@ const EditWorkout = () => {
                                     <select
                                         id="category"
                                         name="category"
+                                        autoComplete="level-name"
                                         { ...register("category", {
                                             required: "Category is required",
                                         }) }
                                         className={ `block w-full h-40 custom-blue-shade1 rounded-md border-0 py-3 text-gray-200 shadow-sm placeholder-gray-500 pl-4 placeholder-opacity-10 sm:text-sm sm:leading-6 ${ errors.category ? "border-red-500" : ""
                                             }` }
-                                        defaultValue={ workout.category }
+                                        defaultValue={ workout?.category }
                                     >
-                                        { categories.map((category, i) => (
+                                        { categories?.map((category, i) => (
                                             <option key={ i } value={ category._id }>{ category.name }</option>
                                         )) }
                                     </select>
@@ -225,7 +227,7 @@ const EditWorkout = () => {
                                 ) : (
                                     <img
                                         className="h-96 w-96 object-cover "
-                                        src={ `http://localhost:8080/user/${ workout.thumbnailImage }` }
+                                        src={ `http://localhost:8080/user/${ workout?.thumbnailImage }` }
                                         alt="Current profile photo"
                                     />
                                 ) }
@@ -236,32 +238,30 @@ const EditWorkout = () => {
                                         type="file"
                                         name="thumbnailImage"
                                         { ...register("thumbnailImage", {
-                                            required: "Image is required",
-                                            validate: {
-                                                filesize: (file) => {
-                                                    if (file && file[0]) {
-                                                        const sizeInkB = file[0].size / 1024;
-                                                        setImageSize(sizeInkB);
-                                                        const maxImageSize = 500;
-                                                        return (
-                                                            sizeInkB <= maxImageSize ||
-                                                            `Image should not exceed ${ maxImageSize }KB`
-                                                        );
-                                                    }
-                                                    return true;
-                                                },
-                                            },
+                                            required: workout?.thumbnailImage ? false : "Image is required",
+                                            // validate: {
+                                            //     filesize: (file) => {
+                                            //         if (file && file[0]) {
+                                            //             const sizeInkB = file[0].size / 1024;
+                                            //             setImageSize(sizeInkB);
+                                            //             const maxImageSize = 800;
+                                            //             return (
+                                            //                 sizeInkB <= maxImageSize ||
+                                            //                 `Image should not exceed ${ maxImageSize }KB`
+                                            //             );
+                                            //         }
+                                            //         return true;
+                                            //     },
+                                            // },
                                         }) }
                                         onChange={ handleThumbnailPicChange }
                                     />
                                 </div>
-                                { errors.thumbnailImage ? (
+                                { errors.thumbnailImage && (
                                     <small className="mt-2 text-red-500 text-sm">
-                                        { errors.thumbnailImage.type === "required"
-                                            ? errors.thumbnailImage.message
-                                            : `Image size: ${ imageSize }KB. ${ errors.thumbnailImage.message }` }
+                                        { errors.thumbnailImage.message }
                                     </small>
-                                ) : "" }
+                                ) }
                             </div>
 
                             <div className="col-span-full">
@@ -279,18 +279,18 @@ const EditWorkout = () => {
                                         className="block w-full text-sm h-30 text-gray-900 rounded-lg cursor-pointer custom-blue-shade1 dark:text-gray-400 focus:outline-none dark:bg-gray-700 placeholder-gray-500 placeholder-opacity-10"
                                         accept="video/mp4,video/mpeg,video/quicktime"
                                         { ...register("videos", {
-                                            required: "Workout video is required",
-                                            validate: {
-                                                filesize: (file) => {
-                                                    if (file && file[0]) {
-                                                        const sizeInkB = file[0].size / 1024;
-                                                        setVideoSize(sizeInkB)
-                                                        const maxVideoSize = 50000
-                                                        return sizeInkB <= maxVideoSize || `video should not exceed ${ maxVideoSize }MB`
-                                                    }
-                                                    return true
-                                                }
-                                            }
+                                            required: workout?.video ? false : "Workout video is required",
+                                            // validate: {
+                                            //     filesize: (file) => {
+                                            //         if (file && file[0]) {
+                                            //             const sizeInkB = file[0].size / 1024;
+                                            //             setVideoSize(sizeInkB)
+                                            //             const maxVideoSize = 50000
+                                            //             return sizeInkB <= maxVideoSize || `video should not exceed ${ maxVideoSize }MB`
+                                            //         }
+                                            //         return true
+                                            //     }
+                                            // }
                                         }) }
                                         onChange={ (e) => {
                                             setVideos(e.target.files);

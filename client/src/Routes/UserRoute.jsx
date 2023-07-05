@@ -10,7 +10,7 @@ const UserRoute = () => {
                 {/* Header */ }
                 <Header/>
                 {/* Body */ }
-                <main className="h-full custom-dark-blue px-4 py-8 md:px-8 flex justify-center items-center">
+                <main className=" custom-dark-blue px-4 py-8 md:px-8 flex justify-center items-center">
                     <div className="mx-auto max-w-7xl w-11/12 py-12 sm:px-6 lg:px-8">
                         <Routes>
                             <Route path="dashboard" element={ <Dashboard /> } />

@@ -54,3 +54,12 @@ code {
 .custom-blue-grey{
   background-color: #7D7E93;
 }
+
+.overflow{
+  overflow: hidden !important;
+}
+
+.instructors{
+  border-color: #7D7E93 !important;
+  color: white !important;
+}

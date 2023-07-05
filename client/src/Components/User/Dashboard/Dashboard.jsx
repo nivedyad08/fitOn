@@ -5,8 +5,8 @@ import TrainersList from './TrainersList';
 const Dashboard = () => {
     return (
         <>
-            <PopularWorkouts/>
             <TrainersList/>
+            <PopularWorkouts/>
         </>
     );
 }

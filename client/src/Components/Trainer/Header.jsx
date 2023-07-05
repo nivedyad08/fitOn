@@ -39,7 +39,7 @@ export default function Header() {
         if (id === "signout") {
             Cookies.remove("accessToken")
             dispatch(logoutUser)
-            navigate("/")
+            navigate("/login")
         } else if (id === "account") {
             navigate("/trainer/account")
         }

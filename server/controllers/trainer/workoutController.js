@@ -96,25 +96,32 @@ const deleteWorkout = async (req, res) => {
 
 const editWorkout = async (req, res) => {
     try {
-        const { workoutId } = req.query
-        const { workoutTitle, description, category, difficultyLevel } = req.body
-        if (req.file) {
-            const thumbnail = req.file
-        }
-        const workoutProduct = await Workout.findOneAndUpdate(
-            workoutId,
-            {
-                workoutTitle,
-                description,
-                category,
-                difficultyLevel,
-                thumbnailImage: thumbnail.filename
-            },
-        );
+        const { workoutTitle, description, category, difficultyLevel } = req.body;
+        const { workoutId } = req.query;
+        console.log(req.body);
+        if (!workoutId)
+            return res.status(400).json({ message: "Invalid Workout" });
+        const workoutDetails = await Workout.findById(workoutId);
+        let thumbnailImage = workoutDetails.thumbnailImage
+        let video = workoutDetails.video
 
-        if (!workoutProduct)
-            return res.status(400).json({ message: "Something went wrong" });
-        return res.status(200).json({ message: "Workout updated successfully !!" });
+        if (req.files && req.files.thumbnailImage) {
+            thumbnailImage = req.files.thumbnailImage[0].filename
+        }
+        if (req.files && req.files.video) {
+            video = req.files.video[0].filename
+        }
+        const updateResult = await Workout.findByIdAndUpdate(workoutId, {
+            workoutTitle,
+            description,
+            category,
+            difficultyLevel,
+            thumbnailImage,
+            video,
+        },{new:true});
+        if (!updateResult)
+            return res.status(400).json({ message: "Workout not updated !!" });
+        return res.status(200).json({ message: "Workout updated successfully !!",workout:updateResult });
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
