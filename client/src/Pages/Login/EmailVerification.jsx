@@ -22,8 +22,8 @@ const EmailVerification = () => {
                             <p className="mt-10 text-center text-sm text-custom-slate">
                                 Back to{ " " }
                                 <Link
-                                    to="/"
-                                    className="font-medium leading-6 text-custom-yellow font-normal hover:text-indigo-500"
+                                    to="/login"
+                                    className="font-medium leading-6 text-custom-yellow hover:text-indigo-500"
                                 >
                                     Login
                                 </Link>

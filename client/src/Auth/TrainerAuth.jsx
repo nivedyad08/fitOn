@@ -8,7 +8,7 @@ function TrainerAuth() {
     const user = useSelector((state) => state.loggedUser.userInfo)
     const location = useLocation();
     return (
-        trainerToken && user.role === TRAINER_ROLE ? <Outlet /> : <Navigate to="/" state={ { from: location } } replace />
+        trainerToken && user.role === TRAINER_ROLE ? <Outlet /> : <Navigate to="/login" state={ { from: location } } replace />
     )
 }
 

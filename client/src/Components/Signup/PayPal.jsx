@@ -2,7 +2,6 @@ import React, { useRef, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import axios from "../../config/axios"
 
 const Paypal = () =>{
     const paypal = useRef();
@@ -31,7 +30,7 @@ const Paypal = () =>{
                     if (order.status === "COMPLETED") {
                         // const updateUser = axios.post(`/api/admin/payment-update/${user._id}`)
                         toast.success("Payment completed successfully")
-                        navigate("/")
+                        navigate("/login")
                     }
                     console.log(order);
                 },
@@ -43,9 +42,4 @@ const Paypal = () =>{
     }, []);
 
     return paypal;
-//     return (
-//         <div>
-//             <div ref={ paypal }></div>
-//         </div>
-//     );
 }

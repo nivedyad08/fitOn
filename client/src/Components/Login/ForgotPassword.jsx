@@ -28,7 +28,6 @@ function ForgotPassword() {
     }
   };
 
-
   return (
     <div className="md:w-8/12 lg:ml-6 lg:w-5/12">
       <div className="text-center">
@@ -41,12 +40,12 @@ function ForgotPassword() {
         <h5 className="mb-12 mt-1 pb-1 text-xl text-white font-semibold text-center">
           Forgot password?
         </h5>
-        <p class="text-md text-center font-semibold leading-relaxed text-custom-whitish">Please enter your email to receive a verification code.</p>
+        <p className="text-md text-center font-semibold leading-relaxed text-custom-whitish">Please enter your email to receive a verification code.</p>
         <form onSubmit={ handleSubmit(updatePasswordHandle) }>
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium leading-6 text-white font-normal"
+              className="block text-sm leading-6 text-white font-normal"
             >
               Email address
             </label>
@@ -76,7 +75,7 @@ function ForgotPassword() {
           </div>
 
           <div>
-            <button class="rounded-lg h-40 w-full mt-10 bg-custom-yellow rounded-lg text-sm px-5 py-2.5 text-center font-medium focus:outline-none text-white">
+            <button className="rounded-lg h-40 w-full mt-10 bg-custom-yellow rounded-lg text-sm px-5 py-2.5 text-center font-medium focus:outline-none text-white">
               SEND
             </button>
           </div>
@@ -85,8 +84,8 @@ function ForgotPassword() {
         <p className="mt-10 text-center text-sm text-custom-slate">
           Back to{ " " }
           <Link
-            to="/"
-            className="font-medium leading-6 text-custom-yellow font-normal hover:text-indigo-500"
+            to="/login"
+            className="font-medium leading-6 text-custom-yellow hover:text-indigo-500"
           >
             Login
           </Link>

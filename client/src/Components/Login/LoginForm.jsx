@@ -132,7 +132,7 @@ function LoginForm() {
           </div>
 
           <div>
-            <button class="rounded-lg h-40 w-full mt-10 bg-custom-yellow text-sm px-5 py-2.5 text-center font-medium focus:outline-none text-white">
+            <button className="rounded-lg h-40 w-full mt-10 bg-custom-yellow text-sm px-5 py-2.5 text-center font-medium focus:outline-none text-white">
               LOGIN
             </button>
           </div>

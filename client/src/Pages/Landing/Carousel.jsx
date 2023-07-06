@@ -25,7 +25,7 @@ const Carousel = () => {
         slider.scrollLeft = slider.scrollLeft + 500;
     };
     return (
-        <div className='relative flex items-center group pb-30 my-80'>
+        <div className='relative flex items-center group pb-30 my-30'>
             <MdChevronLeft
                 onClick={ slideLeft }
                 className='bg-white left-0 rounded-full absolute opacity-50 hover:opacity-100 cursor-pointer z-10 hidden group-hover:block'

@@ -16,6 +16,7 @@ const register = async (req, res) => {
       if (isUser) {
         return res.status(400).json({ message: "User already exists !!" });
       } else {
+        const otp = Math.floor(Math.random() * 9000 + 1000);
         const newUser = User({
           firstName,
           lastName,
@@ -23,10 +24,16 @@ const register = async (req, res) => {
           role,
           password: await bcrypt.hash(password, 10),
           userLocation,
+          verificationCode: otp,
           isActive: true
         });
         const resUser = await newUser.save();
         if (resUser) {
+          const message = `<p>Hey ${ resUser.firstName } ${ resUser.lastName },<br/> Please enter the following code on the page where you requested for an OTP.</p><br/><button type="button" class="mt-20 py-20 px-20 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-gray-400 border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">${ otp }</button>`;
+
+          const subject = "Email Verification"
+
+          sendEmailVerification(resUser.firstName, resUser.lastName, email, message)
           return res
             .status(200)
             .json({ message: "Registered Successfully", user: resUser });
@@ -183,7 +190,9 @@ const forgotPassword = async (req, res) => {
       if (!user) {
         return res.status(400).json({ message: "User not Found" });
       }
-      sendEmailVerification(user.firstName, user.lastName, email)
+      const message = `<p>Hi ${ user.firstName } ${ user.lastName }, please click <a href=${ process.env.APP_URL }user/forgotPassword?email=${ user.email }>here</a> to create a new password.</p>`
+      const subject = "Forgot Password";
+      sendEmailVerification(user.firstName, user.lastName, email, message, subject)
       return res.status(200).json({ message: "Email sent successfully !!" });
 
     } else {
@@ -195,7 +204,7 @@ const forgotPassword = async (req, res) => {
 }
 
 /****Send email verification*****/
-const sendEmailVerification = async (firstname, lastname, email) => {
+const sendEmailVerification = async (firstname, lastname, email, message, subject) => {
   return new Promise((resolve, reject) => {
     try {
       const emailTransporter = nodemailer.createTransport({
@@ -210,8 +219,8 @@ const sendEmailVerification = async (firstname, lastname, email) => {
       const mailOptions = {
         from: 'neethus484@gmail.com',
         to: email,
-        subject: 'Forgot Password',
-        html: `<p>Hi ${ firstname } ${ lastname }, please click <a href=${ process.env.APP_URL }user/forgotPassword?email=${ email }>here</a> to create a new password.</p>`,
+        subject: subject,
+        html: message,
       };
 
       emailTransporter.sendMail(mailOptions, function (error, info) {
@@ -248,6 +257,22 @@ const updatePassword = async (req, res) => {
   }
 }
 
+const validateOtp = async (req, res) => {
+  try {
+    const { otp } = req.body
+    const { userId } = req.query
+    const user = await User.findById(userId)
+    if (!user)
+      return res.status(400).json({ message: "Invalid user" });
+    if (!user.verificationCode || user.verificationCode !== otp)
+      return res.status(400).json({ message: "Invalid OTP" });
+      
+    await User.findByIdAndUpdate(userId, { verificationCode: null })
+    return res.status(200).json({ message: 'Otp verified !!!' })
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+}
 
 /****Set refresh token as a cookie*****/
 
@@ -277,5 +302,6 @@ module.exports = {
   forgotPassword,
   updatePassword,
   paymentUpdate,
+  validateOtp,
   logout
 };

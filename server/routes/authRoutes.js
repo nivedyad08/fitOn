@@ -8,6 +8,7 @@ const userUpload = userImageUpload.fields([
 ]);
 
 authRoute.post("/user/register", authController.register);
+authRoute.post("/user/validate-otp", authController.validateOtp);
 authRoute.post("/user/profile-complete", userUpload,
 authController.profileComplete);
 authRoute.post("/user/payment-update/:userId",

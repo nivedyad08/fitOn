@@ -1,6 +1,5 @@
 import React, { useState, forwardRef } from "react";
 import { Link } from "react-router-dom";
-import Paypal from "./PayPal";
 
 const Payment = forwardRef(function ({ checkout, setCheckOut }, ref) {
   return (
@@ -15,7 +14,7 @@ const Payment = forwardRef(function ({ checkout, setCheckOut }, ref) {
         <div class="mx-auto max-w-7xl px-6 lg:px-8 ">
           <div class="mx-auto mt-16 max-w-2xl rounded-3xl ring-1 ring-gray-200 sm:mt-20 lg:mx-0 lg:flex lg:max-w-none">
             <div class="p-8 sm:p-10 lg:flex-auto">
-              <h3 class="text-2xl font-bold tracking-tight text-white font-normal">Lifetime membership</h3>
+              <h3 class="text-2xl font-bold tracking-tight text-white ">Lifetime membership</h3>
               <p class="mt-6 text-base leading-7 text-custom-whitish">Don't miss out on the enhanced functionality and exclusive features of our application. Make a payment today and unlock it all!</p>
               <div class="mt-10 flex items-center gap-x-4">
                 <h4 class="flex-none text-sm font-semibold leading-6 text-indigo-600">What’s included</h4>
@@ -52,7 +51,7 @@ const Payment = forwardRef(function ({ checkout, setCheckOut }, ref) {
                   <div class="mx-auto max-w-xs px-8">
                     <p class="text-base font-semibold text-white">Pay once, own it forever</p>
                     <p class="mt-6 flex items-baseline justify-center gap-x-2">
-                      <span class="text-5xl font-bold tracking-tight text-white font-normal">$1000</span>
+                      <span class="text-5xl  tracking-tight text-white font-normal">$1000</span>
                       <span class="text-sm font-semibold leading-6 tracking-wide text-white">USD</span>
                     </p>
                     { checkout ? (
@@ -75,8 +74,8 @@ const Payment = forwardRef(function ({ checkout, setCheckOut }, ref) {
               <p className="mt-10 text-center text-sm text-custom-slate">
                 Already registered ?{ " " }
                 <Link
-                  to="/"
-                  className="font-medium leading-6 text-custom-yellow font-normal hover:text-indigo-500"
+                  to="/login"
+                  className="font-medium leading-6 text-custom-yellow hover:text-indigo-500"
                 >
                   Login
                 </Link>

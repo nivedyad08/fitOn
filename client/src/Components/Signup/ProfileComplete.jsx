@@ -196,7 +196,7 @@ function ProfileComplete() {
         <p className="mt-10 text-center text-sm text-custom-slate">
           Already registered ?{ " " }
           <Link
-            to="/"
+            to="/login"
             className="font-medium leading-6 text-custom-yellow hover:text-indigo-500"
           >
             Login

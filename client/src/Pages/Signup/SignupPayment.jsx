@@ -39,7 +39,7 @@ function SignupPayment() {
                 const updateUserPayment = await axios.post(`/api/auth/user/payment-update/${ user._id }`, { transactionId: transactionId });
                 if (updateUserPayment.status === 200) {
                   toast.success("Payment completed successfully");
-                  navigate("/");
+                  navigate("/login");
                 }
               }
             } catch (error) {
