@@ -9,6 +9,7 @@ import { logoutUser } from "../redux-toolkit/slices/userSlice"
 
 const navigation = [
     { name: 'Dashboard', href: '/user/dashboard', current: false },
+    { name: 'Trainers', href: '/user/trainers', current: false },
     { name: 'Sessions', href: '/user/sessions', current: false },
 ]
 const userNavigation = [

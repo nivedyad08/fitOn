@@ -1,16 +1,18 @@
 export const basic = {
     "name":"BASIC",
-    "price": 0,
-    "duration":"life time",
+    "price": 42.41,
+    "duration":"3 months",
     "benefits": [
         "Basic workouts",
         "Recorded sessions",
+        "One to one chatting system",
+        "Diet Plans",
     ]
 }
 
 export const pro = {
     "name":"PRO",
-    "price": 6.88,
+    "price": 79.98,
     "duration":"6 months",
     "benefits": [
         "Basic workouts",

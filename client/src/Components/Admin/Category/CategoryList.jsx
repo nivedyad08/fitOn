@@ -15,7 +15,7 @@ const CategoryList = () => {
         () => [
             {
                 // Second group columns
-                Header: "Categories",
+                Header: " ",
                 columns: [
                     {
                         Header: "Id",

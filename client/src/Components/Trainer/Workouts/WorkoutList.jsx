@@ -60,7 +60,7 @@ const WorkoutList = () => {
         () => [
             {
                 // Second group columns
-                Header: "Workouts",
+                Header: " ",
                 columns: [
                     {
                         Header: "Workout Title",

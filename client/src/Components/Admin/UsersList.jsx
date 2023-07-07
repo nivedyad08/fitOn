@@ -8,7 +8,7 @@ const UsersList = () => {
     () => [
       {
         // Second group columns
-        Header: "Users",
+        Header: " ",
         columns: [
           {
             Header: "First Name",

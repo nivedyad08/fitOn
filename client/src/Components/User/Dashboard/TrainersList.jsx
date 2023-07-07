@@ -9,7 +9,6 @@ const TrainersList = () => {
             try {
                 const response = await axios.get("api/user/trainers")
                 setTrainers(response.data.trainers)
-                console.log(response.data.trainers);
             } catch (error) {
                 toast.error("An error occurred. Please try again later");
             }

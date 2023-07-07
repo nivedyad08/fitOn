@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "../../config/axios";
 import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
-import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import { FaHeart } from 'react-icons/fa';
 import {BASE_URL} from "../../constants/urls"
 
-const Carousel = () => {
+const TrainersSlider = () => {
     const [trainers, setTrainers] = useState([]);
 
     // setTrainers(response.data.results);
@@ -70,4 +70,4 @@ const Carousel = () => {
     );
 }
 
-export default Carousel;
+export default TrainersSlider;

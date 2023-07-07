@@ -3,6 +3,7 @@ const updateUserDetails = require("../../helpers/userAccount").updateUserDetails
 const updateUserPassword = require("../../helpers/userAccount").updateUserPassword
 
 const editUser = async (req, res) => {
+    console.log(req.files);
     const userDetailsEdit = await updateUserDetails(req, res)
 };
 

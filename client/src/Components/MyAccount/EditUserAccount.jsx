@@ -38,7 +38,6 @@ const EditUserAccount = () => {
 
     const handleCoverPhotoChange = (e) => {
         setCoverPic(e.target.files[0]);
-        console.log(selectedCoverPic);
         setCoverImage(URL.createObjectURL(e.target.files[0]));
     };
 
@@ -74,8 +73,9 @@ const EditUserAccount = () => {
             <div className="space-y-2">
                 <div className="border-b border-gray-900/10 pb-12">
                     <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                        <div className="col-span-full mt-10">
-                            <label htmlFor="firstName" className="block text-sm font-lg leading-6 text-custom-whitish">
+
+                        <div className="sm:col-span-3">
+                            <label htmlFor="category" className="block text-sm font-lg leading-6 text-custom-whitish">
                                 First Name
                             </label>
                             <div className="mt-2">
@@ -100,8 +100,8 @@ const EditUserAccount = () => {
                             </div>
                         </div>
 
-                        <div className="col-span-full mt-10">
-                            <label htmlFor="lastName" className="block text-sm font-lg leading-6 text-custom-whitish">
+                        <div className="sm:col-span-3">
+                            <label htmlFor="last-name" className="block text-sm font-lg leading-6 text-custom-whitish">
                                 Last Name
                             </label>
                             <div className="mt-2">
@@ -178,10 +178,6 @@ const EditUserAccount = () => {
                                     rows={ 4 }
                                     { ...register("userBio", {
                                         required: "Bio is required",
-                                        pattern: {
-                                            value: /^(?=.*\S)[A-Za-z\s\d!@#$%^&*()_+=\-[\]{};':"\\|,.<>/?]+$/i,
-                                            message: "Title should only contain letters",
-                                        },
                                     }) }
                                     className={ `block h-40 w-full rounded-md border-0 py-1.5 text-gray-200  ring-inset placeholder-gray-500 pl-4 placeholder-opacity-100  custom-blue-shade1 sm:text-sm sm:leading-6 ${ errors.userBio ? "border-red-500" : ""
                                         }` }
@@ -289,7 +285,7 @@ const EditUserAccount = () => {
                                 <input class="block w-full text-sm h-30 text-gray-900 rounded-lg cursor-pointer custom-blue-shade1 dark:text-gray-400 focus:outline-none dark:bg-gray-700 placeholder-gray-500 placeholder-opacity-10"
                                     id="file_input" type="file"
                                     { ...register("profilePic", {
-                                        required:"Profile pic is required",
+                                        required: "Profile pic is required",
                                     }) }
                                     onChange={ handleProfilePicChange }
                                 />

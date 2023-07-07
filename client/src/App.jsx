@@ -16,6 +16,7 @@ import errorPage from "./Pages/errorPage";
 import UserAuth from "./Auth/UserAuth";
 import UserRoute from "./Routes/UserRoute";
 import LandingPage from "./Pages/Landing/LandingPage";
+import TrainersList from "./Pages/TrainersList";
 
 function App() {
   return (

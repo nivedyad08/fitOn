@@ -15,7 +15,7 @@ const AdminRoute = () => {
             <div className="flex h-screen">
                 {/* Sidebar */ }
                 <Sidebar />
-                <div className="flex-grow">
+                <div className="flex-grow bg-white">
                     {/* Header */ }
                     <Header />
                     {/* Body */ }
