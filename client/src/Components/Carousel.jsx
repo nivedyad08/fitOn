@@ -68,9 +68,9 @@ const Carousel = ({ image1, image2 ,height}) => {
             <div class="sliderAx">
                 <div id="slider-1" className={ `mx-auto ${ currentSlide === 0 ? '' : 'hidden' }` }>
                     <div
-                        className={`bg-cover bg-center  h-[${height}] text-white py-24 px-10 `}
+                        className={`bg-cover bg-center text-white py-24 px-10 `}
                         style={ {
-                            backgroundImage: `url(${ image1 })`,backgroundSize: "contain",
+                            backgroundImage: `url(${ image1 })`,height:`${height}`,backgroundSize: "contain",
                         } }
                     >
                         <div className="md:w-1/2">
@@ -92,9 +92,9 @@ const Carousel = ({ image1, image2 ,height}) => {
 
                 <div id="slider-2" className={ `mx-auto ${ currentSlide === 1 ? '' : 'hidden' }` }>
                     <div
-                        className={`bg-cover bg-center h-[${height}] text-white py-24 px-10 object-fill`}
+                        className={`bg-cover bg-center text-white py-24 px-10 object-fill`}
                         style={ {
-                            backgroundImage: `url(${ image2 })`,backgroundSize: "contain"
+                            backgroundImage: `url(${ image2 })`,height:`${height}`,backgroundSize: "contain"
                         } }
                     >
                         <p className="font-bold text-sm uppercase">STAY FIT</p>
