@@ -12,11 +12,6 @@ const Dashboard = () => {
         <>
             <div className="mx-auto text-center">
                 <section class="w-full">
-                    {/* <img
-                        src="/images/banner-image.jpg"
-                        class="object-fill w-full h-[400px]"
-                        alt="Image alt text"
-                    /> */}
                     <Carousel image1={image1} image2 = {image2} height={height}/>
                 </section>
                 <div className="mx-auto max-w-lg">

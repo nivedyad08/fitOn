@@ -16,13 +16,15 @@ import errorPage from "./Pages/errorPage";
 import UserAuth from "./Auth/UserAuth";
 import UserRoute from "./Routes/UserRoute";
 import LandingPage from "./Pages/Landing/LandingPage";
-import TrainersList from "./Pages/TrainersList";
+import React, { useEffect, useState } from "react"
+import Loader from "./Components/Loader";
 
 function App() {
+
   return (
     <div>
       <Routes>
-        {/* <Route path="/*" element={ <errorPage /> } /> */}
+        {/* <Route path="/*" element={ <errorPage /> } /> */ }
         <Route path="/" element={ <LandingPage /> } />
         <Route path="/login" element={ <LoginPage /> } />
         <Route path="/forgot-password" element={ <ForgortPasswordPage /> } />

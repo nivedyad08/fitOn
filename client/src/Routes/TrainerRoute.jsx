@@ -24,6 +24,7 @@ const TrainerRoute = () => {
                             <Route path="workout/:workoutId" element={ <ViewWorkout /> } />
                             <Route path="edit/:workoutId" element={ <EditWorkout /> } />
                             <Route path="account" element={ <Account /> } />
+                            
                         </Routes>
                     </div>
                 </main>
