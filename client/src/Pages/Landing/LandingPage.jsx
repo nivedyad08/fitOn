@@ -145,7 +145,7 @@ const LandingPage = () => {
                 <TrainersSlider />
             </section>
             <div className="py-20 bg-gradient-to-r from-[#0a0b1a] via-[#141433] to-[#282843] dark:bg-gray-900">
-                <PricingPlans />
+                <PricingPlans userPlans={ false } />
             </div>
 
             <footer className="bg-black dark:bg-gray-900">

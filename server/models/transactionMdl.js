@@ -5,7 +5,7 @@ const Schema = mongoose.Schema,
 const transactionSchema = new mongoose.Schema(
     {
         userId: {
-            type: String,
+            type: ObjectId,
             required: false,
         },
         role: {
@@ -13,7 +13,7 @@ const transactionSchema = new mongoose.Schema(
             required: false,
         },
         subscriptionId: {
-            type: String,
+            type: ObjectId,
             required: false,
             default: null,
         },
@@ -32,7 +32,7 @@ const transactionSchema = new mongoose.Schema(
             default: null,
         },
         expiry_date: {
-            type: String,
+            type: Date,
             required: false,
             default: null,
         }

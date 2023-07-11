@@ -3,13 +3,23 @@ import Table from "./Table";
 import axios from "../../config/axios"
 import { TRAINER_ROLE, PENDING_TRAINER } from "../../constants/roles"
 import { Switch } from "@mui/material";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { trainerDetails } from "../redux-toolkit/slices/trainerSlice";
 
 const TrainersList = () => {
+    const navigate = useNavigate()
+    const dispatch = useDispatch();
+    const viewTrainer = (trainer) => {
+        dispatch(trainerDetails(trainer))
+        navigate(`/admin/trainer/view/${ trainer._id }`)
+    }
     const columns = useMemo(
         () => [
             {
                 // Second group - Details
-                Header: "Trainers",
+                Header: " ",
                 // Second group columns
                 columns: [
                     {
@@ -57,6 +67,7 @@ const TrainersList = () => {
                                         checked={ isChecked }
                                         onChange={ handleUserStatus }
                                     />
+                                    <VisibilityIcon className="cursor-pointer mt-6" onClick={ () => viewTrainer(row.original) } />
                                 </div>
                             );
                         },
@@ -77,7 +88,7 @@ const TrainersList = () => {
     }, []);
     return (
         <div className="App">
-            <Table columns={ columns } data={ data }  />
+            <Table columns={ columns } data={ data } />
         </div>
     );
 }

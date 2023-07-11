@@ -43,6 +43,7 @@ function ProfileComplete() {
       formData.append("userBio", userInput.userBio);
       formData.append("userLocation", userInput.userLocation);
       formData.append("userId", userId);
+      
       const response = await axios.post(
         "/api/auth/user/profile-complete",
         formData

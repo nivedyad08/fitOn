@@ -5,6 +5,8 @@ const isUser = require("../../middlewares/isUser")
 
 
 userRoute.get('/trainers', userController.trainers);
+userRoute.get('/packages', userController.packages);
+userRoute.post('/payment-update/:mode', userController.subscription);
 
 
 module.exports = userRoute

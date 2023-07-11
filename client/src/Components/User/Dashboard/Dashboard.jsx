@@ -1,6 +1,5 @@
 import React from 'react';
 import PopularWorkouts from './PopularWorkouts';
-import TrainersList from './TrainersList';
 import TrainersSlider from '../../../Pages/Landing/TrainersSlider';
 import Carousel from '../../Carousel';
 

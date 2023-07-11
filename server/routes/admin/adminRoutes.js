@@ -3,6 +3,7 @@ const adminRoute = express();
 const adminController = require("../../controllers/admin/adminController");
 const categoryController = require("../../controllers/admin/categoryController");
 const workoutController = require("../../controllers/admin/workoutController");
+const transactionController = require("../../controllers/admin/TransactionController");
 const isAdmin = require("../../middlewares/isAdmin")
 
 adminRoute.get(
@@ -28,5 +29,7 @@ adminRoute.put("/category/change-status", isAdmin, categoryController.changeStat
 adminRoute.get("/levels", isAdmin, adminController.levels)
 adminRoute.get("/workouts", isAdmin, workoutController.workouts)
 adminRoute.put("/workout/change-status", isAdmin, workoutController.changeStatus)
+
+adminRoute.get("/transactions", isAdmin, transactionController.transactions)
 
 module.exports = adminRoute;

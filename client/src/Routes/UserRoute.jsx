@@ -6,6 +6,9 @@ import Account from '../Components/MyAccount/Account';
 import TrainersList from '../Components/User/Trainers/TrainersList';
 import TrainerDetails from '../Components/User/Trainers/TrainerDetails';
 import Loader from '../Components/Loader';
+import UserPricingPlans from '../Components/User/Membership/UserMembershipDetails';
+import Checkout from '../Components/User/Membership/Checkout';
+import Watch from '../Components/User/Trainers/Watch';
 
 const UserRoute = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -35,6 +38,9 @@ const UserRoute = () => {
                                 <Route path="account" element={ <Account /> } />
                                 <Route path="trainers" element={ <TrainersList /> } />
                                 <Route path="trainer/details/:trainerId" element={ <TrainerDetails /> } />
+                                <Route path="subscribe/membership" element={ <UserPricingPlans /> } />
+                                <Route path="checkout/:mode/:userId" element={ <Checkout /> } />
+                                <Route path="trainer/watch/:workoutVideo" element={ <Watch /> } />
                             </Routes>
 
                         </div>

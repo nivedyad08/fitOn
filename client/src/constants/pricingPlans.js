@@ -1,12 +1,10 @@
 export const basic = {
     "name":"BASIC",
-    "price": 42.41,
-    "duration":"3 months",
+    "price": 0,
+    "duration":"life time",
     "benefits": [
         "Basic workouts",
         "Recorded sessions",
-        "One to one chatting system",
-        "Diet Plans",
     ]
 }
 

@@ -29,7 +29,7 @@ const WorkoutList = () => {
                     },
                     {
                         Header: "Trainer",
-                        accessor: "trainerId",
+                        accessor: "trainer[0].firstName",
                     },
                     {
                         Header: "Workout Category",
@@ -69,7 +69,7 @@ const WorkoutList = () => {
                                         checked={ isChecked }
                                         onChange={ handleWorkoutStatus }
                                     />
-                                    <VisibilityIcon className="cursor-pointer" onClick={ () => viewWorkout(row.original) } />
+                                    <VisibilityIcon className="cursor-pointer mt-6" onClick={ () => viewWorkout(row.original) } />
                                 </div>
                             );
                         },

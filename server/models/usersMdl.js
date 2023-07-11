@@ -76,17 +76,16 @@ const userSchema = new mongoose.Schema(
     ],
     subscriptions: [
       {
-        subscription_id: { type: ObjectId },
-        trainer_id: { type: Number },
-        start_date: { type: Number },
-        end_date: { type: Number },
-        isValid: { type: Boolean },
-        package_id: { type: Boolean },
-        total_amount: { type: Number },
-        createdAt: { type: String },
-        updatedAt: { type: String },
+        subscriptionId: { type: ObjectId },
+        startDate: { type: Date },
+        endDate: { type: Date },
       },
     ],  
+    isSubscriber: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   { timestamps: true }
 );

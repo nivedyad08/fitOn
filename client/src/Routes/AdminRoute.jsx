@@ -8,6 +8,7 @@ import Header from '../Components/Admin/Header';
 import Categories from '../Components/Admin/Category/Categories';
 import WorkoutList from '../Components/Admin/Workout/WorkoutList';
 import ViewWorkout from '../Components/Admin/Workout/ViewWorkout';
+import Transactions from '../Components/Admin/Transaction/Transactions';
 
 const AdminRoute = () => {
     return (
@@ -27,6 +28,7 @@ const AdminRoute = () => {
                             <Route path="workouts" element={ <WorkoutList /> } />
                             <Route path="workout/:workoutId" element={ <ViewWorkout /> } />
                             <Route path="categories" element={ <Categories /> } />
+                            <Route path="transactions" element={ <Transactions /> } />
                         </Routes>
                     </div>
                 </div>

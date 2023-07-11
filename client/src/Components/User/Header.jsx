@@ -1,7 +1,7 @@
 import { Fragment, useEffect } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser } from "../redux-toolkit/slices/userSlice"
@@ -38,7 +38,7 @@ export default function Header() {
     const handleClick = (id) => {
         if (id === "signout") {
             Cookies.remove("accessToken")
-            dispatch(logoutUser)
+            dispatch(logoutUser())
             navigate("/login")
         } else if (id === "account") {
             navigate("/user/account")
@@ -53,11 +53,13 @@ export default function Header() {
                             <div className="flex py-24 px-20 items-center justify-between">
                                 <div className="flex items-center">
                                     <div className="flex-shrink-0">
-                                        <img
-                                            className="w-40 h-40"
-                                            src="/logo.png"
-                                            alt="Your Company"
-                                        />
+                                        <Link to="/">
+                                            <img
+                                                className="w-40 h-40"
+                                                src="/logo.png"
+                                                alt="Your Company"
+                                            />
+                                        </Link>
                                     </div>
                                     <div className="hidden md:block">
                                         <div className="ml-10 flex items-baseline space-x-4">
@@ -94,7 +96,12 @@ export default function Header() {
                                             <div>
                                                 <Menu.Button className="flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                                     <span className="sr-only">Open user menu</span>
-                                                    <img className="h-30 w-30 rounded-full object-cover" src={ `http://localhost:8080/user/${ user.profilePic }` } alt="" />
+                                                    { user.profilePic === null ?
+                                                        <img className="h-30 w-30 rounded-full object-cover" src="/images/user-plceholder.png" alt="" />
+                                                        :
+                                                        <img className="h-30 w-30 rounded-full object-cover" src={ `http://localhost:8080/user/${ user.profilePic }` } alt="" />
+
+                                                    }
                                                 </Menu.Button>
                                             </div>
                                             <Transition

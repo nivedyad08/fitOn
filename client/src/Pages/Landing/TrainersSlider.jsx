@@ -2,17 +2,23 @@ import React, { useState, useEffect } from "react";
 import axios from "../../config/axios";
 import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
 import { FaHeart } from 'react-icons/fa';
-import {BASE_URL} from "../../constants/urls"
+import { BASE_URL } from "../../constants/urls"
+import { useDispatch, useSelector } from "react-redux";
+import { trainerDetails } from "../../Components/redux-toolkit/slices/trainerSlice";
+import { useNavigate } from "react-router-dom";
 
 const TrainersSlider = () => {
-    const [trainers, setTrainers] = useState([]);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    // setTrainers(response.data.results);
+    const [trainers, setTrainers] = useState([]);
+    const user = useSelector((state) => state.loggedUser.userInfo)
 
     useEffect(() => {
         (async () => {
-            const fetchTrainers = await axios.get(`api/user/trainers`)
+            const fetchTrainers = await axios.get(`api/user/trainers?userId=${ user._id }`)
             setTrainers(fetchTrainers.data.trainers);
+            console.log(trainers);
         })()
     }, []);
     const slideLeft = () => {
@@ -24,6 +30,10 @@ const TrainersSlider = () => {
         var slider = document.getElementById('slider' + 1);
         slider.scrollLeft = slider.scrollLeft + 500;
     };
+    const showTrainerDetails = (trainer) => {
+        dispatch(trainerDetails(trainer))
+        navigate(`/user/trainer/details/${ trainer._id }`)
+    }
     return (
         <div className='relative flex items-center group pb-30 my-30'>
             <MdChevronLeft
@@ -35,23 +45,23 @@ const TrainersSlider = () => {
                 id={ 'slider' + rowID }
                 className='w-full h-full overflow-x-scroll overflow whitespace-nowrap scroll-smooth scrollbar-hide relative'
             >
-                { trainers.map((item, id) => (
+                { trainers.map((trainer, index) => (
                     <>
-                        <div className='w-[160px] sm:w-[200px] md:w-[240px] lg:w-[280px] inline-block cursor-pointer relative p-2'>
+                        <div className='w-[160px] sm:w-[200px] md:w-[240px] lg:w-[280px] inline-block cursor-pointer relative p-2' key={ index } onClick={ () => showTrainerDetails(trainer) }>
                             <img
                                 className='w-[252px] h-[220px] block'
-                                src={ `${BASE_URL}/user/${ item?.coverPhoto }` }
-                                alt={ item?.firstName }
+                                src={ `${ BASE_URL }/user/${ trainer.profilePic ? trainer.profilePic : trainer.user.profilePic }` }
+                                alt={ trainer.firstName ? trainer.firstName : trainer.user.firstName }
                             />
                             <h2 className="mt-14 text-base font-semibold capitalize text-gray-300 dark:text-white">
-                                {item.firstName} {item.lastName}
+                                { trainer.firstName ? trainer.firstName : trainer.user.firstName } { trainer.firstName ? trainer.lastName : trainer.user.lastName }
                             </h2>
                             <p className="mt-2 text-sm tracking-wider text-gray-400 dark:text-blue-400">
-                                {item.userLocation}
+                                { trainer.userLocation ? trainer.userLocation : trainer.user.userLocation }
                             </p>
                             <div className='absolute top-0 left-0 w-full h-full hover:bg-black/80 opacity-0 hover:opacity-100 text-white'>
                                 <p className='white-space-normal text-xs md:text-sm font-bold flex justify-center items-center h-full text-center'>
-                                    { item?.firstName }
+                                    { trainer.firstName ? trainer.firstName : trainer.user.firstName }
                                 </p>
                                 <p>
                                     <FaHeart className='absolute top-4 left-4 text-gray-300' />
