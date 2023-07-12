@@ -50,6 +50,21 @@ const uploadWorkoutVideo = async (req, res) => {
     }
 }
 
+const uploadBasicWorkoutVideo = async (req, res) => {
+    try {
+        const { userId } = req.query
+        const { basicVideo } = req.files
+        if (!userId && !basicVideo)
+            return res.status(400).json({ message: "Something went wrong" });
+        const uploadVideo = await User.findByIdAndUpdate(userId, { basicVideo: basicVideo[0].filename })
+        if (!uploadVideo)
+            return res.status(400).json({ message: "Video not uploaded! Something went wrong" });
+        return res.status(200).json({ message: "Video Uploaded" });
+    } catch (error) {
+        return res.status(400).json({ message: error.message });
+    }
+}
+
 const workouts = async (req, res) => {
     try {
         const { userId } = req.query
@@ -118,10 +133,10 @@ const editWorkout = async (req, res) => {
             difficultyLevel,
             thumbnailImage,
             video,
-        },{new:true});
+        }, { new: true });
         if (!updateResult)
             return res.status(400).json({ message: "Workout not updated !!" });
-        return res.status(200).json({ message: "Workout updated successfully !!",workout:updateResult });
+        return res.status(200).json({ message: "Workout updated successfully !!", workout: updateResult });
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -132,5 +147,6 @@ module.exports = {
     uploadWorkoutVideo,
     workouts,
     deleteWorkout,
-    editWorkout
+    editWorkout,
+    uploadBasicWorkoutVideo
 }

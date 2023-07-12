@@ -10,11 +10,11 @@ const Dashboard = () => {
     return (
         <>
             <div className="mx-auto text-center">
-                <section class="w-full">
+                <section className="w-full">
                     <Carousel image1={image1} image2 = {image2} height={height}/>
                 </section>
                 <div className="mx-auto max-w-lg">
-
+ 
                 </div>
             </div>
             <div className='px-30'>

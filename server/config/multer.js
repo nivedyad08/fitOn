@@ -54,11 +54,12 @@ const videoFileFilter = (req, file, cb) => {
   const file_extension = file.originalname.slice(
     ((file.originalname.lastIndexOf(".") - 1) >>> 0) + 2
   );
-  const array_of_allowed_files = ["mp4", "mpeg", "mov"]; // Remove the dot before "mov"
+  const array_of_allowed_files = ["mp4", "mpeg", "mov","gif"]; // Remove the dot before "mov"
   const array_of_allowed_file_types = [
     "video/mp4",
     "video/mpeg",
     "video/quicktime",
+    "image/gif"
   ];
   if (
     array_of_allowed_files.includes(file_extension) &&

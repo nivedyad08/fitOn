@@ -12,6 +12,10 @@ const subscriptionSchema = new mongoose.Schema(
             type: ObjectId,
             required: true,
         },
+        trainerId: {
+            type: ObjectId,
+            required: true,
+        },
         address: {
             type: String,
             required: true,

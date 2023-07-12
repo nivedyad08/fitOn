@@ -268,7 +268,7 @@ const EditWorkout = () => {
                                 <label htmlFor="cover-photo" className="block text-sm font-lg leading-6 text-custom-whitish">Upload Workout Video
                                 </label>
                                 <div className="mt-2 ">
-                                    <video class="h-96" controls>
+                                    <video className="h-96" controls>
                                         <source src={ `http://localhost:8080/workouts/${ workout.video }` } type="video/mp4" />
                                     </video>
                                     <input

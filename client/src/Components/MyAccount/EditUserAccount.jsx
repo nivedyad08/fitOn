@@ -295,7 +295,7 @@ const EditUserAccount = () => {
                                     ) }
                             </div>
                             <div className="mt-2 ">
-                                <input class="block w-full text-sm h-30 text-gray-900 rounded-lg cursor-pointer custom-blue-shade1 dark:text-gray-400 focus:outline-none dark:bg-gray-700 placeholder-gray-500 placeholder-opacity-10"
+                                <input className="block w-full text-sm h-30 text-gray-900 rounded-lg cursor-pointer custom-blue-shade1 dark:text-gray-400 focus:outline-none dark:bg-gray-700 placeholder-gray-500 placeholder-opacity-10"
                                     id="file_input" type="file"
                                     { ...register("profilePic", {
                                         required: user?.profilePic ? false : "Profile pic is required",

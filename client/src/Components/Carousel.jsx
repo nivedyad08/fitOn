@@ -64,8 +64,8 @@ const Carousel = ({ image1, image2 ,height}) => {
         return () => clearInterval(xx);
     }, []);
     return (
-        <div class="relative ">
-            <div class="sliderAx">
+        <div className="relative ">
+            <div className="sliderAx">
                 <div id="slider-1" className={ `mx-auto ${ currentSlide === 0 ? '' : 'hidden' }` }>
                     <div
                         className={`bg-cover bg-center text-white py-24 px-10 `}
@@ -112,9 +112,9 @@ const Carousel = ({ image1, image2 ,height}) => {
                     <br />
                 </div>
             </div>
-            <div class="flex justify-between w-12 mx-auto pb-2">
-                <button id="sButton1" onclick="sliderButton1()" class="bg-purple-400 rounded-full w-4 pb-2 " ></button>
-                <button id="sButton2" onclick="sliderButton2() " class="bg-purple-400 rounded-full w-4 p-2"></button>
+            <div className="flex justify-between w-12 mx-auto pb-2">
+                <button id="sButton1" onclick="sliderButton1()" className="bg-purple-400 rounded-full w-4 pb-2 " ></button>
+                <button id="sButton2" onclick="sliderButton2() " className="bg-purple-400 rounded-full w-4 p-2"></button>
             </div>
         </div>
     );

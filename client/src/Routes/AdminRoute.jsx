@@ -3,12 +3,13 @@ import { Route, Routes } from 'react-router-dom';
 import Sidebar from '../Components/Admin/Sidebar';
 import AdminDashboard from '../Components/Admin/AdminDashboard';
 import UsersList from '../Components/Admin/UsersList';
-import TrainersList from '../Components/Admin/TrainersList';
+import TrainersList from '../Components/Admin/Trainer/TrainersList';
 import Header from '../Components/Admin/Header';
 import Categories from '../Components/Admin/Category/Categories';
 import WorkoutList from '../Components/Admin/Workout/WorkoutList';
 import ViewWorkout from '../Components/Admin/Workout/ViewWorkout';
 import Transactions from '../Components/Admin/Transaction/Transactions';
+import ViewTrainerDetails from '../Components/Admin/Trainer/ViewTrainerDetails';
 
 const AdminRoute = () => {
     return (
@@ -25,6 +26,7 @@ const AdminRoute = () => {
                             <Route path="dashboard" element={ <AdminDashboard /> } />
                             <Route path="users" element={ <UsersList /> } />
                             <Route path="trainers" element={ <TrainersList /> } />
+                            <Route path="trainer/view/:trainerId" element={ <ViewTrainerDetails /> } />
                             <Route path="workouts" element={ <WorkoutList /> } />
                             <Route path="workout/:workoutId" element={ <ViewWorkout /> } />
                             <Route path="categories" element={ <Categories /> } />

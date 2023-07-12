@@ -20,7 +20,7 @@ export default function Watch() {
                 <ArrowBackOutlined />
                 Go back
             </div>
-            <video class="mx-auto h-screen" controls>
+            <video className="mx-auto h-screen" controls>
                 <source src={ `http://localhost:8080/workouts/${ workoutVideo }` } type="video/mp4" />
             </video>
         </div>

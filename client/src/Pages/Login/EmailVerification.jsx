@@ -18,7 +18,7 @@ const EmailVerification = () => {
                             <h5 className="mb-12 mt-1 pb-1 text-xl text-white font-semibold text-center">
                                 Email has been sent to your email
                             </h5>
-                            <p class="text-md text-center font-semibold leading-relaxed text-custom-whitish"> Please check the mail to update your password.</p>
+                            <p className="text-md text-center font-semibold leading-relaxed text-custom-whitish"> Please check the mail to update your password.</p>
                             <p className="mt-10 text-center text-sm text-custom-slate">
                                 Back to{ " " }
                                 <Link

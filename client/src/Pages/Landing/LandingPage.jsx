@@ -44,10 +44,10 @@ const LandingPage = () => {
                     </div>
                 </nav>
                 <div className="mx-auto px-6 py-16 text-center">
-                    <section class="w-full">
+                    <section className="w-full">
                         <img
                             src="/images/banner-4.png"
-                            class="object-fill w-full h-[400px]"
+                            className="object-fill w-full h-[400px]"
                             alt="Image alt text"
                         />
                     </section>

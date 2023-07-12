@@ -20,7 +20,7 @@ trainerRoute.post('/add-workout', isTrainer, thumbnailUpload.single('thumbnailIm
 trainerRoute.post('/upload-workout-video', isTrainer, workoutUpload.fields([
   {
     name: "videos",
-    maxCount: 5,
+    maxCount: 1,
   },
 ]), workoutController.uploadWorkoutVideo);
 
@@ -29,6 +29,11 @@ trainerRoute.post('/edit-workout', isTrainer, workoutController.editWorkout);
 
 trainerRoute.post('/edit-user-details', isTrainer, userUpload, trainerController.editUser);
 trainerRoute.post('/change/password', isTrainer, trainerController.changePassword);
-
+trainerRoute.post('/upload-basic-workout-video', isTrainer, workoutUpload.fields([
+  {
+    name: "basicVideo",
+    maxCount: 1,
+  },
+]), workoutController.uploadBasicWorkoutVideo);
 
 module.exports = trainerRoute

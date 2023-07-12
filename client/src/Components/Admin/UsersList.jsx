@@ -2,9 +2,10 @@ import React, { useMemo, useState, useEffect } from "react";
 import Table from "./Table";
 import axios from "../../config/axios";
 import { Switch } from "@mui/material";
+import { BASE_URL } from "../../constants/urls";
 
 const UsersList = () => {
-   const columns = useMemo(
+  const columns = useMemo(
     () => [
       {
         // Second group columns
@@ -13,6 +14,15 @@ const UsersList = () => {
           {
             Header: "First Name",
             accessor: "firstName",
+            Cell: ({ value, row }) => {
+              const data = row.original
+              return (
+                <div className="flex items-center gap-x-6">
+                  <img className="h-40 w-40 rounded-full" src={ row.original.profilePic ? `${ BASE_URL }/user/${ row.original.profilePic }` : "/images/user-plceholder.png" } alt="" />
+                  <h3 className="text-base leading-6 tracking-tight">{ row.original.firstName }</h3>
+                </div>
+              );
+            },
           },
           {
             Header: "Last Name",

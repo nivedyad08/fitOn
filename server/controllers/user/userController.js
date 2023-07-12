@@ -19,45 +19,57 @@ const trainers = async (req, res) => {
         // const levelMatch = !user.isSubscriber ? { difficultyLevel: level._id } : {}
         const limitCount = !user.isSubscriber ? 10 : null
         let trainersList = ""
-        if (user.isSubscriber) {
-            trainersList = await User.aggregate([
-                { $match: { isActive: true, role: TRAINER_ROLE } },
-                {
-                    $lookup: {
-                        from: "workouts",
-                        localField: "_id",
-                        foreignField: "trainerId",
-                        as: "workouts",
-                    }
-                },
-                { $sort: { createdAt: 1 } }
-            ])
-        } else {
-            trainersList = await Workout.aggregate([
-                { $match: { status: true, difficultyLevel: level._id } },
-                {
-                    $lookup: {
-                        from: "users",
-                        localField: "trainerId",
-                        foreignField: "_id",
-                        as: "users",
-                    }
-                },
-                {
-                    $project: {
-                        workoutTitle: 1,
-                        description: 1,
-                        video: 1,
-                        thumbnailImage: 1,
-                        totalDuration: 1,
-                        viewers: 1,
-                        createdAt: 1,
-                        user: { $arrayElemAt: ["$users", 0] }
-                    }
-                },
-                { $limit: 10 }, { $sort: { createdAt: 1 } }
-            ])
-        }
+        trainersList = await User.aggregate([
+            { $match: { isActive: true, role: TRAINER_ROLE } },
+            {
+                $lookup: {
+                    from: "workouts",
+                    localField: "_id",
+                    foreignField: "trainerId",
+                    as: "workouts",
+                }
+            },
+            { $sort: { createdAt: 1 } }
+        ])
+        // if (user.isSubscriber) {
+        //     trainersList = await User.aggregate([
+        //         { $match: { isActive: true, role: TRAINER_ROLE } },
+        //         {
+        //             $lookup: {
+        //                 from: "workouts",
+        //                 localField: "_id",
+        //                 foreignField: "trainerId",
+        //                 as: "workouts",
+        //             }
+        //         },
+        //         { $sort: { createdAt: 1 } }
+        //     ])
+        // } else {
+        //     trainersList = await Workout.aggregate([
+        //         { $match: { status: true, difficultyLevel: level._id } },
+        //         {
+        //             $lookup: {
+        //                 from: "users",
+        //                 localField: "trainerId",
+        //                 foreignField: "_id",
+        //                 as: "users",
+        //             }
+        //         },
+        //         {
+        //             $project: {
+        //                 workoutTitle: 1,
+        //                 description: 1,
+        //                 video: 1,
+        //                 thumbnailImage: 1,
+        //                 totalDuration: 1,
+        //                 viewers: 1,
+        //                 createdAt: 1,
+        //                 user: { $arrayElemAt: ["$users", 0] }
+        //             }
+        //         },
+        //         { $limit: 10 }, { $sort: { createdAt: 1 } }
+        //     ])
+        // }
         return res.status(200).json({ trainers: trainersList });
     } catch (error) {
         return res.status(400).json({ message: error.message });
@@ -75,7 +87,8 @@ const subscription = async (req, res) => {
     try {
         const { address, package, phone } = req.body.formdata
         const { transactionId } = req.body
-        const { userId } = req.query
+        console.log(req.query);
+        const { userId, trainerId } = req.query
         if (!address && !package && !phone && !userId)
             return res.status(400).json({ message: "All fields are required" });
         const user = await User.findById(userId)
@@ -86,21 +99,24 @@ const subscription = async (req, res) => {
         const totalAmt = (parseFloat(gstAmt) + parseFloat(packageDetails.price)).toFixed(2);
 
         const currentDate = new Date();
-        const endDate = new Date();
+        let endDate = null;
 
-        if (packageDetails.duration === 6) {
-            endDate.setMonth(currentDate.getMonth() + 5);
-        } else {
+        if (packageDetails.duration === "6") {
+            endDate = new Date(currentDate.setMonth(currentDate.getMonth() + 5));
+        } else if (packageDetails.duration === "12") {
+            endDate = new Date(currentDate);
             endDate.setFullYear(currentDate.getFullYear() + 1);
         }
 
+        const startDate = new Date()
         const newSubscriber = Subscription({
             paymentId: transactionId,
             userId,
+            trainerId,
             address,
             phone,
             packageId: packageDetails._id,
-            startDate: currentDate.toISOString(),
+            startDate: startDate.toISOString(),
             endDate: endDate.toISOString(),
             gst: packageDetails.gst,
             totalAmount: totalAmt,
@@ -128,16 +144,17 @@ const subscription = async (req, res) => {
                 //update user
                 try {
                     const subscriptionDetails = {
+                        trainerId: trainerId,
                         subscriptionId: resSubscribe._id,
-                        startDate: currentDate.toISOString(),
+                        startDate: startDate.toISOString(),
                         endDate: endDate.toISOString(),
+                        isValid: true
                     }
                     const updateUser = await User.findByIdAndUpdate(
                         userId,
                         { $push: { subscriptions: subscriptionDetails }, isSubscriber: true },
                         { new: true }
                     );
-                    console.log('User updated:', updateUser);
                 } catch (error) {
                     console.error('Error updating user:', error);
                 }

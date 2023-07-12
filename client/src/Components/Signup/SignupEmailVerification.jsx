@@ -38,7 +38,7 @@ const SignupEmailVerification = ({ email, user }) => {
             <h5 className="mb-12 mt-1 pb-1 text-xl text-white font-semibold text-center">
                 Email Verification
             </h5>
-            <p class="text-md text-center font-normal leading-relaxed text-green-300"> We've sent a verification code to your <br />email-{ email }</p>
+            <p className="text-md text-center font-normal leading-relaxed text-green-300"> We've sent a verification code to your <br />email-{ email }</p>
             <form onSubmit={ handleSubmit(validateOtp) }>
                 <div className="mt-2">
                     <input

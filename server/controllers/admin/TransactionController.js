@@ -13,12 +13,33 @@ const transactions = async (req, res) => {
                     foreignField: "_id",
                     as: "user",
                 },
+            }, {
                 $lookup: {
                     from: "subscriptions",
                     localField: "subscriptionId",
                     foreignField: "_id",
                     as: "subscription",
                 },
+            },{
+                $lookup:{
+                    from: "packages",
+                    localField: "subscription.packageId",
+                    foreignField: "_id",
+                    as: "package",
+                },
+            },
+            {
+                $project: {
+                    role:1,
+                    commission:1,
+                    adminAmount:1,
+                    trainerAmount:1,
+                    expiry_date:1,
+                    createdAt:1,
+                    user: { $arrayElemAt: ["$user", 0] },
+                    subscription: { $arrayElemAt: ["$subscription", 0] },
+                    package: { $arrayElemAt: ["$package", 0] },
+                }
             },
             { $sort: { createdAt: 1 } }
         ])

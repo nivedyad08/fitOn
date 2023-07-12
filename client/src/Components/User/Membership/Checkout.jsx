@@ -12,6 +12,8 @@ const Checkout = () => {
     const navigate = useNavigate()
     const [isDetails, setDetails] = useState("")
     const user = useSelector((state) => state.loggedUser.userInfo)
+    const trainer = useSelector((state) => state.trainerDetails.trainerInfo)
+    console.log(trainer);
 
     const paypal = useRef();
     const submitRef = useRef();
@@ -63,7 +65,9 @@ const Checkout = () => {
     const handlePaymentSuccess = async (order) => {
         try {
             const transactionId = order.id;
-            const updateUserPayment = await axios.post(`/api/user/payment-update/${ mode }?userId=${ user._id }`, { formdata, transactionId });
+            // const updateUserPayment = await axios.post(`/api/user/payment-update/${ mode }?userId=${ user._id }&trainerId=${trainer._id}`, { formdata, transactionId });
+            const updateUserPayment = await axios.post(`/api/user/payment-update/${mode}?userId=${user._id}&trainerId=${trainer._id}`, { formdata, transactionId})
+
             if (updateUserPayment.status === 200) {
                 navigate("/user/trainers")
                 toast.success("Payment completed successfully");
@@ -101,6 +105,14 @@ const Checkout = () => {
                     </div>
                     {/* Order Summary */ }
                     <div className="mb-6 pb-6 border-b border-gray-200 text-white">
+                    <div className="w-full flex mb-3 items-center">
+                            <div className="flex-grow mb-10">
+                                <span className="text-white">Trainer</span>
+                            </div>
+                            <div className="pl-3">
+                                <span className="font-semibold">{ trainer.firstName } { trainer.lastName }</span>
+                            </div>
+                        </div>
                         <div className="w-full flex mb-3 items-center">
                             <div className="flex-grow mb-10">
                                 <span className="text-white">Subtotal</span>

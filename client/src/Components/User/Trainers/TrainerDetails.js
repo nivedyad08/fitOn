@@ -3,17 +3,20 @@ import Carousel from "../../Carousel";
 import { useSelector } from "react-redux";
 import { BASE_URL } from "../../../constants/urls";
 import { useNavigate, Link } from "react-router-dom";
-import YouTube from "react-youtube";
+import { dateMonthYearStringFormat } from "../../../helpers/CommonFunctions";
 
 const TrainerDetails = () => {
     const navigate = useNavigate()
     const trainer = useSelector((state) => state.trainerDetails.trainerInfo)
+    const user = useSelector((state) => state.loggedUser.userInfo)
     const image1 = `${ BASE_URL }/user/${ trainer.coverPhoto ? trainer.coverPhoto : trainer.user.coverPhoto }`
 
-    function formatDate() {
-        const options = { month: 'long', day: 'numeric', year: 'numeric' };
-        const date = new Date();
-        return date.toLocaleDateString(undefined, options);
+    const handleVideoAccess = () => {
+        console.log(user);
+        if (user.subscriptions.length>0) {
+        } else {
+            navigate("/user/subscribe/membership")
+        }
     }
 
     return (
@@ -42,7 +45,32 @@ const TrainerDetails = () => {
                 </div >
 
                 <h1 className="text-white uppercase text-2xl font-semibold tracking-wider mb-20">{ trainer.firstName ? trainer.firstName : trainer.user.firstName }'s  WORKOUTS</h1>
-                {
+                { trainer.workouts !== null ?
+                    <div className="mx-6 grid grid-cols-1 sm:grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-3 mt-10">
+                        { trainer.workouts.map((workout, index) => (
+                            <div className="shadow-lg overflow-hidden" key={ index }>
+                                <div className="relative">
+                                    <img className="w-sm w-[345px] h-[200px]" src={ `${ BASE_URL }/user/${ workout.thumbnailImage }` } alt="" />
+                                    <div className="absolute mr-48 mb-44 inset-0 flex items-center justify-center">
+                                        <svg className="codicon codicon-play-150 w-52 cursor-pointer" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg" onClick={ handleVideoAccess }>
+                                            <g fill="none" fillRule="evenodd">
+                                                <circle stroke="#FFF" strokeWidth="2" cx="75.011" cy="75.417" r="74"></circle>
+                                                <path fill="#FFF" d="M68.054 59.177l26.143 16.284-26.143 16.284z"></path>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                    <div className="p-2 mr-40 relative">
+                                        <p className="text-base text-center mt-6 font-semibold uppercase text-custom-whitish">{ workout.workoutTitle }</p>
+                                        <p className="text-custom-whitish text-center">{ dateMonthYearStringFormat(workout.createdAt) }</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        )) }
+                    </div>
+                    : ""
+                }
+                {/* {
                     trainer.thumbnailImage ? (
                         <>
                             <div className="mx-6 grid grid-cols-1 sm:grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-3 mt-10 ">
@@ -59,7 +87,8 @@ const TrainerDetails = () => {
                                         </div>
                                         <div className="p-2 mr-40 relative">
                                             <p className="text-base text-center mt-6 font-semibold uppercase text-custom-whitish">{ trainer.workoutTitle }</p>
-                                            <p className="text-custom-whitish text-center">{ formatDate(trainer.createdAt) }</p>
+                                            <p className="text-custom-whitish text-center">{
+                                                dateMonthYearStringFormat(trainer.createdAt) }</p>
                                         </div>
                                     </div>
                                 </div>
@@ -78,18 +107,16 @@ const TrainerDetails = () => {
                                         <div className="relative">
                                             <img className="w-sm w-[345px] h-[200px]" src={ `${ BASE_URL }/user/${ workout.thumbnailImage }` } alt="" />
                                             <div className="absolute mr-48 mb-44 inset-0 flex items-center justify-center">
-                                                <Link to={ `/user/trainer/watch/${ workout.video }` }>
-                                                    <svg className="codicon codicon-play-150 w-52" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
-                                                        <g fill="none" fillRule="evenodd">
-                                                            <circle stroke="#FFF" strokeWidth="2" cx="75.011" cy="75.417" r="74"></circle>
-                                                            <path fill="#FFF" d="M68.054 59.177l26.143 16.284-26.143 16.284z"></path>
-                                                        </g>
-                                                    </svg>
-                                                </Link>
+                                                <svg className="codicon codicon-play-150 w-52" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg" onClick={handleVideoAccess}>
+                                                    <g fill="none" fillRule="evenodd">
+                                                        <circle stroke="#FFF" strokeWidth="2" cx="75.011" cy="75.417" r="74"></circle>
+                                                        <path fill="#FFF" d="M68.054 59.177l26.143 16.284-26.143 16.284z"></path>
+                                                    </g>
+                                                </svg>
                                             </div>
                                             <div className="p-2 mr-40 relative">
                                                 <p className="text-base text-center mt-6 font-semibold uppercase text-custom-whitish">{ workout.workoutTitle }</p>
-                                                <p className="text-custom-whitish text-center">{ formatDate(workout.createdAt) }</p>
+                                                <p className="text-custom-whitish text-center">{ dateMonthYearStringFormat(workout.createdAt) }</p>
                                             </div>
                                         </div>
                                     </div>
@@ -98,7 +125,7 @@ const TrainerDetails = () => {
                             </div>
                         )
                             : ""
-                }
+                } */}
             </div >
         </>
     );

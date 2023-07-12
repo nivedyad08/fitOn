@@ -24,8 +24,8 @@ const Header = () => {
             <div className="flex items-center justify-between w-full">
                 <div className="flex items-center ml-auto">
                     <div className="relative ml-16 cursor-pointer">
-                        <div class="relative inline-flex items-center mt-8 justify-center w-36 h-36 overflow-hidden bg-yellow-500 rounded-full dark:bg-yellow-700" onClick={ toggleDropdown }>
-                            <span class="font-medium text-gray-600 dark:text-gray-300">AD</span>
+                        <div className="relative inline-flex items-center mt-8 justify-center w-36 h-36 overflow-hidden bg-yellow-500 rounded-full dark:bg-yellow-700" onClick={ toggleDropdown }>
+                            <span className="font-medium text-gray-600 dark:text-gray-300">AD</span>
                         </div>
                         <div
                             className={ `absolute right-20 mt-2 py-2 w-80 h-90 bg-white rounded-md shadow-lg

@@ -50,6 +50,11 @@ const userSchema = new mongoose.Schema(
       required: false,
       default: null,
     },
+    basicVideo: {
+      type: String,
+      required: false,
+      default: null
+    },
     deletedAt: {
       type: String,
       required: false,
@@ -67,7 +72,6 @@ const userSchema = new mongoose.Schema(
     },
     userFavourites: [
       {
-        id: { type: ObjectId },
         workout_id: { type: Number },
         trainer_id: { type: Number },
         createdAt: { type: String },
@@ -76,11 +80,13 @@ const userSchema = new mongoose.Schema(
     ],
     subscriptions: [
       {
+        trainerId: { type: ObjectId },
         subscriptionId: { type: ObjectId },
         startDate: { type: Date },
         endDate: { type: Date },
+        isValid:{ type: Boolean },
       },
-    ],  
+    ],
     isSubscriber: {
       type: Boolean,
       required: false,

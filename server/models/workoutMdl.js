@@ -38,7 +38,7 @@ const workoutSchema = new mongoose.Schema(
             required: false,
             default:0
         },
-        viewers: {
+        favourites: {
             type: Number,
             required: false,
             default:0

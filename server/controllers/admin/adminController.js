@@ -26,7 +26,18 @@ const trainers = async (req, res) => {
     if (req.roles !== ADMIN_ROLE) {
       return res.status(400).json({ message: "Invalid user" });
     }
-    const trainers = await User.find({ role: { $in: [TRAINER_ROLE, PENDING_TRAINER] } });
+    // const trainers = await User.find({ role: { $in: [TRAINER_ROLE, PENDING_TRAINER] } });
+    const trainers = await User.aggregate([
+      { $match: { role: { $in: [TRAINER_ROLE, PENDING_TRAINER] } } },
+      {
+        $lookup: {
+          from: "workouts",
+          localField: "_id",
+          foreignField: "trainerId",
+          as: "workouts",
+        }
+      }
+    ])
     if (trainers) {
       return res.status(200).json({ trainers });
     }
@@ -54,8 +65,8 @@ const changeStatus = async (req, res) => {
 
 const levels = async (req, res) => {
   try {
-    const levels = await Level.find({status:true})
-    return res.status(200).json({ levels:levels });
+    const levels = await Level.find({ status: true })
+    return res.status(200).json({ levels: levels });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

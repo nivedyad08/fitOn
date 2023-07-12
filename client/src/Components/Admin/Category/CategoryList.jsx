@@ -47,7 +47,7 @@ const CategoryList = () => {
                                         checked={ isChecked }
                                         onChange={ handleUserStatus }
                                     />
-                                    <button type="button" class="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-10 text-center mr-2 mb-2 dark:focus:ring-yellow-900" onClick={ () => toggleModal(row.original) }>Edit</button>
+                                    <button type="button" className="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-10 text-center mr-2 mb-2 dark:focus:ring-yellow-900" onClick={ () => toggleModal(row.original) }>Edit</button>
                                 </div>
                             );
                         },

@@ -81,8 +81,8 @@ export default function Header() {
                                 </div>
                                 <div className="hidden md:block">
                                     <div className="ml-4 flex items-center md:ml-6 px-20 gap-20">
-                                        <button type="button" class="inline-flex items-center px-20 py-10 text-sm font-medium text-white border border-gray-200 rounded-md hover:text-yellow-600" onClick={ () => navigate("/trainer/add-workout") }>
-                                            <svg aria-hidden="true" class="w-10 h-10 mr-6 fill-current" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <button type="button" className="inline-flex items-center px-20 py-10 text-sm font-medium text-white border border-gray-200 rounded-md hover:text-yellow-600" onClick={ () => navigate("/trainer/add-workout") }>
+                                            <svg aria-hidden="true" className="w-10 h-10 mr-6 fill-current" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M10 2a1 1 0 01 1 1v6h6a1 1 0 110 2h-6v6a1 1 0 11-2 0v-6H3a1 1 0 110-2h6V3a1 1 0 011-1z" />
                                             </svg>
                                             Add Workout

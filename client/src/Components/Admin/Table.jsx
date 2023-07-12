@@ -69,11 +69,11 @@ const Table = ({ columns, data, selectedRows }) => {
                         { page.map(row => {
                             prepareRow(row);
                             return (
-                                <tr { ...row.getRowProps() } className="hover:bg-gray-50 w-10 h-10">
+                                <tr { ...row.getRowProps() } className="hover:bg-gray-50 h-56">
                                     { row.cells.map(cell => (
                                         <td
                                             { ...cell.getCellProps() }
-                                            className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-gray-700 border-t"
+                                            className="px-5 py-5 border-b capitalize border-gray-200 bg-white text-sm text-gray-700 border-t"
                                         >
                                             { cell.render('Cell') }
                                         </td>
