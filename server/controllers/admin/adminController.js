@@ -72,10 +72,32 @@ const levels = async (req, res) => {
   }
 }
 
+const dashboardDetails = async (req, res) => {
+  console.log(654321);
+  try {
+    const totalSubscribers = await User.find({ isSubscriber: true }).count()
+    const totalUsers = await User.find({ role: USER_ROLE }).count()
+    const totalTrainers = await User.find({ role: TRAINER_ROLE }).count()
+    const totalWorkouts = await Workout.find({ status: true }).count()
+
+    const topWorkouts = await Workout.find({status:true}).limit(5)
+    return res.status(200).json({
+      totalSubscribers,
+      totalUsers,
+      totalTrainers,
+      totalWorkouts,
+      topWorkouts
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+}
+
 
 module.exports = {
   users,
   trainers,
   changeStatus,
   levels,
+  dashboardDetails
 }

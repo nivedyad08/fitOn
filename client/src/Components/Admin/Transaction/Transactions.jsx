@@ -7,7 +7,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { TRAINER_ROLE } from "../../../constants/roles";
+import { TRAINER_ROLE, USER_ROLE } from "../../../constants/roles";
 import { dateMonthYear } from "../../../helpers/CommonFunctions";
 
 const Transactions = () => {
@@ -109,11 +109,23 @@ const Transactions = () => {
                             const expiryDate = new Date(data.expiry_date);
 
                             return (
-                               ( expiryDate > currentDate || data.expiry_date===null) ? <CheckCircleIcon  className="text-green-600"/> : <CancelIcon className="text-red-600"/>
-                                // <div style={ { display: "flex", flexDirection: "row" } }>
-                                //     <VisibilityIcon className="cursor-pointer mt-6" onClick={ () => viewTransaction(row.original) } />
-                                // </div>
+                                (
+                                    expiryDate > currentDate || data.expiry_date === null) ? <CheckCircleIcon className="text-green-600" /> : <CancelIcon className="text-red-600" />
                             );
+                        },
+                    },
+                    {
+                        Header: "Action",
+                        accessor: "_id",
+                        Cell: ({ value, row }) => {
+                            const data = row.original
+                            return (
+                                data.role === USER_ROLE ?
+                                <div style={ { display: "flex", flexDirection: "row" } }>
+                                    <VisibilityIcon className="cursor-pointer mt-6" onClick={ () => viewTransaction(row.original) } />
+                                </div>
+                                :" "
+                            )
                         },
                     },
 

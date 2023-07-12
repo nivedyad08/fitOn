@@ -31,5 +31,6 @@ adminRoute.get("/workouts", isAdmin, workoutController.workouts)
 adminRoute.put("/workout/change-status", isAdmin, workoutController.changeStatus)
 
 adminRoute.get("/transactions", isAdmin, transactionController.transactions)
+adminRoute.get("/dashboard/details", isAdmin, adminController.dashboardDetails)
 
 module.exports = adminRoute;
