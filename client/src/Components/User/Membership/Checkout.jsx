@@ -6,14 +6,16 @@ import { useSelector } from 'react-redux';
 import axios from "../../../config/axios"
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux"
+import { loggedUserDetails } from "../../redux-toolkit/slices/userSlice";
 
 const Checkout = () => {
     const { mode } = useParams()
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     const [isDetails, setDetails] = useState("")
     const user = useSelector((state) => state.loggedUser.userInfo)
     const trainer = useSelector((state) => state.trainerDetails.trainerInfo)
-    console.log(trainer);
 
     const paypal = useRef();
     const submitRef = useRef();
@@ -65,10 +67,11 @@ const Checkout = () => {
     const handlePaymentSuccess = async (order) => {
         try {
             const transactionId = order.id;
-            // const updateUserPayment = await axios.post(`/api/user/payment-update/${ mode }?userId=${ user._id }&trainerId=${trainer._id}`, { formdata, transactionId });
             const updateUserPayment = await axios.post(`/api/user/payment-update/${mode}?userId=${user._id}&trainerId=${trainer._id}`, { formdata, transactionId})
 
             if (updateUserPayment.status === 200) {
+                if(updateUserPayment.data.user)
+                    dispatch(loggedUserDetails(updateUserPayment.data.user));
                 navigate("/user/trainers")
                 toast.success("Payment completed successfully");
             }
@@ -99,7 +102,7 @@ const Checkout = () => {
                                 <h6 className="font-semibold capitalize tracking-wide text-white">Fiton membership { mode }</h6>
                             </div>
                             <div>
-                                <span className="font-semibold text-white text-xl">{ isDetails.duration }</span>
+                                <span className="font-semibold text-base text-white">{ isDetails.duration } Months</span>
                             </div>
                         </div>
                     </div>

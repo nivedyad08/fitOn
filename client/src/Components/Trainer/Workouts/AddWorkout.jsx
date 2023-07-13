@@ -1,17 +1,24 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import axios from "../../../config/axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Alert from "./UploadBasicVideo";
+import { useDispatch } from "react-redux"
+import { loggedUserDetails } from "../../redux-toolkit/slices/userSlice";
 
 export default function AddWorkout() {
+    const dispatch = useDispatch()
     const [categories, setCategories] = useState([])
     const [levels, setLevels] = useState([])
     const [addWorkout, setAddWorkout] = useState(false);
     const user = useSelector((state) => state.loggedUser.userInfo)
-
+    useLayoutEffect(() => {
+        if (user.basicVideo) {
+            setAddWorkout(true)
+        }
+    },[])
     useEffect(() => {
         axios.get("api/admin/categories").then((response) => {
             const list = response.data.categories
@@ -100,7 +107,7 @@ export default function AddWorkout() {
         }
     };
 
-    const handleBasicVideoUpload = async (data,videoFile) => {
+    const handleBasicVideoUpload = async (data, videoFile) => {
         try {
             if (data) {
                 const formVideoData = new FormData();
@@ -109,9 +116,9 @@ export default function AddWorkout() {
                     formVideoData.append("basicVideo", videoFile[key]);
                 }
 
-                const upload = await axios.post(`api/trainer/upload-basic-workout-video?userId=${ user._id }`, formVideoData);
-
-                if (upload.status === 200) {
+                const response = await axios.post(`api/trainer/upload-basic-workout-video?userId=${ user._id }`, formVideoData);
+                if (response.status === 200) {
+                    dispatch(loggedUserDetails(response.data.user));
                     setAddWorkout(true);
                     toast.success("Basic workout video added successfully");
                 }
@@ -350,6 +357,6 @@ export default function AddWorkout() {
                 </form>
             </div>
             :
-            <Alert handleBasicVideoUpload={handleBasicVideoUpload}/>
+            <Alert handleBasicVideoUpload={ handleBasicVideoUpload } />
     )
 }

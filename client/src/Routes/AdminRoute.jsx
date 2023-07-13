@@ -10,6 +10,7 @@ import WorkoutList from '../Components/Admin/Workout/WorkoutList';
 import ViewWorkout from '../Components/Admin/Workout/ViewWorkout';
 import Transactions from '../Components/Admin/Transaction/Transactions';
 import ViewTrainerDetails from '../Components/Admin/Trainer/ViewTrainerDetails';
+import SubscriptionDetails from '../Components/Admin/Transaction/SubscriptionDetails';
 
 const AdminRoute = () => {
     return (
@@ -31,6 +32,7 @@ const AdminRoute = () => {
                             <Route path="workout/:workoutId" element={ <ViewWorkout /> } />
                             <Route path="categories" element={ <Categories /> } />
                             <Route path="transactions" element={ <Transactions /> } />
+                            <Route path="transactions/details/:transactionId" element={ <SubscriptionDetails/> } />
                         </Routes>
                     </div>
                 </div>

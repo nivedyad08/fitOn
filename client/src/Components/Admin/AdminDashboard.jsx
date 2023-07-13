@@ -6,6 +6,7 @@ import Sidebar from './Sidebar';
 import Header from './Header';
 import { toast } from "react-toastify";
 import { getDashboardDetails } from "../../Services/AdminApi"
+import { BASE_URL } from '../../constants/urls';
 
 function AdminDashboard() {
   const { userInfo } = useSelector((state) => {
@@ -22,7 +23,7 @@ function AdminDashboard() {
         toast.error("An error occurred. Please try again later");
       }
     })
-  })
+  }, [])
   return (
     <>
       <div className="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">
@@ -34,7 +35,7 @@ function AdminDashboard() {
             </div>
             <div className="flex items-center justify-between mt-6">
               <div>
-                <svg className="w-28 h-28 p-2.5 bg-blue-400 bg-opacity-20 rounded-full text-blue-600 border border-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                <svg className="w-28 h-28 p-2.5 bg-blue-400 bg-opacity-20 rounded-full text-blue-600 border border-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" stroke-linejoin="round" stroke-width="1" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
               </div>
               <div className="flex flex-col px-7">
                 <div className="flex items-end">
@@ -49,7 +50,7 @@ function AdminDashboard() {
             </div>
             <div className="flex items-center justify-between mt-6">
               <div>
-                <svg className="w-28 h-28 p-2.5 bg-green-400 bg-opacity-20 rounded-full text-green-600 border border-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                <svg className="w-28 h-28 p-2.5 bg-green-400 bg-opacity-20 rounded-full text-green-600 border border-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" stroke-linejoin="round" stroke-width="1" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
               </div>
               <div className="flex flex-col px-7">
                 <div className="flex items-end">
@@ -64,7 +65,7 @@ function AdminDashboard() {
             </div>
             <div className="flex items-center justify-between mt-6">
               <div>
-                <svg className="w-28 h-28 p-2.5 bg-green-400 bg-opacity-20 rounded-full text-green-600 border border-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                <svg className="w-28 h-28 p-2.5 bg-green-400 bg-opacity-20 rounded-full text-green-600 border border-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" stroke-linejoin="round" stroke-width="1" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
               </div>
               <div className="flex flex-col px-7">
                 <div className="flex items-end">
@@ -101,7 +102,7 @@ function AdminDashboard() {
           </div>
         </div>
         {/* Top 5 workouts */ }
-        <div className="relative mt-32 overflow-x-auto px-30">
+        <div className="relative mt-32 pb-30 overflow-x-auto px-30">
           <h2 className='text-2xl mb-10 font-bold tracking-wide text-gray-700'>TOP 5 WORKOUTS</h2>
           <table className="w-full text-sm text-left text-gray-700 dark:text-gray-400">
             <thead className="text-xs uppercase bg-[#EFEFF2] text-[#7D7E93] ">
@@ -114,70 +115,25 @@ function AdminDashboard() {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-border-[#FBFBFB]">
-                <th className="px-10 py-10 font-normal text-gray-700 whitespace-nowrap">
-                  <div className="flex items-center gap-x-6">
-                    <img className="h-32 w-32 " src="/images/cover-placeholder.png" alt="" />
-                    <h3 className="text-base leading-6 tracking-tight text-gray-700">Silver</h3>
-                  </div>
-                </th>
-                <td className="px-10 py-10">Silver</td>
-                <td className="px-10 py-10">Laptop</td>
-                <td className="px-10 py-10">$2999</td>
-                <td className="px-10 py-10">$2999</td>
-              </tr>
-              <tr className="border-b border-border-[#FBFBFB]">
-                <th className="px-10 py-10 font-normal text-gray-700 whitespace-nowrap">
-                  <div className="flex items-center gap-x-6">
-                    <img className="h-32 w-32 " src="/images/cover-placeholder.png" alt="" />
-                    <h3 className="text-base leading-6 tracking-tight text-gray-700">Silver</h3>
-                  </div>
-                </th>
-                <td className="px-10 py-10">Silver</td>
-                <td className="px-10 py-10">Laptop</td>
-                <td className="px-10 py-10">$2999</td>
-                <td className="px-10 py-10">$2999</td>
-              </tr>
-              <tr className="border-b border-border-[#FBFBFB]">
-                <th className="px-10 py-10 font-normal text-gray-700 whitespace-nowrap">
-                  <div className="flex items-center gap-x-6">
-                    <img className="h-32 w-32 " src="/images/cover-placeholder.png" alt="" />
-                    <h3 className="text-base leading-6 tracking-tight text-gray-700">Silver</h3>
-                  </div>
-                </th>
-                <td className="px-10 py-10">Silver</td>
-                <td className="px-10 py-10">Laptop</td>
-                <td className="px-10 py-10">$2999</td>
-                <td className="px-10 py-10">$2999</td>
-              </tr>
-              <tr className="border-b border-border-[#FBFBFB]">
-                <th className="px-10 py-10 font-normal text-gray-700 whitespace-nowrap">
-                  <div className="flex items-center gap-x-6">
-                    <img className="h-32 w-32 " src="/images/cover-placeholder.png" alt="" />
-                    <h3 className="text-base leading-6 tracking-tight text-gray-700">Silver</h3>
-                  </div>
-                </th>
-                <td className="px-10 py-10">Silver</td>
-                <td className="px-10 py-10">Laptop</td>
-                <td className="px-10 py-10">$2999</td>
-                <td className="px-10 py-10">$2999</td>
-              </tr>
-              <tr className="border-b border-border-[#FBFBFB]">
-                <th className="px-10 py-10 font-normal text-gray-700 whitespace-nowrap">
-                  <div className="flex items-center gap-x-6">
-                    <img className="h-32 w-32 " src="/images/cover-placeholder.png" alt="" />
-                    <h3 className="text-base leading-6 tracking-tight text-gray-700">Silver</h3>
-                  </div>
-                </th>
-                <td className="px-10 py-10">Silver</td>
-                <td className="px-10 py-10">Laptop</td>
-                <td className="px-10 py-10">$2999</td>
-                <td className="px-10 py-10">$2999</td>
-              </tr>
+              { details.topWorkouts && details.topWorkouts.map((workout, index) => (
+                < tr className="border-b border-border-[#FBFBFB]" >
+                  <th className="px-10 py-10 font-normal text-gray-700 whitespace-nowrap">
+                    <div className="flex items-center gap-x-6">
+                      <img className="h-32 w-32 " src={ `${ BASE_URL }/user/${ workout.thumbnailImage }` } alt="" />
+                      <h3 className="text-base leading-6 tracking-tight text-gray-700">{ workout.workoutTitle }</h3>
+                    </div>
+                  </th>
+                  <td className="px-10 py-10">{workout.category}</td>
+                  <td className="px-10 py-10">{workout.level}</td>
+                  <td className="px-10 py-10">0</td>
+                  <td className="px-10 py-10">0</td>
+                </tr>
+              ))
+              }
             </tbody>
           </table>
         </div>
-      </div>
+      </div >
 
     </>
   )

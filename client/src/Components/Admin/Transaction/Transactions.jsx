@@ -9,13 +9,14 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { TRAINER_ROLE, USER_ROLE } from "../../../constants/roles";
 import { dateMonthYear } from "../../../helpers/CommonFunctions";
+import { transactionDetails } from "../../redux-toolkit/slices/transactionSlice";
 
 const Transactions = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch();
     const viewTransaction = (transaction) => {
-        // dispatch(trainerDetails(trainer))
-        // navigate(`/admin/trainer/view/${ trainer._id }`)
+        dispatch(transactionDetails(transaction))
+        navigate(`/admin/transactions/details/${ transaction._id }`)
     }
 
     const date = new Date();
@@ -79,11 +80,10 @@ const Transactions = () => {
                         },
                     },
                     {
-                        Header: "Amount",
+                        Header: "Amount ($)",
                         accessor: "",
                         Cell: ({ value, row }) => {
                             const data = row.original
-                            console.log(data);
                             return (
                                 data.trainerAmount ?
                                     ((parseFloat(data.adminAmount) + parseFloat(data.trainerAmount)).toFixed(2))
@@ -93,11 +93,11 @@ const Transactions = () => {
 
                     },
                     {
-                        Header: "Commission",
+                        Header: "Commission (%)",
                         accessor: "commission",
                     },
                     {
-                        Header: "Profit",
+                        Header: "Profit ($)",
                         accessor: "adminAmount",
                     },
                     {
@@ -121,10 +121,10 @@ const Transactions = () => {
                             const data = row.original
                             return (
                                 data.role === USER_ROLE ?
-                                <div style={ { display: "flex", flexDirection: "row" } }>
-                                    <VisibilityIcon className="cursor-pointer mt-6" onClick={ () => viewTransaction(row.original) } />
-                                </div>
-                                :" "
+                                    <div style={ { display: "flex", flexDirection: "row" } }>
+                                        <VisibilityIcon className="cursor-pointer mt-6" onClick={ () => viewTransaction(row.original) } />
+                                    </div>
+                                    : " "
                             )
                         },
                     },

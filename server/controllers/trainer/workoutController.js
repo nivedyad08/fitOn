@@ -56,10 +56,10 @@ const uploadBasicWorkoutVideo = async (req, res) => {
         const { basicVideo } = req.files
         if (!userId && !basicVideo)
             return res.status(400).json({ message: "Something went wrong" });
-        const uploadVideo = await User.findByIdAndUpdate(userId, { basicVideo: basicVideo[0].filename })
+        const uploadVideo = await User.findByIdAndUpdate(userId, { basicVideo: basicVideo[0].filename }, { new: true })
         if (!uploadVideo)
             return res.status(400).json({ message: "Video not uploaded! Something went wrong" });
-        return res.status(200).json({ message: "Video Uploaded" });
+        return res.status(200).json({ message: "Video Uploaded", user: uploadVideo });
     } catch (error) {
         return res.status(400).json({ message: error.message });
     }

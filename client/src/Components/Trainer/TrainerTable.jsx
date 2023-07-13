@@ -1,30 +1,35 @@
 import React, { useState } from 'react';
-import { useFilters, useTable } from 'react-table';
+import { useFilters, usePagination, useTable, useGlobalFilter } from 'react-table';
 
-const Table = ({ columns, data, selectedRows }) => {
+const TrainerTable = ({ columns, data, selectedRows, trColor }) => {
     const {
-        getTableProps, // table props from react-table
-        getTableBodyProps, // table body props from react-table
-        headerGroups, // headerGroups, if your table has groupings
-        rows, // rows for the table based on the data passed
-        prepareRow, // Prepare the row (this function needs to be called for each row before getting the row props)
-        setFilter
+        getTableProps,
+        getTableBodyProps,
+        headerGroups,
+        page, // Instead of using 'rows', we will use 'page' for pagination
+        prepareRow,
+        setFilter,
+        canPreviousPage,
+        canNextPage,
+        nextPage,
+        previousPage,
+        pageOptions,
+        state: { pageIndex, globalFilter },
+        setGlobalFilter,
     } = useTable(
         {
             columns,
-            data
+            data,
+            initialState: { pageIndex: 0, pageSize: 6 }, // Initialize the pageIndex to 0
         },
-        useFilters
+        useFilters,
+        useGlobalFilter,
+        usePagination,
     );
 
-    // Create a state
-    const [filterInput, setFilterInput] = useState('');
-
-    // Update the state when input changes
     const handleFilterChange = e => {
-        const value = e.target.value || undefined;
-        setFilter('workoutTitle', value); // Update the show.name filter. Now our table will filter and show only the rows which have a matching value
-        setFilterInput(value);
+        const value = e.target.value || '';
+        setGlobalFilter(value);
     };
 
     return (
@@ -32,48 +37,75 @@ const Table = ({ columns, data, selectedRows }) => {
             <div className="p-4">
                 <div className="flex items-center mb-4 mt-20 justify-between">
                     <input
-                        value={filterInput}
-                        onChange={handleFilterChange}
+                        value={ globalFilter || '' }
+                        onChange={ handleFilterChange }
                         placeholder="Search name"
-                        className="p-2 px-4 text-sm py-10 text-white border custom-blue border-gray-600 rounded-md mr-4"
-                        style={{ width: '20%' }} // Increase width by setting the 'width' inline style
+                        className="p-2 px-4 text-sm py-10 text-white border focus:border-gray-500 custom-blue border-gray-600 rounded-md mr-4"
+                        style={ { width: '80%' } }
                     />
                 </div>
                 <div className="inline-block min-w-full overflow-hidden">
-                    <table {...getTableProps()} className="min-w-full divide-y w-full text-sm text-center text-gray-100 dark:text-gray-400 mt-10">
-                        <thead className="text-sm uppercase custom-blue text-custom-whitish">
-                            {headerGroups.map(headerGroup => (
-                                <tr {...headerGroup.getHeaderGroupProps()} style={{ borderStyle: 'hidden', marginBottom: '10px', lineHeight: '24px' }}>
-                                    {headerGroup.headers.map(column => (
+                    <table { ...getTableProps() } className="min-w-full divide-y w-full text-sm text-center text-gray-100 dark:text-gray-400 mt-10">
+                        <thead className={ `text-sm uppercase bg-[${ trColor }] text-custom-whitish` }>
+                            { headerGroups.map(headerGroup => (
+                                <tr { ...headerGroup.getHeaderGroupProps() } style={ { borderStyle: 'hidden', marginBottom: '10px', lineHeight: '24px' } }>
+                                    { headerGroup.headers.map(column => (
                                         <th
-                                            {...column.getHeaderProps()}
+                                            { ...column.getHeaderProps() }
                                             className="px-4 py-2 font-medium text-custom-whitish uppercase tracking-wider"
                                         >
-                                            {column.render('Header')}
+                                            { column.render('Header') }
                                         </th>
-                                    ))}
+                                    )) }
                                 </tr>
-                            ))}
+                            )) }
                         </thead>
-                        <tbody {...getTableBodyProps()}>
-                            {rows.map(row => {
+                        <tbody { ...getTableBodyProps() }>
+                            { page.map(row => {
                                 prepareRow(row);
                                 return (
-                                    <tr {...row.getRowProps()} className="border-b border-gray-700">
-                                        {row.cells.map(cell => (
-                                            <td {...cell.getCellProps()} className="px-10 py-20">
-                                                {cell.render('Cell')}
+                                    <tr { ...row.getRowProps() } className="border-b border-gray-700">
+                                        { row.cells.map(cell => (
+                                            <td { ...cell.getCellProps() } className="px-10 capitalize py-20">
+                                                { cell.render('Cell') }
                                             </td>
-                                        ))}
+                                        )) }
                                     </tr>
                                 );
-                            })}
+                            }) }
                         </tbody>
                     </table>
+                    {/* Pagination */ }
+                    <div className="mt-4 flex justify-between items-center">
+                        <div className="flex items-center">
+                            <button
+                                onClick={ () => previousPage() }
+                                disabled={ !canPreviousPage }
+                                className={ `${ canPreviousPage ? 'bg-yellow-500 hover:bg-yellow-700' : 'bg-gray-300 pointer-events-none'
+                                    } text-gray-500 px-4 py-2 rounded-md mr-2` }
+                            >
+                                Previous
+                            </button>
+                            <button
+                                onClick={ () => nextPage() }
+                                disabled={ !canNextPage }
+                                className={ `${ canNextPage ? 'bg-yellow-500 hover:bg-yellow-700' : 'bg-gray-300 pointer-events-none'
+                                    } text-gray-500 px-4 py-2 rounded-md` }
+                            >
+                                Next
+                            </button>
+                        </div>
+                        <div className="text-gray-400">
+                            Page{ ' ' }
+                            <strong>
+                                { pageIndex + 1 } of { pageOptions.length }
+                            </strong>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     );
 };
 
-export default Table;
+export default TrainerTable;

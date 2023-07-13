@@ -43,7 +43,6 @@ const transactions = async (req, res) => {
             },
             { $sort: { createdAt: 1 } }
         ])
-        console.log(transactions);
         if (!transactions)
             return res.status(500).json({ message: "Something went wrong" });
         return res.status(200).json({ transactions: transactions });

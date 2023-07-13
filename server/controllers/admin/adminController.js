@@ -73,14 +73,39 @@ const levels = async (req, res) => {
 }
 
 const dashboardDetails = async (req, res) => {
-  console.log(654321);
   try {
     const totalSubscribers = await User.find({ isSubscriber: true }).count()
     const totalUsers = await User.find({ role: USER_ROLE }).count()
     const totalTrainers = await User.find({ role: TRAINER_ROLE }).count()
     const totalWorkouts = await Workout.find({ status: true }).count()
 
-    const topWorkouts = await Workout.find({status:true}).limit(5)
+    const topWorkouts = await Workout.aggregate([
+      {
+        $lookup: {
+          from: "categories",
+          localField: "category",
+          foreignField: "_id",
+          as: "category",
+        },
+      },
+      {
+        $lookup: {
+          from: "levels",
+          localField: "difficultyLevel",
+          foreignField: "_id",
+          as: "level",
+        },
+      },
+      {
+        $project:{
+          category: { $arrayElemAt: ["$category.name", 0] },
+          level: { $arrayElemAt: ["$level.name", 0] },
+          workoutTitle:1,
+          thumbnailImage:1,
+        },
+      },
+      {$limit:5}
+    ]);
     return res.status(200).json({
       totalSubscribers,
       totalUsers,

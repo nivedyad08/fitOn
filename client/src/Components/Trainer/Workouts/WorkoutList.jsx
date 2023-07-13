@@ -136,6 +136,7 @@ const WorkoutList = () => {
                 <Table
                     columns={ columns }
                     data={ data }
+                    trColor="#1f2044"
                 />
             </div>
 

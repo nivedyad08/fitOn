@@ -11,9 +11,16 @@ const TrainerDetails = () => {
     const user = useSelector((state) => state.loggedUser.userInfo)
     const image1 = `${ BASE_URL }/user/${ trainer.coverPhoto ? trainer.coverPhoto : trainer.user.coverPhoto }`
 
-    const handleVideoAccess = () => {
-        console.log(user);
-        if (user.subscriptions.length>0) {
+    const handleVideoAccess = (workoutVideo) => {
+        if (user.subscriptions.length > 0) {
+            const subscriber = user.subscriptions.filter((item, i) =>
+                item.trainerId === trainer._id && item.isValid
+            )
+            if (!subscriber.length > 0)
+                navigate("/user/subscribe/membership")
+            else
+                navigate(`/user/trainer/watch/${workoutVideo}`)
+
         } else {
             navigate("/user/subscribe/membership")
         }
@@ -52,7 +59,8 @@ const TrainerDetails = () => {
                                 <div className="relative">
                                     <img className="w-sm w-[345px] h-[200px]" src={ `${ BASE_URL }/user/${ workout.thumbnailImage }` } alt="" />
                                     <div className="absolute mr-48 mb-44 inset-0 flex items-center justify-center">
-                                        <svg className="codicon codicon-play-150 w-52 cursor-pointer" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg" onClick={ handleVideoAccess }>
+                                        <svg className="codicon codicon-play-150 w-52 cursor-pointer" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg"
+                                        onClick={ () => handleVideoAccess(workout.video) }>
                                             <g fill="none" fillRule="evenodd">
                                                 <circle stroke="#FFF" strokeWidth="2" cx="75.011" cy="75.417" r="74"></circle>
                                                 <path fill="#FFF" d="M68.054 59.177l26.143 16.284-26.143 16.284z"></path>
