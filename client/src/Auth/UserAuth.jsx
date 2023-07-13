@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Navigate, Outlet, useLocation } from "react-router-dom"
 import { USER_ROLE } from "../constants/roles"
 
-function UserAuth() {
+function UserAuth({children}) {
     const userToken = Cookies.get("accessToken")
     const user = useSelector((state) => state.loggedUser.userInfo)
     const location = useLocation();

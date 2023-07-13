@@ -1,18 +1,40 @@
-import React from 'react';
+// Dashboard.js
+
+import React, { useEffect, useState } from 'react';
 import TotalCount from './TotalCount';
 import TopWorkouts from './TopWorkouts';
+import { fetchDashboardDetails } from "../../../Services/TrainerApi";
+import { toast } from "react-toastify";
+import { useSelector } from 'react-redux';
 
 const Dashboard = () => {
+    console.log(7890);
+    const [workout, setWorkoutDetails] = useState("");
+    const user = useSelector((state) => state.loggedUser.userInfo);
+    useEffect(() => {
+        fetchDashboardDetails(user._id)
+            .then((response) => {
+                console.log(response);
+                setWorkoutDetails(response);
+            })
+            .catch((error) => {
+                if (error.response && error.response.status === 400) {
+                    toast.error(error.response.data.message);
+                } else {
+                    toast.error("An error occurred. Please try again later");
+                }
+            });
+    }, []);
+console.log("workout=>",workout);
     return (
         <div className="w-full h-screen flex-shrink flex-grow-0 px-30">
-            <TotalCount />
+            <TotalCount workout={ workout } />
             <div className="mt-40">
                 <h2 className="text-2xl font-bold mb-4 text-custom-whitish">Top Workouts</h2>
-                <TopWorkouts/>
+                <TopWorkouts topWorkouts={ workout.topWorkouts } />
             </div>
         </div>
-
     );
-}
+};
 
 export default Dashboard;

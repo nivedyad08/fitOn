@@ -40,7 +40,7 @@ const UserRoute = () => {
                                 <Route path="trainer/details/:trainerId" element={ <TrainerDetails /> } />
                                 <Route path="subscribe/membership" element={ <UserPricingPlans /> } />
                                 <Route path="checkout/:mode/:userId" element={ <Checkout /> } />
-                                <Route path="trainer/watch/:workoutVideo" element={ <Watch /> } />
+                                <Route path="trainer/watch/:workoutVideo/:workoutId" element={ <Watch /> } />
                             </Routes>
 
                         </div>

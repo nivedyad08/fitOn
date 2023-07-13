@@ -4,7 +4,7 @@ const Level = require("../../models/levelsMdl");
 const Package = require("../../models/packageMdl");
 const Subscription = require("../../models/subscriptionMdl");
 const Transaction = require("../../models/transactionMdl");
-const { TRAINER_ROLE } = require("../../constants/roles")
+const { TRAINER_ROLE, USER_ROLE } = require("../../constants/roles")
 const mongoose = require('mongoose');
 
 const ObjectId = mongoose.Types.ObjectId
@@ -93,23 +93,47 @@ const subscription = async (req, res) => {
 
 const subscriptionDetails = async (req, res) => {
     try {
-        const { userId } = req.query
-        console.log(userId);
+        const { userId } = req.query;
+        const user = await User.findById(userId);
+
+        let matchStage = {};
+        let localField = "";
+        let foreignField = "";
+
+        if (user.role === USER_ROLE) {
+            matchStage = { userId: new ObjectId(userId) };
+            localField = "trainerId";
+            foreignField = "_id";
+        } else {
+            matchStage = { trainerId: new ObjectId(userId) };
+            localField = "userId";
+            foreignField = "_id";
+        }
+
         const subscriptions = await Subscription.aggregate([
-            { $match: { userId: new ObjectId(userId) } },
+            { $match: matchStage },
             {
                 $lookup: {
                     from: "users",
-                    localField: "trainerId",
-                    foreignField: "_id",
+                    localField,
+                    foreignField,
                     as: "trainer",
                 },
-            }, {
+            },
+            {
                 $lookup: {
                     from: "packages",
                     localField: "packageId",
                     foreignField: "_id",
                     as: "package",
+                },
+            },
+            {
+                $lookup: {
+                    from: "transactions",
+                    localField: "_id",
+                    foreignField: "subscriptionId",
+                    as: "transaction",
                 },
             },
             {
@@ -121,26 +145,26 @@ const subscriptionDetails = async (req, res) => {
                     gst: 1,
                     totalAmount: 1,
                     createdAt: 1,
-                    trainer: {
-                        firstName:{ $arrayElemAt: ["$trainer.firstName", 0] },
-                        lastName:{ $arrayElemAt: ["$trainer.lastName", 0] },
-                    },
-                    package: {
-                        name:{ $arrayElemAt: ["$package.name", 0] },
-                        duration:{ $arrayElemAt: ["$package.duration", 0] },
-                    },
-                }
+                    "trainer.firstName": { $arrayElemAt: ["$trainer.firstName", 0] },
+                    "trainer.lastName": { $arrayElemAt: ["$trainer.lastName", 0] },
+                    "package.name": { $arrayElemAt: ["$package.name", 0] },
+                    "package.duration": { $arrayElemAt: ["$package.duration", 0] },
+                    "transaction.trainerAmount": { $arrayElemAt: ["$transaction.trainerAmount", 0] },
+                },
             },
-            { $sort: { createdAt: 1 } }
-        ])
-        console.log(subscriptions);
-        if (!subscriptions)
+            { $sort: { createdAt: 1 } },
+        ]);
+
+        if (!subscriptions) {
             return res.status(500).json({ message: "Something went wrong" });
-        return res.status(200).json({ subscriptions: subscriptions });
+        }
+
+        return res.status(200).json({ subscriptions });
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
-}
+};
+
 
 module.exports = {
     subscription,

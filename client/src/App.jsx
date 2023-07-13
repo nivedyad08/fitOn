@@ -18,21 +18,48 @@ import UserRoute from "./Routes/UserRoute";
 import LandingPage from "./Pages/Landing/LandingPage";
 import React, { useEffect, useState } from "react"
 import Loader from "./Components/Loader";
+import ProtectedAuth from "./Auth/ProtectedAuth";
+import AuthRoute from "./Routes/AuthRoute";
 
 function App() {
 
   return (
     <div>
       <Routes>
-        {/* <Route path="/*" element={ <errorPage /> } /> */ }
         <Route path="/" element={ <LandingPage /> } />
-        <Route path="/login" element={ <LoginPage /> } />
-        <Route path="/forgot-password" element={ <ForgortPasswordPage /> } />
-        <Route path="/forgot-password/email-verification" element={ <EmailVerification /> } />
-        <Route path="/user/forgotPassword" element={ <UpdatePasswordPage /> } />
-        <Route path="/register" element={ <SignupPage /> } />
-        <Route path="/profile-complete/:username/:userId" element={ <ProfileCompletePage /> } />
-        <Route path="/payment/:userId" element={ <SignupPayment /> } />
+        {/* <Route path="/login" element={
+          <ProtectedAuth>
+            <LoginPage />
+          </ProtectedAuth>
+        } />
+        <Route path="/forgot-password" element={
+          <ProtectedAuth>
+            <ForgortPasswordPage />
+          </ProtectedAuth>
+        } />
+        <Route path="/forgot-password/email-verification" element={
+          <ProtectedAuth>
+            <EmailVerification />
+          </ProtectedAuth> } />
+        <Route path="/user/forgotPassword" element={
+          <ProtectedAuth>
+            <UpdatePasswordPage />
+          </ProtectedAuth> } />
+        <Route path="/register" element={
+          <ProtectedAuth>
+            <SignupPage />
+          </ProtectedAuth> } />
+        <Route path="/profile-complete/:username/:userId" element={
+          <ProtectedAuth>
+            <ProfileCompletePage />
+          </ProtectedAuth>
+        } />
+        <Route path="/payment/:userId" element={
+          <ProtectedAuth>
+            <SignupPayment />
+          </ProtectedAuth> } /> */}
+
+
         /*Admin */
         <Route element={ <AdminAuth /> }>
           <Route path="/admin/*" element={ <AdminRoute /> } />
@@ -44,6 +71,10 @@ function App() {
         /*User */
         <Route element={ <UserAuth /> }>
           <Route path="/user/*" element={ <UserRoute /> } />
+        </Route>
+        /*Auth */
+        <Route element={ <ProtectedAuth /> }>
+          <Route path="/*" element={ <AuthRoute /> } />
         </Route>
       </Routes>
       <ToastContainerBox />

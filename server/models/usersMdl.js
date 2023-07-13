@@ -72,10 +72,9 @@ const userSchema = new mongoose.Schema(
     },
     userFavourites: [
       {
-        workout_id: { type: Number },
-        trainer_id: { type: Number },
+        workoutId: { type: ObjectId },
+        trainerId: { type: ObjectId },
         createdAt: { type: String },
-        updatedAt: { type: String },
       },
     ],
     subscriptions: [

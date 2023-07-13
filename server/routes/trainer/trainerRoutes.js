@@ -26,14 +26,15 @@ trainerRoute.post('/upload-workout-video', isTrainer, workoutUpload.fields([
 
 trainerRoute.put('/delete-workout', isTrainer, workoutController.deleteWorkout);
 trainerRoute.post('/edit-workout', isTrainer, workoutController.editWorkout);
-
-trainerRoute.post('/edit-user-details', isTrainer, userUpload, trainerController.editUser);
-trainerRoute.post('/change/password', isTrainer, trainerController.changePassword);
 trainerRoute.post('/upload-basic-workout-video', isTrainer, workoutUpload.fields([
   {
     name: "basicVideo",
     maxCount: 1,
   },
 ]), workoutController.uploadBasicWorkoutVideo);
+
+trainerRoute.post('/edit-user-details', isTrainer, userUpload, trainerController.editUser);
+trainerRoute.post('/change/password', isTrainer, trainerController.changePassword);
+trainerRoute.get('/dashboard/details', isTrainer, trainerController.dashboardDetails);
 
 module.exports = trainerRoute

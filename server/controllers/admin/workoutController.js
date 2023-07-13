@@ -1,4 +1,7 @@
 const Workout = require("../../models/workoutMdl");
+const mongoose = require('mongoose');
+
+const ObjectId = mongoose.Types.ObjectId
 
 const workouts = async (req, res) => {
     try {

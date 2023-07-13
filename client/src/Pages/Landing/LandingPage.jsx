@@ -3,6 +3,7 @@ import TrainersSlider from './TrainersSlider';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import PricingPlans from './PricingPlans';
+import { useSelector } from 'react-redux';
 
 
 const LandingPage = () => {
@@ -10,6 +11,8 @@ const LandingPage = () => {
     const closeMenu = () => {
         setIsOpen(false);
     };
+    // const user = useSelector((state) => state.loggedUser.userInfo)
+    
     return (
         <main className='p-20 bg-gradient-to-r from-[#0a0b1a] via-[#141433] to-[#04040e]'>
             <section className="bg-white bg-gradient-to-r from-[#0a0b1a] via-[#141433] to-[#282843]">

@@ -4,8 +4,7 @@ import { toast } from "react-toastify";
 import { fetchUserSubscriptionDetails } from "../../Services/UserApi"
 import { useSelector } from "react-redux";
 import { dateMonthYear } from "../../helpers/CommonFunctions";
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
+import { USER_ROLE, TRAINER_ROLE } from "../../constants/roles"
 
 const Subscription = () => {
     const [data, setData] = useState([]);
@@ -13,7 +12,6 @@ const Subscription = () => {
     useEffect(() => {
         fetchUserSubscriptionDetails(user._id).then((response) => {
             setData(response.subscriptions);
-            console.log(response.subscriptions);
         }).catch((error) => {
             if (error.response && error.response.status === 400) {
                 toast.error(error.response.data.message);
@@ -31,7 +29,7 @@ const Subscription = () => {
                 Header: " ",
                 columns: [
                     {
-                        Header: "Trainer",
+                        Header: user.role === USER_ROLE ? "Trainer" : "User",
                         accessor: "trainer[0].firstName",
                         Cell: ({ value, row }) => {
                             const data = row.original
@@ -95,6 +93,18 @@ const Subscription = () => {
                         }
                     },
                     {
+                        Header: user.role === TRAINER_ROLE ? "Profit" : " ",
+                        accessor: "transaction[0].trainerAmount",
+                        Cell: ({ value, row }) => {
+                            const data = row.original
+                            return (
+                                user.role === TRAINER_ROLE ? (
+                                    <span>${ data.transaction[0].trainerAmount }</span>
+                                ) : ""
+                            )
+                        }
+                    },
+                    {
                         Header: "Status",
                         accessor: " ",
                         Cell: ({ value, row }) => {
@@ -103,7 +113,7 @@ const Subscription = () => {
                             const expiryDate = new Date(data.endDate);
                             return (
                                 (
-                                    expiryDate > currentDate || data.endDate === null) ? <CheckCircleIcon className="text-green-600" /> : <CancelIcon className="text-red-600" />
+                                    expiryDate > currentDate || data.endDate === null) ? <span className="bg-green-600 text-green-200 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300 capitalize">Active</span> : <span className="bg-red-600 text-red-200 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300 capitalize">Inactive</span>
                             );
                         },
                     },

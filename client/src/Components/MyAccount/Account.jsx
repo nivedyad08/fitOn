@@ -21,17 +21,17 @@ const Account = () => {
         return (
           <ChangePassword />
         )
+      case 'favourites':
+        return (
+          <Favourites />
+        )
       case 'reports':
         return (
-          user.role === USER_ROLE ?
-            <Favourites />
-            : <Reports />
+          <Reports />
         )
       case 'subscriptions':
         return (
-          user.role === USER_ROLE ?
-            <Subscription />
-            : ""
+          <Subscription />
         )
     }
   }

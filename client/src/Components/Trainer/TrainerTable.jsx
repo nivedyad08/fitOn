@@ -46,7 +46,7 @@ const TrainerTable = ({ columns, data, selectedRows, trColor }) => {
                 </div>
                 <div className="inline-block min-w-full overflow-hidden">
                     <table { ...getTableProps() } className="min-w-full divide-y w-full text-sm text-center text-gray-100 dark:text-gray-400 mt-10">
-                        <thead className={ `text-sm uppercase bg-[${ trColor }] text-custom-whitish` }>
+                        <thead className="text-sm uppercase text-custom-whitish" style={ { background: trColor } }>
                             { headerGroups.map(headerGroup => (
                                 <tr { ...headerGroup.getHeaderGroupProps() } style={ { borderStyle: 'hidden', marginBottom: '10px', lineHeight: '24px' } }>
                                     { headerGroup.headers.map(column => (
