@@ -4,7 +4,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
-import { loggedUserDetails } from "../redux-toolkit/slices/userSlice";
+import { signupUserDetails } from "../redux-toolkit/slices/signupSlice";
 
 function ProfileComplete() {
   const dispatch = useDispatch();
@@ -50,8 +50,8 @@ function ProfileComplete() {
       );
       if (response.status === 200) {
         const { accessToken, user } = response.data;
-        Cookies.set("accessToken", accessToken);
-        dispatch(loggedUserDetails(user));
+        // Cookies.set("accessToken", accessToken);
+        dispatch(signupUserDetails(user));
         toast.success("User Profile updated Successfully");
         navigate(`/payment/${user._id}`);
       }

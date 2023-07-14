@@ -10,7 +10,6 @@ import { loggedUserDetails } from "../../redux-toolkit/slices/userSlice";
 
 export default function Watch() {
     const { workoutVideo, workoutId } = useParams();
-    console.log(workoutId);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.loggedUser.userInfo);

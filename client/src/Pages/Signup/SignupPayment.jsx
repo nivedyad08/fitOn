@@ -9,7 +9,8 @@ import Payment from "../../Components/Signup/Payment";
 function SignupPayment() {
   const paypal = useRef();
   const navigate = useNavigate();
-  const user = useSelector((state) => state.loggedUser.userInfo);
+  const user = useSelector((state) => state.signupUserDetails.signupInfo);
+  console.log(user);
   const [checkout, setCheckOut] = useState(false);
 
   useEffect(() => {

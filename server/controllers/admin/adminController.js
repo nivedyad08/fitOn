@@ -12,7 +12,7 @@ const users = async (req, res) => {
     if (req.roles !== ADMIN_ROLE) {
       return res.status(400).json({ message: "Invalid user" });
     }
-    const users = await User.find({ role: USER_ROLE });
+    const users = await User.find({ role: USER_ROLE }).sort({createdAt:-1});
     if (users) {
       return res.status(200).json({ users });
     }
@@ -36,7 +36,8 @@ const trainers = async (req, res) => {
           foreignField: "trainerId",
           as: "workouts",
         }
-      }
+      },
+      { $sort: { createdAt: -1 } }
     ])
     if (trainers) {
       return res.status(200).json({ trainers });
@@ -97,14 +98,14 @@ const dashboardDetails = async (req, res) => {
         },
       },
       {
-        $project:{
+        $project: {
           category: { $arrayElemAt: ["$category.name", 0] },
           level: { $arrayElemAt: ["$level.name", 0] },
-          workoutTitle:1,
-          thumbnailImage:1,
+          workoutTitle: 1,
+          thumbnailImage: 1,
         },
       },
-      {$limit:5}
+      { $limit: 5 }
     ]);
     return res.status(200).json({
       totalSubscribers,

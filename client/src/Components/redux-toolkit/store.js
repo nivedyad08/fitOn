@@ -6,6 +6,7 @@ import userSlice from "./slices/userSlice"
 import workoutSlice from "./slices/workoutSlice"
 import trainerSlice from "./slices/trainerSlice"
 import transactionSlice from "./slices/transactionSlice"
+import signupSlice from "./slices/signupSlice"
 
 const persistConfig = {
     key: 'root',
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
     loggedUser: userSlice,
     workoutDetails: workoutSlice,
     trainerDetails: trainerSlice,
-    transactionDetails: transactionSlice
+    transactionDetails: transactionSlice,
+    signupUserDetails: signupSlice
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 

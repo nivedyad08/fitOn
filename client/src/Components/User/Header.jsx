@@ -5,7 +5,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser } from "../redux-toolkit/slices/userSlice"
-
+import { FaHeart } from 'react-icons/fa';
 
 const navigation = [
     { name: 'Dashboard', href: '/user/dashboard', current: false },
@@ -83,6 +83,15 @@ export default function Header() {
                                 </div>
                                 <div className="hidden md:block">
                                     <div className="ml-4 flex items-center md:ml-6 px-20 gap-10">
+                                        <button
+                                            type="button"
+                                            className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                                        >
+                                            <span className="sr-only">View notifications</span>
+                                            <FaHeart
+                                                className="text-gray-300 w-18 h-18 cursor-pointer"
+                                            />
+                                        </button>
                                         <button
                                             type="button"
                                             className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
