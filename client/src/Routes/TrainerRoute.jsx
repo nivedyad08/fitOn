@@ -8,6 +8,7 @@ import ViewWorkout from '../Components/Trainer/Workouts/ViewWorkout';
 import EditWorkout from '../Components/Trainer/Workouts/EditWorkout';
 import Header from '../Components/Trainer/Header';
 import Loader from '../Components/Loader';
+import Error from '../Components/Error';
 
 const TrainerRoute = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -38,7 +39,7 @@ const TrainerRoute = () => {
                                     <Route path="workout/:workoutId" element={ <ViewWorkout /> } />
                                     <Route path="edit/:workoutId" element={ <EditWorkout /> } />
                                     <Route path="account" element={ <Account /> } />
-
+                                    <Route path="*" element={ <Error /> } />
                                 </Routes>
                             </div>
                         </main>

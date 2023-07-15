@@ -69,6 +69,7 @@ const addTofavourites = async (req, res) => {
                 { $push: { userFavourites: userFavouritesDetails } },
                 { new: true }
             );
+            const updateFavouriteCount = await Workout.findByIdAndUpdate(workoutId, { $inc: { favourites: 1 } })
             return res.status(200).json({ message: "Added to favourites", isValid: true, user: addTofavs });
         } else {
             const removeFromofavs = await User.findByIdAndUpdate(
@@ -76,6 +77,9 @@ const addTofavourites = async (req, res) => {
                 { $pull: { userFavourites: { workoutId: workoutId } } },
                 { new: true }
             );
+            if (workout.favourites) {
+                const updateFavouriteCount = await Workout.findByIdAndUpdate(workoutId, { $inc: { favourites: -1 } })
+            }
             return res.status(200).json({ message: "Removed from favourites", isValid: false, user: removeFromofavs });
         }
     } catch (error) {
@@ -86,7 +90,6 @@ const addTofavourites = async (req, res) => {
 const userFavourites = async (req, res) => {
     try {
         const { userId } = req.query
-        console.log("userId=>", userId);
         const favourites = await User.aggregate([
             { $match: { _id: new ObjectId(userId) } },
             { $unwind: "$userFavourites" },
@@ -122,10 +125,60 @@ const userFavourites = async (req, res) => {
             },
             { $sort: { createdAt: 1 } },
         ])
-        console.log("favourites=>", favourites);
         if (!favourites)
             return res.status(400).json({ message: "Something went wrong" });
         return res.status(200).json({ favourites: favourites });
+    } catch (error) {
+        return res.status(400).json({ message: error.message });
+    }
+}
+
+const addRating = async (req, res) => {
+    try {
+        const { userId } = req.query;
+        const { workoutId, trainerId, rating } = req.body;
+        const user = await User.findById(userId)
+        const workout = await Workout.findById(workoutId)
+        if (!user || !workout)
+            return res.status(400).json({ message: "Invalid request" });
+
+        const rateWorkout = await Workout.find({
+            _id: workoutId,
+            userRatings: { $elemMatch: { userId } }
+        }).count()
+
+        const userRatingDetails = {
+            userId,
+            rating,
+            createdAt: new Date().toISOString(),
+        }
+        if (!rateWorkout) {
+            const addRatings = await Workout.findByIdAndUpdate(
+                workoutId,
+                { $push: { userRatings: userRatingDetails } },
+                { new: true }
+            );
+        } else {
+            const updateRating = await Workout.updateOne(
+                {
+                    _id: workoutId,
+                    userRatings: { $elemMatch: { userId } }
+                },
+                { $set: { "userRatings.$.rating": userRatingDetails.rating } },
+                { new: true }
+            );
+        }
+        const updatedUserDetails = await User.aggregate([
+            { $match: { _id: new ObjectId(trainerId) } },
+            {
+                $lookup: {
+                    from: "workouts",
+                    localField: "_id",
+                    foreignField: "trainerId",
+                    as: "workouts",
+                }
+            }])
+        return res.status(200).json({ message: "Updated Rating", isValid: true, workout: updatedUserDetails });
     } catch (error) {
         return res.status(400).json({ message: error.message });
     }
@@ -136,5 +189,6 @@ module.exports = {
     trainers,
     packages,
     addTofavourites,
-    userFavourites
+    userFavourites,
+    addRating
 };

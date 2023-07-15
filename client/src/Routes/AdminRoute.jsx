@@ -11,6 +11,7 @@ import ViewWorkout from '../Components/Admin/Workout/ViewWorkout';
 import Transactions from '../Components/Admin/Transaction/Transactions';
 import ViewTrainerDetails from '../Components/Admin/Trainer/ViewTrainerDetails';
 import SubscriptionDetails from '../Components/Admin/Transaction/SubscriptionDetails';
+import Error from '../Components/Error';
 
 const AdminRoute = () => {
     return (
@@ -33,6 +34,7 @@ const AdminRoute = () => {
                             <Route path="categories" element={ <Categories /> } />
                             <Route path="transactions" element={ <Transactions /> } />
                             <Route path="transactions/details/:transactionId" element={ <SubscriptionDetails/> } />
+                            <Route path="*" element={ <Error /> } />
                         </Routes>
                     </div>
                 </div>

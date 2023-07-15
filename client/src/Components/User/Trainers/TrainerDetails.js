@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import { BASE_URL } from "../../../constants/urls";
 import { useNavigate, Link } from "react-router-dom";
 import { dateMonthYearStringFormat } from "../../../helpers/CommonFunctions";
+import StarIcon from '@mui/icons-material/Star';
+import { calculateAverageRating } from "../../../helpers/CommonFunctions";
 
 const TrainerDetails = () => {
     const navigate = useNavigate()
@@ -11,7 +13,7 @@ const TrainerDetails = () => {
     const user = useSelector((state) => state.loggedUser.userInfo)
     const image1 = `${ BASE_URL }/user/${ trainer.coverPhoto ? trainer.coverPhoto : trainer.user.coverPhoto }`
 
-    const handleVideoAccess = (workoutVideo,workoutId) => {
+    const handleVideoAccess = (workoutVideo, workoutId) => {
         if (user.subscriptions.length > 0) {
             const subscriber = user.subscriptions.filter((item, i) =>
                 item.trainerId === trainer._id && item.isValid
@@ -19,7 +21,7 @@ const TrainerDetails = () => {
             if (!subscriber.length > 0)
                 navigate("/user/subscribe/membership")
             else
-                navigate(`/user/trainer/watch/${ workoutVideo }/${workoutId}`)
+                navigate(`/user/trainer/watch/${ workoutVideo }/${ workoutId }`)
 
         } else {
             navigate("/user/subscribe/membership")
@@ -53,52 +55,67 @@ const TrainerDetails = () => {
 
                 <h1 className="text-white uppercase text-2xl font-semibold tracking-wider mb-20">{ trainer.firstName ? trainer.firstName : trainer.user.firstName }'s  WORKOUTS</h1>
 
-                { trainer.workouts !== null ?
-                    <div className="mx-6 grid grid-cols-1 sm:grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-3 mt-10">
-                        <div className="shadow-lg overflow-hidden">
-                            <div className="relative">
-                                <img className="w-sm w-[345px] h-[200px]" src={ `${ BASE_URL }/user/${ trainer.coverPhoto }` } alt="" />
-                                <div className="absolute top-0 right-48 bg-pink-500 text-white px-2 py-1 rounded-tr-md">
-                                    <p className="text-base font-semibold">Basic workout</p>
-                                </div>
-                                <div className="absolute mr-48 mb-44 inset-0 flex items-center justify-center">
-                                    <Link to={ `/user/trainer/watch/${ trainer.basicVideo }/1` }>
-                                        <svg className="codicon codicon-play-150 w-52 cursor-pointer" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
-                                            <g fill="none" fillRule="evenodd">
-                                                <circle stroke="#FFF" strokeWidth="2" cx="75.011" cy="75.417" r="74"></circle>
-                                                <path fill="#FFF" d="M68.054 59.177l26.143 16.284-26.143 16.284z"></path>
-                                            </g>
-                                        </svg>
-                                    </Link>
-                                </div>
-                                <div className="p-2 ml-8 mt-8 relative">
-                                    <p className="text-base text-center mt-6 font-semibold uppercase text-custom-whitish">Basic Workout video</p>
-                                </div>
-                            </div>
-                        </div>
-                        { trainer.workouts.map((workout, index) => (
-                            <div className="shadow-lg overflow-hidden" key={ index }>
-                                <div className="relative">
-                                    <img className="w-sm w-[345px] h-[200px]" src={ `${ BASE_URL }/user/${ workout.thumbnailImage }` } alt="" />
-                                    <div className="absolute mr-48 mb-44 inset-0 flex items-center justify-center">
-                                        <svg className="codicon codicon-play-150 w-52 cursor-pointer" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg"
-                                            onClick={ () => handleVideoAccess(workout.video,workout._id) }>
-                                            <g fill="none" fillRule="evenodd">
-                                                <circle stroke="#FFF" strokeWidth="2" cx="75.011" cy="75.417" r="74"></circle>
-                                                <path fill="#FFF" d="M68.054 59.177l26.143 16.284-26.143 16.284z"></path>
-                                            </g>
-                                        </svg>
-                                    </div>
-                                    <div className="p-2 mr-40 relative">
-                                        <p className="text-base text-center mt-6 font-semibold uppercase text-custom-whitish">{ workout.workoutTitle }</p>
-                                        <p className="text-custom-whitish text-center">{ dateMonthYearStringFormat(workout.createdAt) }</p>
+                { trainer.workouts.length > 0 ?
+                    (
+                        <div className="mx-6 grid grid-cols-1 sm:grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-3 mt-10">
+                            { trainer.basicVideo && (
+                                <div className="shadow-lg overflow-hidden">
+                                    <div className="relative">
+                                        <img className="w-sm w-[345px] h-[200px]" src={ `${ BASE_URL }/user/${ trainer.coverPhoto }` } alt="" />
+                                        <div className="absolute top-0 right-48 bg-pink-500 text-white px-2 py-1 rounded-tr-md">
+                                            <p className="text-base font-semibold">Basic workout</p>
+                                        </div>
+                                        <div className="absolute mr-48 mb-44 inset-0 flex items-center justify-center">
+                                            <Link to={ `/user/trainer/watch/${ trainer.basicVideo }/1` }>
+                                                <svg className="codicon codicon-play-150 w-52 cursor-pointer" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
+                                                    <g fill="none" fillRule="evenodd">
+                                                        <circle stroke="#FFF" strokeWidth="2" cx="75.011" cy="75.417" r="74"></circle>
+                                                        <path fill="#FFF" d="M68.054 59.177l26.143 16.284-26.143 16.284z"></path>
+                                                    </g>
+                                                </svg>
+                                            </Link>
+                                        </div>
+                                        <div className="p-2 ml-8 mt-8 relative">
+                                            <p className="text-base text-center mt-6 font-semibold uppercase text-custom-whitish">Basic Workout video</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            ) }
+                            { trainer.workouts.map((workout, index) => (
+                                <div className="shadow-lg overflow-hidden" key={ index }>
+                                    <div className="relative">
+                                        <img className="w-sm w-[345px] h-[200px]" src={ `${ BASE_URL }/user/${ workout.thumbnailImage }` } alt="" />
+                                        { workout.userRatings && workout.userRatings.length > 0 ? (
+                                            <div className="absolute top-0 right-48 bg-[#414160] rounded-lg px-10 mt-2 rounded-tr-md">
+                                                <StarIcon className="text-yellow-500 w-[15px] mb-2" />
+                                                <span className="text-white text-sm">{ calculateAverageRating(workout.userRatings) }</span>
+                                            </div>
+                                        ) : ""
+                                        }
+                                        <div className="absolute mr-48 mb-44 inset-0 flex items-center justify-center">
+                                            <svg className="codicon codicon-play-150 w-52 cursor-pointer" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg"
+                                                onClick={ () => handleVideoAccess(workout.video, workout._id) }>
+                                                <g fill="none" fillRule="evenodd">
+                                                    <circle stroke="#FFF" strokeWidth="2" cx="75.011" cy="75.417" r="74"></circle>
+                                                    <path fill="#FFF" d="M68.054 59.177l26.143 16.284-26.143 16.284z"></path>
+                                                </g>
+                                            </svg>
+                                        </div>
+                                        <div className="p-2 mr-40 relative">
+                                            <p className="text-base text-center mt-6 font-semibold uppercase text-custom-whitish">{ workout.workoutTitle }</p>
+                                            <p className="text-custom-whitish text-center">{ dateMonthYearStringFormat(workout.createdAt) }</p>
+                                        </div>
+                                    </div>
+                                </div>
 
-                        )) }
-                    </div>
-                    : ""
+                            )) }
+                        </div>
+                    )
+                    : (
+                        <div class="p-20 mb-72 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                            <span class="font-medium">No workouts available!</span> Trainer did'nt upload any workout videos.
+                        </div>
+                    )
                 }
             </div >
         </>

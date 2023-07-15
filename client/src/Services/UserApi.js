@@ -17,3 +17,9 @@ export const fetchUserFavourites = async (userId) => {
     const res = await axios.get(`${ USER_BASE_URL }/favourites?userId=${ userId }`)
     return res.data;
 }
+
+//Workout rating
+export const rateWorkout = async (userId,ratingDetails) => {
+    const res = await axios.post(`${ USER_BASE_URL }/workout/rating?userId=${ userId }`,ratingDetails)
+    return res.data;
+}

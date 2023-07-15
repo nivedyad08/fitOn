@@ -18,6 +18,7 @@ const TrainersList = () => {
     }, []);
 
     const showTrainerDetails = (trainer) => {
+        console.log(trainer);
         dispatch(trainerDetails(trainer))
         navigate(`/user/trainer/details/${ trainer._id }`)
     }

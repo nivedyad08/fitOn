@@ -11,6 +11,7 @@ userRoute.post('/payment-update/:mode', transactionController.subscription);
 userRoute.get('/subscription', transactionController.subscriptionDetails);
 userRoute.get('/favourites', userController.userFavourites);
 userRoute.put('/workout/add-to-favourites', userController.addTofavourites);
+userRoute.post('/workout/rating', userController.addRating);
 
 
 module.exports = userRoute

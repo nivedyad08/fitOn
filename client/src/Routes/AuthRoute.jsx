@@ -7,6 +7,7 @@ import EmailVerification from '../Pages/Login/EmailVerification';
 import UpdatePasswordPage from '../Pages/Login/UpdatePasswordPage';
 import ProfileCompletePage from '../Pages/Signup/ProfileCompletePage';
 import SignupPayment from '../Pages/Signup/SignupPayment';
+import Error from '../Components/Error';
 
 const AdminRoute = () => {
     return (
@@ -20,6 +21,7 @@ const AdminRoute = () => {
                     <Route path="user/forgotPassword" element={ <UpdatePasswordPage /> } />
                     <Route path="profile-complete/:username/:userId" element={ <ProfileCompletePage /> } />
                     <Route path="payment/:userId" element={ <SignupPayment /> } />
+                    <Route path="*" element={ <Error /> } />
                 </Routes>
             </div>
         </>

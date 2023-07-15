@@ -8,7 +8,7 @@ function UserAuth({children}) {
     const user = useSelector((state) => state.loggedUser.userInfo)
     const location = useLocation();
     return (
-        userToken && user.role === USER_ROLE ? <Outlet /> : <Navigate to="/" state={ { from: location } } replace />
+        userToken && user.role === USER_ROLE ? <Outlet /> : <Navigate to="/login" state={ { from: location } } replace />
     )
 }
 

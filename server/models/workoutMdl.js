@@ -27,7 +27,7 @@ const workoutSchema = new mongoose.Schema(
         video: {
             type: String,
             required: false,
-            default:null
+            default: null
         },
         thumbnailImage: {
             type: String,
@@ -36,20 +36,32 @@ const workoutSchema = new mongoose.Schema(
         totalDuration: {
             type: String,
             required: false,
-            default:0
+            default: 0
         },
         favourites: {
             type: Number,
             required: false,
-            default:0
+            default: 0
         },
-        status:{
+        userRatings: [
+            {
+                _id: false,
+                userId: { type: ObjectId },
+                rating: { type: Number },
+                createdAt: { type: String },
+            },
+        ],
+        status: {
             type: Boolean,
             required: true,
-            default:true
+            default: true
         },
     },
     { timestamps: true }
 );
+
+// Set the rest of the fields as null
+workoutSchema.set("toObject", { getters: true });
+workoutSchema.set("toJSON", { getters: true });
 
 module.exports = mongoose.model("workouts", workoutSchema);
