@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { BASE_URL } from '../../../constants/urls';
 import { dateMonthYear } from "../../../helpers/CommonFunctions"
+import { popularWorkouts } from '../../../Services/UserApi';
+import { toast } from "react-toastify";
+import StarIcon from '@mui/icons-material/Star';
 
-const TopWorkouts = ({ topWorkouts }) => {
-    console.log("topWorkouts=>", topWorkouts);
+const TopWorkouts = ({ workout }) => {
     return (
-        // workoutDetails.length && (
         <div className="relative mt-12 overflow-x-auto">
             <table className="w-full text-sm text-left text-gray-100 dark:text-gray-400">
                 <thead className="text-xs uppercase custom-blue text-custom-whitish ">
@@ -14,11 +15,12 @@ const TopWorkouts = ({ topWorkouts }) => {
                         <th className="px-10 py-10">Category</th>
                         <th className="px-10 py-10">Level</th>
                         <th className="px-10 py-10">Added to favorites</th>
+                        <th className="px-10 py-10">Ratings</th>
                         <th className="px-10 py-10">Created At</th>
                     </tr>
                 </thead>
                 <tbody>
-                    { topWorkouts && topWorkouts.map((item, index) => (
+                    { workout && workout.map((item, index) => (
                         <tr className="border-b border-gray-700" key={ index }>
                             <td className="px-10 py-20 font-normal text-gray-200 whitespace-nowrap">
                                 <div className="flex items-center gap-x-6">
@@ -26,9 +28,10 @@ const TopWorkouts = ({ topWorkouts }) => {
                                     <h3 className="text-base leading-6 tracking-tight text-gray-200">{ item.workoutTitle }</h3>
                                 </div>
                             </td>
-                            <td className="px-10 py-20">{ item.category[0].name }</td>
-                            <td className="px-10 py-20">{ item.level[0].name }</td>
-                            <td className="px-10 py-20">0</td>
+                            <td className="px-10 py-20">{ item.category }</td>
+                            <td className="px-10 py-20">{ item.level }</td>
+                            <td className="px-10 py-20">{ item.favourites }</td>
+                            <td className="px-10 py-20">{ item.averageRating.toFixed(2) }<span className='text-yellow-500 mr-6'><StarIcon /></span><span>({item.totalRatingsCount})</span></td>
                             <td className="px-10 py-20">{ dateMonthYear(item.createdAt) }</td>
                         </tr>
                     ))

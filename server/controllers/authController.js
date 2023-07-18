@@ -1,4 +1,5 @@
 const User = require("../models/usersMdl");
+const Workout = require("../models/workoutMdl");
 const Transaction = require("../models/transactionMdl");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -25,7 +26,7 @@ const register = async (req, res) => {
           password: await bcrypt.hash(password, 10),
           userLocation,
           verificationCode: otp,
-          isActive: true
+          isActive: false
         });
         const resUser = await newUser.save();
         if (resUser) {
@@ -107,7 +108,6 @@ const paymentUpdate = async (req, res) => {
 /****Refresh Token*****/
 const refresh = (req, res) => {
   const cookies = req.cookies;
-  console.log(cookies.refreshToken);
   if (!cookies?.refreshToken) return res.status(401).json({ message: 'Unauthorized' });
 
   const refreshToken = cookies.refreshToken;
@@ -240,7 +240,6 @@ const sendEmailVerification = async (firstname, lastname, email, message, subjec
 
 /****Update password*****/
 const updatePassword = async (req, res) => {
-  console.log(657890);
   try {
     const { newPassword, confirmPassword, email } = req.body
     if (!newPassword || !confirmPassword || !email)
@@ -266,8 +265,8 @@ const validateOtp = async (req, res) => {
       return res.status(400).json({ message: "Invalid user" });
     if (!user.verificationCode || user.verificationCode !== otp)
       return res.status(400).json({ message: "Invalid OTP" });
-      
-    await User.findByIdAndUpdate(userId, { verificationCode: null })
+
+    await User.findByIdAndUpdate(userId, { verificationCode: null, isActive: true })
     return res.status(200).json({ message: 'Otp verified !!!' })
   } catch (error) {
     return res.status(400).json({ message: error.message });
@@ -284,6 +283,55 @@ const setRefreshTokenCookie = (res, refreshToken) => {
     maxAge: 7 * 24 * 60 * 60 * 1000
   });
 }
+
+const popularWorkouts = async (req, res) => {
+  try {
+    const topWorkouts = await Workout.aggregate([
+      {
+        $unwind: "$userRatings" // Unwind the 'userRatings' array
+      },
+      {
+        $lookup: {
+          from: "categories",
+          localField: "category",
+          foreignField: "_id",
+          as: "category"
+        }
+      },
+      {
+        $lookup: {
+          from: "levels",
+          localField: "difficultyLevel",
+          foreignField: "_id",
+          as: "level"
+        }
+      },
+      {
+        $group: {
+          _id: "$_id", // Group by workout ID
+          totalRatingCount: { $sum: 1 }, // Count the number of ratings per workout
+          workoutTitle: { $first: "$workoutTitle" },
+          thumbnailImage: { $first: "$thumbnailImage" },
+          favourites: { $first: "$favourites" },
+          createdAt: { $first: "$createdAt" },
+          category: { $first: "$category.name" },
+          level: { $first: "$level.name" },
+        }
+      },
+      {
+        $sort: { totalRatingCount: -1 }
+      },
+      {
+        $limit: 4
+      }
+    ]);
+
+    return res.status(200).json({ topWorkouts: topWorkouts })
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+};
+
 
 /****Logout*****/
 const logout = (req, res) => {
@@ -303,5 +351,6 @@ module.exports = {
   updatePassword,
   paymentUpdate,
   validateOtp,
+  popularWorkouts,
   logout
 };

@@ -18,5 +18,6 @@ authRoute.post("/user/login", authController.login);
 authRoute.post("/logout", authController.logout);
 authRoute.post("/forgot-password", authController.forgotPassword);
 authRoute.post('/update/password', authController.updatePassword)
+authRoute.get('/popular/workouts', authController.popularWorkouts);
 
 module.exports = authRoute;

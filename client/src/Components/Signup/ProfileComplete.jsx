@@ -50,7 +50,6 @@ function ProfileComplete() {
       );
       if (response.status === 200) {
         const { accessToken, user } = response.data;
-        // Cookies.set("accessToken", accessToken);
         dispatch(signupUserDetails(user));
         toast.success("User Profile updated Successfully");
         navigate(`/payment/${user._id}`);

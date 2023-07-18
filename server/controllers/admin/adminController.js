@@ -12,7 +12,7 @@ const users = async (req, res) => {
     if (req.roles !== ADMIN_ROLE) {
       return res.status(400).json({ message: "Invalid user" });
     }
-    const users = await User.find({ role: USER_ROLE }).sort({createdAt:-1});
+    const users = await User.find({ role: USER_ROLE }).sort({ createdAt: -1 });
     if (users) {
       return res.status(200).json({ users });
     }
@@ -98,13 +98,34 @@ const dashboardDetails = async (req, res) => {
         },
       },
       {
+        $unwind: "$userRatings" // Unwind the userRatings array to separate each rating object
+      },
+      {
+        $group: {
+          _id: "$_id",
+          workoutTitle: { $first: "$workoutTitle" },
+          favourites: { $first: "$favourites" },
+          thumbnailImage: { $first: "$thumbnailImage" },
+          createdAt: { $first: "$createdAt" },
+          category: { $first: "$category.name" },
+          level: { $first: "$level.name" },
+          totalRatingsSum: { $sum: "$userRatings.rating" }, // Calculate the sum of userRatings.rating
+          totalRatingsCount: { $sum: 1 } // Count the number of ratings
+        }
+      },
+      {
         $project: {
-          category: { $arrayElemAt: ["$category.name", 0] },
-          level: { $arrayElemAt: ["$level.name", 0] },
           workoutTitle: 1,
           thumbnailImage: 1,
-        },
+          createdAt: 1,
+          favourites: 1,
+          totalRatingsCount: 1,
+          averageRating: { $divide: ["$totalRatingsSum", "$totalRatingsCount"] }, // Calculate the average rating
+          category: { $arrayElemAt: ["$category", 0] },
+          level: { $arrayElemAt: ["$level", 0] }
+        }
       },
+      { $sort: { averageRating: -1 } },
       { $limit: 5 }
     ]);
     return res.status(200).json({

@@ -77,7 +77,6 @@ export default function AddWorkout() {
             if (data) {
                 const formData = new FormData();
                 // Append form fields to formData
-                console.log(data.description);
                 formData.append("workoutTitle", data.workoutTitle);
                 formData.append("description", data.description);
                 formData.append("category", data.category);

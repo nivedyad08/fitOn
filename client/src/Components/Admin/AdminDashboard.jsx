@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import Cookies from "js-cookie";
-import axios from "../../config/axios";
 import { useSelector } from 'react-redux';
-import Sidebar from './Sidebar';
-import Header from './Header';
 import { toast } from "react-toastify";
 import { getDashboardDetails } from "../../Services/AdminApi"
 import { BASE_URL } from '../../constants/urls';
+import StarIcon from '@mui/icons-material/Star';
 
 function AdminDashboard() {
   const { userInfo } = useSelector((state) => {
@@ -24,6 +21,7 @@ function AdminDashboard() {
       }
     })
   }, [])
+  console.log(details);
   return (
     <>
       <div className="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">
@@ -123,10 +121,10 @@ function AdminDashboard() {
                       <h3 className="text-base leading-6 tracking-tight text-gray-700">{ workout.workoutTitle }</h3>
                     </div>
                   </th>
-                  <td className="px-10 py-10">{workout.category}</td>
-                  <td className="px-10 py-10">{workout.level}</td>
-                  <td className="px-10 py-10">0</td>
-                  <td className="px-10 py-10">0</td>
+                  <td className="px-10 py-10">{ workout.category }</td>
+                  <td className="px-10 py-10">{ workout.level }</td>
+                  <td className="px-10 py-20">{ workout.averageRating.toFixed(2) }<span className='text-yellow-500 mr-6'><StarIcon /></span><span>({ workout.totalRatingsCount })</span></td>
+                  <td className="px-10 py-20">{ workout.favourites }</td>
                 </tr>
               ))
               }

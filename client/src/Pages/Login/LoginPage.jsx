@@ -8,7 +8,7 @@ export default function LoginPage() {
       <div className="container h-full px-6 py-24">
         <div className="g-6 flex h-full flex-wrap items-center justify-center lg:justify-between">
           <LoginForm />
-          <Slider img="login-bg.png" />
+          <Slider img="login-bg.png"/>
         </div>
       </div>
     </section>

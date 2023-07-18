@@ -19,7 +19,13 @@ export const fetchUserFavourites = async (userId) => {
 }
 
 //Workout rating
-export const rateWorkout = async (userId,ratingDetails) => {
-    const res = await axios.post(`${ USER_BASE_URL }/workout/rating?userId=${ userId }`,ratingDetails)
+export const rateWorkout = async (userId, ratingDetails) => {
+    const res = await axios.post(`${ USER_BASE_URL }/workout/rating?userId=${ userId }`, ratingDetails)
+    return res.data;
+}
+
+//Popular Workouts
+export const popularWorkouts = async () => {
+    const res = await axios.get(`api/auth/popular/workouts`)
     return res.data;
 }

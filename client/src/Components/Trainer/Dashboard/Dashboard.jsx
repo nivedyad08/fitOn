@@ -8,13 +8,11 @@ import { toast } from "react-toastify";
 import { useSelector } from 'react-redux';
 
 const Dashboard = () => {
-    console.log(7890);
     const [workout, setWorkoutDetails] = useState("");
     const user = useSelector((state) => state.loggedUser.userInfo);
     useEffect(() => {
         fetchDashboardDetails(user._id)
             .then((response) => {
-                console.log(response);
                 setWorkoutDetails(response);
             })
             .catch((error) => {
@@ -25,13 +23,12 @@ const Dashboard = () => {
                 }
             });
     }, []);
-console.log("workout=>",workout);
     return (
         <div className="w-full h-screen flex-shrink flex-grow-0 px-30">
             <TotalCount workout={ workout } />
             <div className="mt-40">
                 <h2 className="text-2xl font-bold mb-4 text-custom-whitish">Top Workouts</h2>
-                <TopWorkouts topWorkouts={ workout.topWorkouts } />
+                <TopWorkouts workout={workout.topWorkouts}/>
             </div>
         </div>
     );

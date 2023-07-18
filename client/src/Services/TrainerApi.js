@@ -8,6 +8,12 @@ export const fetchDashboardDetails = async (trainerId) => {
     return res.data;
 }
 
+//Popular Workouts
+export const popularWorkouts = async () => {
+    const res = await axios.get(`api/auth/popular/workouts`)
+    return res.data;
+}
+
 //Reports
 // export const fetchUserTransactionDetails = async (trainerId) => {
 //     const res = await axios.get(`${ TRAINER_BASE_URL }/transaction/reports?trainerId=${ trainerId }`)

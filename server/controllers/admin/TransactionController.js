@@ -41,7 +41,7 @@ const transactions = async (req, res) => {
                     package: { $arrayElemAt: ["$package", 0] },
                 }
             },
-            { $sort: { createdAt: 1 } }
+            { $sort: { createdAt: -1 } }
         ])
         if (!transactions)
             return res.status(500).json({ message: "Something went wrong" });

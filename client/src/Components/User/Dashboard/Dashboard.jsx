@@ -4,17 +4,17 @@ import TrainersSlider from '../../../Pages/Landing/TrainersSlider';
 import Carousel from '../../Carousel';
 
 const Dashboard = () => {
-    const image1="/images/workouts.png"
-    const image2 ="/images/workouts-2.png"
+    const image1 = "/images/workouts.png"
+    const image2 = "/images/workouts-2.png"
     const height = "335px"
     return (
         <>
             <div className="mx-auto text-center">
                 <section className="w-full">
-                    <Carousel image1={image1} image2 = {image2} height={height}/>
+                    <Carousel image1={ image1 } image2={ image2 } height={ height } />
                 </section>
                 <div className="mx-auto max-w-lg">
- 
+
                 </div>
             </div>
             <div className='px-30'>
@@ -38,3 +38,5 @@ const Dashboard = () => {
 }
 
 export default Dashboard;
+
+
