@@ -9,6 +9,7 @@ import Loader from '../Components/Loader';
 import UserPricingPlans from '../Components/User/Membership/UserMembershipDetails';
 import Checkout from '../Components/User/Membership/Checkout';
 import Watch from '../Components/User/Trainers/Watch';
+import ChatScreen from '../Components/ChatSystem/ChatScreen';
 import Error from '../Components/Error';
 
 const UserRoute = () => {
@@ -42,6 +43,7 @@ const UserRoute = () => {
                                 <Route path="subscribe/membership" element={ <UserPricingPlans /> } />
                                 <Route path="checkout/:mode/:userId" element={ <Checkout /> } />
                                 <Route path="trainer/watch/:workoutVideo/:workoutId" element={ <Watch /> } />
+                                <Route path="chats" element={ <ChatScreen /> } />
                                 <Route path="*" element={ <Error /> } />
                             </Routes>
 

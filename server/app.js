@@ -13,74 +13,82 @@ cron.schedule('0 0 * * *', async () => {
   const result = await checkSubscriptionStatus();
 });
 
-
 //app
 const app = express();
-
-//Socket IO
-const http = require('http').Server(app);
-const socketIO = require('socket.io')(http, {
-  cors: {
-    origin: "http://localhost:3000"
-  }
-});
-let users = [];
-
-socketIO.on('connection', (socket) => {
-  console.log(7777);
-  console.log(`⚡: ${socket.id} user just connected!`);
-  socket.on('message', (data) => {
-    socketIO.emit('messageResponse', data);
-  });
-
-  socket.on('typing', (data) => socket.broadcast.emit('typingResponse', data));
-
-  socket.on('newUser', (data) => {
-    console.log(66666);
-    users.push(data);
-    console.log(users);
-
-    socketIO.emit('newUserResponse', users);
-  });
-
-  socket.on('disconnect', () => {
-    console.log('🔥: A user disconnected');
-    users = users.filter((user) => user.socketID !== socket.id);
-    socketIO.emit('newUserResponse', users);
-    socket.disconnect();
-  });
-});
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
+//db
+require("./config/database").connectDb();
+
 //middleware
 app.use(morgan("dev"));
 app.use(cors({ origin: true, credentials: true }));
-
-
-
-//db
-require("./config/database").connectDb();
 
 //routes
 const authRoute = require("./routes/authRoutes");
 const adminRoute = require("./routes/admin/adminRoutes");
 const trainerRoute = require("./routes/trainer/trainerRoutes");
 const userRoute = require("./routes/user/userRoutes");
+const chatRouter = require("./routes/chats/chatRouter");
+
+const server = app.listen(8080, () => {
+  console.log(`Server is running on port 8080.`);
+});
+
+const io = require('socket.io')(server, {
+  pingTimeout: 60000,
+  cors: {
+    origin: "http://localhost:3000"
+  }
+})
+
+io.on("connection", (socket) => {
+  console.log("connected to socket.io");
+
+  socket.on("setup", (user) => {
+    socket.join(user.userId);
+    socket.emit('connected');
+  });
+
+  socket.on("join chat", (room) => {
+    socket.join(room);
+    console.log("user joined in room " + room);
+  })
+
+  socket.on("typing", (room) => socket.in(room).emit("typing"));
+  socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
+
+  socket.on('new message', (newMessageRecieved) => {
+    let chat = newMessageRecieved.chat;
+    if (!chat.users) return console.log("no users");
+    chat.users.forEach(user => {
+      if (user._id == newMessageRecieved.sender._id) return
+      socket.in(user._id).emit("message recieved", newMessageRecieved);
+    });
+  })
+
+  socket.off("setup", () => {
+    console.log("User disconned");
+    socket.leave(user._id);
+  })
+})
 
 app.use("/api/auth", authRoute);
-app.use("/api/admin", adminRoute)
-app.use("/api/trainer", trainerRoute)
-app.use("/api/user", userRoute)
+app.use("/api/admin", adminRoute);
+app.use("/api/trainer", trainerRoute);
+app.use("/api/user", userRoute);
+app.use("/api/chats", chatRouter);
 
 //port
 const port = process.env.port || 8080;
 
 //listener
-http.listen(port, () =>
-  console.log(`Server is running on port ${ port }`)
-);
+// const server = app.listen(port, () =>
+//   console.log(`Server is running on port ${ port }`)
+// );
+
 
 /*The cors() function takes an object with two properties: origin and credentials. 
 The origin property specifies which domains are allowed to make cross-origin requests to the application.

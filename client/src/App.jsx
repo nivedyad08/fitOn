@@ -10,21 +10,12 @@ import UserRoute from "./Routes/UserRoute";
 import LandingPage from "./Pages/Landing/LandingPage";
 import ProtectedAuth from "./Auth/ProtectedAuth";
 import AuthRoute from "./Routes/AuthRoute";
-//Socket
-import socketIO from 'socket.io-client';
-import Chat from "./Components/ChatSystem/Chat";
-import ChatPage from "./Components/ChatSystem/ChatPage";
-const socket = socketIO.connect('http://localhost:8080');
 
 function App() {
 
   return (
     <div>
       <Routes>
-
-        <Route path="/chatHome" element={ <Chat socket={ socket } /> }></Route>
-        <Route path="/chat" element={ <ChatPage socket={ socket } /> }></Route>
-
         <Route path="/" element={ <LandingPage /> } />
         /*Admin */
         <Route element={ <AdminAuth /> }>
