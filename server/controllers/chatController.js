@@ -80,6 +80,7 @@ const fetchChats = asyncHandler(async function (req, res) {
                         _id: "$chatUsers._id",
                         firstName: "$chatUsers.firstName",
                         lastName: "$chatUsers.lastName",
+                        profilePic: "$chatUsers.profilePic",
                     },
                 },
             ]);

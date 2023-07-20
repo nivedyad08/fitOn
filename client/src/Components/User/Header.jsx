@@ -6,6 +6,8 @@ import Cookies from 'js-cookie';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser } from "../redux-toolkit/slices/userSlice"
 import { FaHeart } from 'react-icons/fa';
+import Badge from '@mui/material/Badge';
+import Stack from '@mui/material/Stack';
 
 const navigation = [
     { name: 'Dashboard', href: '/user/dashboard', current: false },
@@ -21,7 +23,7 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function Header() {
+export default function Header({ notifications, setNotifications, setSelectedChat }) {
     const user = useSelector((state) => state.loggedUser.userInfo)
     const location = useLocation()
     const navigate = useNavigate()
@@ -85,21 +87,65 @@ export default function Header() {
                                     <div className="ml-4 flex items-center md:ml-6 px-20 gap-10">
                                         <button
                                             type="button"
-                                            className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" 
-                                            onClick={()=>navigate("/user/account")}
+                                            className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                                            onClick={ () => navigate("/user/account") }
                                         >
                                             <span className="sr-only">View notifications</span>
                                             <FaHeart
                                                 className="text-gray-300 w-18 h-18 cursor-pointer"
                                             />
                                         </button>
-                                        <button
+                                        {/* <button
                                             type="button"
                                             className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                                         >
                                             <span className="sr-only">View notifications</span>
                                             <BellIcon className="h-20 w-20" aria-hidden="true" />
-                                        </button>
+                                        </button> */}
+                                        {/* Profile dropdown */ }
+                                        <Menu as="div" className="relative ml-3">
+                                            <div>
+                                                <Menu.Button className="flex max-w-xs items-center rounded-full  text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                                                    <span className="sr-only">View notifications</span>
+                                                    <Stack spacing={ 2 } direction="row">
+                                                        <Badge badgeContent={ notifications.length > 0 ? notifications.length : "0" } color="secondary">
+                                                            <BellIcon className="h-20 w-20 text-white" color="action" />
+                                                        </Badge>
+                                                    </Stack>
+                                                </Menu.Button>
+                                            </div>
+                                            <Transition
+                                                as={ Fragment }
+                                                enter="transition ease-out duration-100"
+                                                enterFrom="transform opacity-0 scale-95"
+                                                enterTo="transform opacity-100 scale-100"
+                                                leave="transition ease-in duration-75"
+                                                leaveFrom="transform opacity-100 scale-100"
+                                                leaveTo="transform opacity-0 scale-95"
+                                            >
+                                                <Menu.Items className="absolute right-0 z-10 my-10 w-60 h-92 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" style={ { width: '218px' } }>
+                                                    { !notifications.length && <span className='block px-8 py-8 text-sm text-gray-700 cursor-pointer'>No New Messages</span> }
+                                                    { notifications.map((item) => (
+                                                        <Menu.Item key={ item._id } >
+                                                            { ({ active }) => (
+                                                                <a
+                                                                    onClick={ () => {
+                                                                        setSelectedChat(item.sender._id)
+                                                                        setNotifications(notifications.filter((n) => n !== item));
+                                                                    } }
+                                                                    className={ classNames(
+                                                                        active ? 'bg-gray-100' : '',
+                                                                        'block px-8 py-8 text-sm text-gray-700 cursor-pointer'
+                                                                    ) }
+                                                                >
+                                                                    { `New Message from ${ item.sender.firstName } ` }
+                                                                </a>
+                                                            ) }
+                                                        </Menu.Item>
+                                                    )) }
+                                                </Menu.Items>
+                                            </Transition>
+                                        </Menu>
 
                                         {/* Profile dropdown */ }
                                         <Menu as="div" className="relative ml-3">

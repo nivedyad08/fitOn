@@ -23,6 +23,8 @@ const UserRoute = () => {
         return () => clearTimeout(timeout);
     }, []);
 
+    const [notifications, setNotifications] = useState([]);
+    const [selectedChat, setSelectedChat] = useState("");
     return (
         <div className="">
             {/* Header */ }
@@ -30,7 +32,7 @@ const UserRoute = () => {
                 <Loader />
             ) : (
                 <Suspense fallback={ <Loader /> }>
-                    <Header />
+                    <Header notifications={ notifications } setNotifications={ setNotifications } setSelectedChat={ setSelectedChat } />
                     {/* Body */ }
                     <main className="custom-dark-blue px-10 overflow-x-hidden md:px-8">
                         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -43,7 +45,7 @@ const UserRoute = () => {
                                 <Route path="subscribe/membership" element={ <UserPricingPlans /> } />
                                 <Route path="checkout/:mode/:userId" element={ <Checkout /> } />
                                 <Route path="trainer/watch/:workoutVideo/:workoutId" element={ <Watch /> } />
-                                <Route path="chats" element={ <Messages /> } />
+                                <Route path="chats" element={ <Messages setNotifications={ setNotifications } notifications={ notifications } selectedChat={ selectedChat } /> } />
                                 <Route path="*" element={ <Error /> } />
                             </Routes>
 

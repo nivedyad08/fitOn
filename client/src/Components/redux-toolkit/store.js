@@ -7,7 +7,6 @@ import workoutSlice from "./slices/workoutSlice"
 import trainerSlice from "./slices/trainerSlice"
 import transactionSlice from "./slices/transactionSlice"
 import signupSlice from "./slices/signupSlice"
-import chatSlice from "./slices/chatSlice"
 
 const persistConfig = {
     key: 'root',
@@ -19,7 +18,6 @@ const rootReducer = combineReducers({
     trainerDetails: trainerSlice,
     transactionDetails: transactionSlice,
     signupUserDetails: signupSlice,
-    ChatState: chatSlice,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
