@@ -31,7 +31,7 @@ const authRoute = require("./routes/authRoutes");
 const adminRoute = require("./routes/admin/adminRoutes");
 const trainerRoute = require("./routes/trainer/trainerRoutes");
 const userRoute = require("./routes/user/userRoutes");
-const chatRouter = require("./routes/chats/chatRouter");
+const chatRoute = require("./routes/chats/chatRoute");
 
 const server = app.listen(8080, () => {
   console.log(`Server is running on port 8080.`);
@@ -48,7 +48,8 @@ io.on("connection", (socket) => {
   console.log("connected to socket.io");
 
   socket.on("setup", (user) => {
-    socket.join(user.userId);
+    socket.join(user);
+    console.log('user setupped');
     socket.emit('connected');
   });
 
@@ -61,6 +62,7 @@ io.on("connection", (socket) => {
   socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
 
   socket.on('new message', (newMessageRecieved) => {
+    console.log(newMessageRecieved);
     let chat = newMessageRecieved.chat;
     if (!chat.users) return console.log("no users");
     chat.users.forEach(user => {
@@ -79,7 +81,7 @@ app.use("/api/auth", authRoute);
 app.use("/api/admin", adminRoute);
 app.use("/api/trainer", trainerRoute);
 app.use("/api/user", userRoute);
-app.use("/api/chats", chatRouter);
+app.use("/api/chats", chatRoute);
 
 //port
 const port = process.env.port || 8080;

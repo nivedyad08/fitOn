@@ -1,0 +1,146 @@
+.msg {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 222, 222, 0.5318761384335156) 0%,
+    rgba(188, 236, 247, 0.4098360655737705) 100%
+  );
+  max-width: 60em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  display: flex;
+}
+
+.users-list {
+  border-right: 1px solid #ccc;
+  padding-right: 20px;
+  height: 400px;
+  overflow-y: auto;
+}
+
+.users-list h2 {
+  margin-bottom: 10px;
+}
+
+.users-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.users-list li {
+  min-width: 5em;
+  /* width: fit-content; */
+  cursor: pointer;
+  padding: 5px;
+  margin-bottom: 5px;
+  border-radius: 3px;
+  background-color: #f0f0f0;
+  transition: background-color 0.3s;
+}
+
+.users-list li.selected {
+  background-color: #e0e0e0;
+}
+
+.chat {
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.chat h2 {
+  margin-bottom: 10px;
+}
+
+.chat-history {
+  flex-grow: 1;
+  height: 300px;
+  overflow-y: scroll;
+  padding: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+.chat-history::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-history::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-history::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+.chat-history div {
+  padding: 5px;
+  margin-bottom: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.chat-history .sent {
+  margin: 0.5em;
+  border-radius: 1em;
+  float: right;
+  clear: both;
+  align-self: flex-end;
+  background-color: #dcf8c6;
+  color: #333;
+  align-items: flex-start;
+  /* text-align: right; */
+}
+
+.chat-history .received {
+  margin: 0.5em;
+  float: left;
+  clear: both;
+  align-self: flex-start;
+  background-color: #f4f4f4;
+  color: #333;
+  align-items: flex-start;
+  /* text-align: left; */
+}
+
+.chat-history span:first-child {
+  font-weight: bold;
+  margin-bottom: 3px;
+}
+
+.message-input {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.message-input div {
+  margin-right: 10px;
+}
+
+.message-input input {
+  padding: 5px;
+  max-width: 20em;
+}
+
+.message-input button {
+  margin: 2em;
+  padding: 5px 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.message-input button:hover {
+  background-color: #45a049;
+}

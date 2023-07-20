@@ -7,6 +7,7 @@ import WorkoutList from '../Components/Trainer/Workouts/WorkoutList';
 import ViewWorkout from '../Components/Trainer/Workouts/ViewWorkout';
 import EditWorkout from '../Components/Trainer/Workouts/EditWorkout';
 import Header from '../Components/Trainer/Header';
+import Messages from '../Components/Messages/Messages';
 import Loader from '../Components/Loader';
 import Error from '../Components/Error';
 
@@ -39,6 +40,7 @@ const TrainerRoute = () => {
                                     <Route path="workout/:workoutId" element={ <ViewWorkout /> } />
                                     <Route path="edit/:workoutId" element={ <EditWorkout /> } />
                                     <Route path="account" element={ <Account /> } />
+                                    <Route path="chats" element={ <Messages /> } />
                                     <Route path="*" element={ <Error /> } />
                                 </Routes>
                             </div>
