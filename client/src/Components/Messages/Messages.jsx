@@ -1,12 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
-// import './message.css'
 import io from "socket.io-client";
 import { useSelector } from "react-redux";
+import SendIcon from '@mui/icons-material/Send';
 import {
     getChats, createNewChat, fetchAllChats,
     sendMessage
 } from "../../Services/UserApi"
-import { Notifications } from '@mui/icons-material';
 
 const EndPoint = "http://localhost:8080";
 var socket, selectedchatcompare;
@@ -122,13 +121,15 @@ function Messages({ setNotifications, notifications, selectedChat }) {
     };
 
     const handleSendMessage = (e) => {
-        e.preventDefault();
-        socket.emit("stop typing", chatId);
-        sendMessage({ content: message, chatId }).then((res) => {
-            socket.emit('new message', res)
-            setChatHistory([...chatHistory, res])
-            setMessage('')
-        })
+        if (message) {
+            e.preventDefault();
+            socket.emit("stop typing", chatId);
+            sendMessage({ content: message, chatId }).then((res) => {
+                socket.emit('new message', res)
+                setChatHistory([...chatHistory, res])
+                setMessage('')
+            })
+        }
     };
 
     const typingHandler = (e) => {
@@ -178,20 +179,31 @@ function Messages({ setNotifications, notifications, selectedChat }) {
                 {/* Chat Area */ }
                 <div className="flex flex-grow flex-col bg-gradient-to-r from-gray-400 to-blue-300 rounded-lg shadow-md p-6">
                     <div className="chat-history flex-grow h-72 overflow-y-auto p-4 rounded-md bg-[#c6c6d5] shadow-md mb-4" ref={ chatContainerRef }>
-                        { selectedUser ? chatHistory.map((msg, index) => (
-                            <div
-                                key={ index }
-                                className={ `flex mb-4 ${ msg.sender.firstName === user.firstName ? 'flex-col-reverse items-end' : 'flex-col items-start'
-                                    }` }
-                            >
-                                <div className={ `px-7 py-4 rounded-md ${ msg.sender.firstName === user.firstName ? 'bg-green-400 text-gray-100' : 'bg-gray-100'
-                                    }` }>
-                                    <span>{ msg.content }</span>
-                                </div>
-                            </div>
-                        )) :
-                            <p className='my-auto'>Select a user to start chatting</p>
+                        {
+                            selectedUser ? (
+                                chatHistory.length > 0 ? (
+                                    chatHistory.map((msg, index) => (
+                                        <div
+                                            key={ index }
+                                            className={ `flex mb-4 ${ msg.sender.firstName === user.firstName ? 'flex-col-reverse items-end' : 'flex-col items-start'
+                                                }` }
+                                        >
+                                            <div
+                                                className={ `px-7 py-4 rounded-md ${ msg.sender.firstName === user.firstName ? 'bg-green-400 text-gray-100' : 'bg-gray-100'
+                                                    }` }
+                                            >
+                                                <span>{ msg.content }</span>
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p className='my-auto'>{ `No chat history available for ${ selectedUser }` }</p>
+                                )
+                            ) : (
+                                <p className='my-auto'>Select a user to start chatting.</p>
+                            )
                         }
+
                     </div>
                     <div className="message-input flex items-center">
                         { istyping ? <div className="text-blue-900">Typing...</div> : <></> }
@@ -206,70 +218,11 @@ function Messages({ setNotifications, notifications, selectedChat }) {
                             onClick={ handleSendMessage }
                             className="px-6 py-12 bg-blue-500 text-white rounded-r-md cursor-pointer transition-colors duration-300 hover:bg-blue-600"
                         >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-20 w-20"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={ 2 } d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                            </svg>
+                            <SendIcon />
                         </button>
                     </div>
                 </div>
             </div>
-
-
-
-
-            {/* <div className="msg">
-                <div className="users-list">
-                    <h2>Users</h2>
-                    <ul>
-                        { users.map((user, index) => (
-                            <li
-                                key={ index }
-                                className={ selectedUser === user.firstName ? "selected" : "" }
-                                onClick={ () => handleUserSelection(user) }
-                            >
-                                { user.firstName }
-                            </li>
-                        )) }
-                    </ul>
-                </div>
-                <div className="chat">
-                    <h2>Chat</h2>
-                    { selectedUser ? (
-                        <div>
-                            <h3 style={ { color: "blue" } }>{ selectedUser }</h3>
-                            <div className="chat-history" ref={ chatContainerRef }>
-                                { chatHistory.map((msg, index) => (
-
-                                    <div
-                                        key={ index }
-                                        className={ msg.sender.firstName === user.firstName ? "sent" : "received" }
-                                    >
-                                        <span style={ { color: 'red' } }>{ msg.sender.firstName }: </span>
-                                        <span>{ msg.content }</span>
-                                    </div>
-                                )) }
-                            </div>
-                            <div className="message-input">
-                                { istyping ? <div>Typing...</div> : <></> }
-                                <input
-                                    type="text"
-                                    value={ message }
-                                    onChange={ typingHandler }
-                                />
-                                <button onClick={ handleSendMessage }>Send</button>
-                            </div>
-                        </div>
-                    ) : (
-                        <p>Select a user to start chatting</p>
-                    ) }
-                </div>
-            </div > */}
         </>
     )
 }

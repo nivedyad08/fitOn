@@ -29,7 +29,7 @@ const trainers = async (req, res) => {
                     as: "workouts",
                 }
             },
-            { $sort: { createdAt: 1 } }
+            { $sort: { createdAt: -1 } }
         ])
         return res.status(200).json({ trainers: trainersList });
     } catch (error) {

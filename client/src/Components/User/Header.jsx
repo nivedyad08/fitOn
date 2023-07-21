@@ -95,14 +95,7 @@ export default function Header({ notifications, setNotifications, setSelectedCha
                                                 className="text-gray-300 w-18 h-18 cursor-pointer"
                                             />
                                         </button>
-                                        {/* <button
-                                            type="button"
-                                            className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                                        >
-                                            <span className="sr-only">View notifications</span>
-                                            <BellIcon className="h-20 w-20" aria-hidden="true" />
-                                        </button> */}
-                                        {/* Profile dropdown */ }
+                                        {/* Notification dropdown */ }
                                         <Menu as="div" className="relative ml-3">
                                             <div>
                                                 <Menu.Button className="flex max-w-xs items-center rounded-full  text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">

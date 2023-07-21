@@ -19,11 +19,16 @@ const addCategory = async (req, res) => {
     const { category } = req.body
     if (!category)
       return res.status(400).json({ message: "Category is required" });
-    const newCategory = await Category.updateOne({ name: category }, { $set: { name: category, status: true } }, { upsert: true })
+    const checkCategory = await Category.findOne({ name: { $regex: `${ category }.*`, $options: "i" } });
+    if (checkCategory)
+      return res.status(400).json({ message: "Category already exist!!!" });
+
+    const newCategory = await Category.updateOne({ name: category }, { $set: { name: category, status: true } }, { upsert: true }, { new: true })
 
     if (!newCategory)
       return res.status(400).json({ message: "Something went wrong" });
-    return res.status(200).json({ message: "Category added successfully !!" });
+    const updatedCategory = await Category.findById(newCategory.upsertedId)
+    return res.status(200).json({ message: "Category added successfully !!", newCategory: updatedCategory });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

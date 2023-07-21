@@ -4,7 +4,7 @@ import axios from "../../../config/axios";
 import { Switch } from "@mui/material";
 import EditCategory from "./EditCategory";
 
-const CategoryList = () => {
+const CategoryList = ({ data, setData }) => {
     const [openEditModal, setEditModalOpen] = useState(false)
     const [categoryDetails, setCategoryDetails] = useState("")
     const toggleModal = (category) => {
@@ -57,8 +57,6 @@ const CategoryList = () => {
         ],
         []
     );
-
-    const [data, setData] = useState([])
     const fetchCategories = async () => {
         let count = 1
         const result = await axios.get("/api/admin/categories");
@@ -83,7 +81,7 @@ const CategoryList = () => {
             </div>
             {
                 openEditModal && (
-                    <EditCategory setEditModalOpen={ setEditModalOpen } categoryName={ categoryDetails.name } categoryId={ categoryDetails._id } setData={ setData } categoryData={data} />
+                    <EditCategory setEditModalOpen={ setEditModalOpen } categoryName={ categoryDetails.name } categoryId={ categoryDetails._id } setData={ setData } categoryData={ data } />
                 )
             }
         </>

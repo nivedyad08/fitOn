@@ -4,6 +4,7 @@ import AddCategory from './AddCategory';
 
 const Categories = () => {
     const [modalOpen, setModalOpen] = useState(false);
+    const [data, setData] = useState([])
     const toggleModal = () => {
         setModalOpen(true);
     };
@@ -22,9 +23,9 @@ const Categories = () => {
                 </button>
             </div>
             { modalOpen && (
-                <AddCategory setModalOpen={setModalOpen} />
+                <AddCategory setModalOpen={ setModalOpen } data={ data } setData={ setData } />
             ) }
-            <CategoryList />
+            <CategoryList data={ data } setData={ setData } />
         </div>
     );
 }

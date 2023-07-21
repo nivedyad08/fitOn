@@ -11,6 +11,7 @@ import Checkout from '../Components/User/Membership/Checkout';
 import Watch from '../Components/User/Trainers/Watch';
 import Error from '../Components/Error';
 import Messages from '../Components/Messages/Messages';
+import Sessions from '../Components/User/Sessions';
 
 const UserRoute = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -41,6 +42,7 @@ const UserRoute = () => {
                                 <Route path="dashboard" element={ <Dashboard /> } />
                                 <Route path="account" element={ <Account /> } />
                                 <Route path="trainers" element={ <TrainersList /> } />
+                                <Route path="sessions" element={ <Sessions /> } />
                                 <Route path="trainer/details/:trainerId" element={ <TrainerDetails /> } />
                                 <Route path="subscribe/membership" element={ <UserPricingPlans /> } />
                                 <Route path="checkout/:mode/:userId" element={ <Checkout /> } />

@@ -36,5 +36,9 @@ trainerRoute.post('/upload-basic-workout-video', isTrainer, workoutUpload.fields
 trainerRoute.post('/edit-user-details', isTrainer, userUpload, trainerController.editUser);
 trainerRoute.post('/change/password', isTrainer, trainerController.changePassword);
 trainerRoute.get('/dashboard/details', isTrainer, trainerController.dashboardDetails);
+trainerRoute.get('/subscribedUsers', isTrainer, trainerController.subscribedUsers);
+trainerRoute.post('/create/session', isTrainer, trainerController.createSession);
+trainerRoute.get('/sessions', trainerController.sessions);
+trainerRoute.get('/change/session-status', isTrainer, trainerController.changeSession);
 
 module.exports = trainerRoute

@@ -10,6 +10,7 @@ import Header from '../Components/Trainer/Header';
 import Messages from '../Components/Messages/Messages';
 import Loader from '../Components/Loader';
 import Error from '../Components/Error';
+import Sessions from '../Components/Trainer/Sessions/Sessions';
 
 const TrainerRoute = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -21,6 +22,8 @@ const TrainerRoute = () => {
         return () => clearTimeout(timeout);
     }, []);
 
+    const [notifications, setNotifications] = useState([]);
+    const [selectedChat, setSelectedChat] = useState("");
     return (
         <>
             <div className="custom-dark-blue"> {/* Update the className to include "h-screen" */ }
@@ -29,7 +32,7 @@ const TrainerRoute = () => {
                     <Loader />
                 ) : (
                     <Suspense fallback={ <Loader /> }>
-                        <Header />
+                        <Header notifications={ notifications } setNotifications={ setNotifications } setSelectedChat={ setSelectedChat } />
                         {/* Body */ }
                         <main className="px-4 py-8 md:px-8 flex justify-center items-center">
                             <div className="mx-auto max-w-7xl w-11/12 py-12 sm:px-6 lg:px-8">
@@ -40,7 +43,8 @@ const TrainerRoute = () => {
                                     <Route path="workout/:workoutId" element={ <ViewWorkout /> } />
                                     <Route path="edit/:workoutId" element={ <EditWorkout /> } />
                                     <Route path="account" element={ <Account /> } />
-                                    <Route path="chats" element={ <Messages /> } />
+                                    <Route path="sessions" element={ <Sessions /> } />
+                                    <Route path="chats" element={ <Messages setNotifications={ setNotifications } notifications={ notifications } selectedChat={ selectedChat } /> } />
                                     <Route path="*" element={ <Error /> } />
                                 </Routes>
                             </div>

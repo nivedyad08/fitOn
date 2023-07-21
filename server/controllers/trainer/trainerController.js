@@ -1,9 +1,11 @@
 const User = require("../../models/usersMdl");
 const Workout = require("../../models/workoutMdl");
+const Sessions = require("../../models/sessionsMdls");
 const updateUserDetails = require("../../helpers/userAccount").updateUserDetails
 const updateUserPassword = require("../../helpers/userAccount").updateUserPassword
-const { USER_ROLE } = require("../../constants/roles")
+const { USER_ROLE, TRAINER_ROLE } = require("../../constants/roles")
 const mongoose = require('mongoose');
+const moment = require('moment');
 
 const ObjectId = mongoose.Types.ObjectId
 
@@ -76,18 +78,17 @@ const dashboardDetails = async (req, res) => {
             },
             {
                 $project: {
-                    workoutTitle:1,
-                    thumbnailImage:1,
-                    createdAt:1,
-                    favourites:1,
-                    totalRatingsCount:1,
+                    workoutTitle: 1,
+                    thumbnailImage: 1,
+                    createdAt: 1,
+                    favourites: 1,
+                    totalRatingsCount: 1,
                     averageRating: { $divide: ["$totalRatingsSum", "$totalRatingsCount"] }, // Calculate the average rating
                     category: { $arrayElemAt: ["$category", 0] },
                     level: { $arrayElemAt: ["$level", 0] }
                 }
             }
         ]);
-console.log(topWorkouts);
         return res.status(200).json({
             totalSubscribers,
             totalWorkouts,
@@ -100,9 +101,147 @@ console.log(topWorkouts);
     }
 }
 
+const subscribedUsers = async (req, res) => {
+    try {
+        const { trainerId } = req.query
+        const userId = new mongoose.Types.ObjectId(trainerId);
+        const usersList = await User.aggregate([
+            {
+                $match: {
+                    subscriptions: { $elemMatch: { trainerId: userId } }
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    firstName: 1,
+                    lastName: 1,
+                }
+            }
+        ]);
+        console.log(usersList);
+        return res.status(200).json({ usersList });
+    } catch (error) {
+
+    }
+}
+
+const createSession = async (req, res) => {
+    try {
+        const { user, datetime, status } = req.body.data
+        const { trainerId } = req.query
+        const userDetails = await User.findById(user)
+        if (!user && !datetime && !status && trainerId)
+            return res.status(400).json({ message: "All fields are required" });
+        const newSession = Sessions({
+            user,
+            trainer: trainerId,
+            datetime,
+            status,
+        });
+        const resSession = await newSession.save();
+        if (!resSession)
+            return res.status(400).json({ message: "Something went wrong" });
+
+        return res.status(200).json({ status: 200, session: resSession, userDetails });
+    } catch (error) {
+
+    }
+}
+
+const sessions = async (req, res) => {
+    try {
+        const { userId } = req.query;
+        const user = await User.findById(userId);
+
+        let matchCondition;
+        if (user.role === TRAINER_ROLE) {
+            matchCondition = { trainer: new ObjectId(userId) };
+        } else {
+            matchCondition = { user: new ObjectId(userId) };
+        }
+
+        const sessionsList = await Sessions.aggregate([
+            {
+                $match: matchCondition
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "user",
+                    foreignField: "_id",
+                    as: "user",
+                }
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "trainer",
+                    foreignField: "_id",
+                    as: "trainer",
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    status: 1,
+                    datetime: 1,
+                    user: {
+                        $concat: [
+                            { $arrayElemAt: ["$user.firstName", 0] },
+                            " ",
+                            { $arrayElemAt: ["$user.lastName", 0] },
+                        ]
+                    },
+                    userProfilePic: { $arrayElemAt: ["$user.profilePic", 0] },
+                    trainer: {
+                        $concat: [
+                            { $arrayElemAt: ["$trainer.firstName", 0] },
+                            " ",
+                            { $arrayElemAt: ["$trainer.lastName", 0] },
+                        ]
+                    },
+                }
+            },
+            { $sort: { createdAt: 1 } },
+        ]);
+
+        // Format the datetime field using moment
+        sessionsList.forEach(session => {
+            session.datetime = moment(session.datetime).format("YYYY-MM-DD HH:mm A");
+        });
+
+        return res.status(200).json({ sessionsList });
+    } catch (error) {
+        // Handle the error here
+        console.error(error);
+        return res.status(500).json({ error: "An error occurred" });
+    }
+}
+
+const changeSession = async (req, res) => {
+    try {
+        const { sessionId } = req.query
+        const { status } = req.body
+        const updateStatus = await Sessions.findByIdAndUpdate(sessionId,
+            { status: status }
+        );
+        if (!updateStatus) {
+            return res.status(400).json({ message: "Something went wrong" });
+        }
+        return res.status(200).json({ status: 200, message: "Status changed successfully !!" });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+
 
 module.exports = {
     editUser,
     changePassword,
-    dashboardDetails
+    dashboardDetails,
+    subscribedUsers,
+    createSession,
+    sessions,
+    changeSession
 };

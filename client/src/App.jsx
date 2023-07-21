@@ -10,12 +10,9 @@ import UserRoute from "./Routes/UserRoute";
 import LandingPage from "./Pages/Landing/LandingPage";
 import ProtectedAuth from "./Auth/ProtectedAuth";
 import AuthRoute from "./Routes/AuthRoute";
-import Box from '@mui/material/Box';
-import Fab from '@mui/material/Fab';
-import AddIcon from '@mui/icons-material/Add';
+import FloatingButton from "./Components/FloatingButton";
 
 function App() {
-
   return (
     <div>
       <Routes>
@@ -39,12 +36,8 @@ function App() {
         <Route path="/*" element={ <errorPage /> } />
       </Routes>
       <ToastContainerBox />
+      <FloatingButton />
 
-      <Box sx={ { '& > :not(style)': { m: 1 } } }>
-        <Fab color="primary" aria-label="add">
-          <AddIcon />
-        </Fab>
-      </Box>
     </div>
   );
 }

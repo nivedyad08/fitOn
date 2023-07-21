@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import axios from '../../../config/axios';
 
-const AddCategory = ({ setModalOpen }) => {
+const AddCategory = ({ setModalOpen, data, setData }) => {
     const hideModal = () => {
         setModalOpen(false);
     };
@@ -23,6 +23,13 @@ const AddCategory = ({ setModalOpen }) => {
             if (data) {
                 const createCategory = await axios.post("api/admin/add-category", data);
                 if (createCategory.status === 200) {
+                    console.log(createCategory);
+                    setData((prevData) => {
+                        if (createCategory.data.newCategory) {
+                            return [...prevData, createCategory.data.newCategory]
+                        }
+                        return prevData
+                    })
                     toast.success("Category Added Successfully");
                 }
                 hideModal()
