@@ -56,6 +56,10 @@ export const sendMessage = async ({ content, chatId }) => {
     return res.data;
 }
 
+export const searchTrainer = async (search) => {
+    const res = await axios.post(`${ USER_BASE_URL }/trainer/search`, { search })
+    return res.data;
+}
 
 // find my current frinends and seach user on chat box
 // export const findMyChatFriends = ({ searchQuery, setUsers }) => {

@@ -184,10 +184,29 @@ const addRating = async (req, res) => {
     }
 }
 
+const searchTrainer = async (req, res, next) => {
+    try {
+        const { search } = req.body;
+        const showTrainer = await User.aggregate([
+            {
+                $match: {
+                    isActive: true,
+                    firstName: { $regex: `${ search }.*`, $options: "i" },
+                },
+            },
+        ]);
+        console.log(showTrainer);
+        return res.status(200).json({ showTrainer: showTrainer });
+    } catch (error) {
+        return res.status(400).json({ message: error.message });
+    }
+};
+
 module.exports = {
     trainers,
     packages,
     addTofavourites,
     userFavourites,
     addRating,
+    searchTrainer
 };
