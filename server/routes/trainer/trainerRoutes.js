@@ -8,23 +8,23 @@ const isTrainer = require("../../middlewares/isTrainer")
 const workoutUpload = require("../../config/multer").workoutVideoUpload
 
 
-const imgUpload = require("../../utils/cloudinary").imageStorage
-const imageStorage = multer({ storage: imgUpload })
+// const userUpload = multer({ storage: imgUpload }).fields([
+//   { name: "profilePic", maxCount: 1 },
+//   { name: "coverPhoto", maxCount: 1 },
+// ]);
 
-const userUpload = multer({ storage: imgUpload }).fields([
-  { name: "profilePic", maxCount: 1 },
-  { name: "coverPhoto", maxCount: 1 },
-]);
+const storage = require("../../utils/cloudinary").imageStorage
+const upload = multer({ storage })
 
 
-const thumbnailUpload = require("../../config/multer").userImageUpload;
+// const thumbnailUpload = require("../../config/multer").userImageUpload;
 
-const userImageUpload = require("../../config/multer").userImageUpload;
+// const userImageUpload = require("../../config/multer").userImageUpload;
 
 
 trainerRoute.get('/workouts', isTrainer, workoutController.workouts);
 
-trainerRoute.post('/add-workout', isTrainer, imageStorage.single("thumbnailImage"), workoutController.addWorkout);
+trainerRoute.post('/add-workout', isTrainer, upload.single("thumbnailImage"), workoutController.addWorkout);
 
 trainerRoute.post('/upload-workout-video', isTrainer, workoutUpload.fields([
   {
@@ -42,7 +42,7 @@ trainerRoute.post('/upload-basic-workout-video', isTrainer, workoutUpload.fields
   },
 ]), workoutController.uploadBasicWorkoutVideo);
 
-trainerRoute.post('/edit-user-details', isTrainer, userUpload, trainerController.editUser);
+trainerRoute.post('/edit-user-details', isTrainer, trainerController.editUser);
 trainerRoute.post('/change/password', isTrainer, trainerController.changePassword);
 trainerRoute.get('/dashboard/details', isTrainer, trainerController.dashboardDetails);
 trainerRoute.get('/subscribedUsers', isTrainer, trainerController.subscribedUsers);

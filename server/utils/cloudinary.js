@@ -1,11 +1,11 @@
-require("dotenv").config();
+require('dotenv').config();
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
 cloudinary.config({
-    cloud_name: 'nivedya',
-    api_key: '996299631483962',
-    api_secret: 'aZAafaSo5fatuTzqTXDSylmMoP0'
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 const imageStorage = new CloudinaryStorage({
@@ -14,7 +14,7 @@ const imageStorage = new CloudinaryStorage({
         folder: 'fitOn',
     },
 });
-
 module.exports = {
+    cloudinary,
     imageStorage,
-}
+};
