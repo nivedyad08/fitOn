@@ -17,8 +17,11 @@ const trainers = async (req, res) => {
             return res.status(400).json({ message: "Invalid user" });
 
         const level = await Level.findOne({ name: "Beginner" }, { _id: 1 })
-        const limitCount = !user.isSubscriber ? 10 : null
         let trainersList = ""
+
+        const page = parseInt(req.query.page) || 1
+        const limit = parseInt(req.query.limit) || 10
+
         trainersList = await User.aggregate([
             { $match: { isActive: true, role: TRAINER_ROLE } },
             {
@@ -29,9 +32,12 @@ const trainers = async (req, res) => {
                     as: "workouts",
                 }
             },
-            { $sort: { createdAt: -1 } }
+            { $sort: { createdAt: -1 } },
+            { $skip: (page - 1) * limit },
+            { $limit: limit }
         ])
-        return res.status(200).json({ trainers: trainersList });
+        const totalTrainersCount = await User.find({ role: TRAINER_ROLE }).count()
+        return res.status(200).json({ trainers: trainersList, totalTrainersCount: totalTrainersCount });
     } catch (error) {
         return res.status(400).json({ message: error.message });
     }

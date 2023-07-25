@@ -5,37 +5,50 @@ import { BASE_URL } from "../../../constants/urls";
 import { useNavigate } from "react-router-dom";
 import { trainerDetails } from "../../redux-toolkit/slices/trainerSlice";
 import { searchTrainer } from "../../../Services/UserApi";
+import Pagination from "./Pagination";
 
 const TrainersList = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [trainers, setTrainers] = useState([]);
     const user = useSelector((state) => state.loggedUser.userInfo)
+
+    const [currentPage, setCurrentPage] = useState(1)
+    const [trainersPerPage] = useState(10)
+
     useEffect(() => {
         (async () => {
-            const fetchTrainers = await axios.get(`api/user/trainers?userId=${ user._id }`)
+            const fetchTrainers = await axios.get(
+                `api/user/trainers?userId=${ user._id }&page=${ currentPage }&limit=${ trainersPerPage }`
+            );
+            const totalTrainers = fetchTrainers.data.totalTrainersCount
+            const totalPages = Math.ceil(totalTrainers / trainersPerPage);
+            setTotalPages(totalPages);
             setTrainers(fetchTrainers.data.trainers);
         })()
-    }, []);
+    }, [currentPage, trainersPerPage]);
 
     const showTrainerDetails = (trainer) => {
-        console.log(trainer);
         dispatch(trainerDetails(trainer))
         navigate(`/user/trainer/details/${ trainer._id }`)
     }
 
     const [search, setSeaerchValue] = useState("")
+    const [totalPages, setTotalPages] = useState(0)
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(search);
         searchTrainer(search).then((res) => {
-            console.log(res);
             setTrainers(res.showTrainer)
         }).catch((error) => {
 
         })
     };
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
     return (
         <>
             <div>
@@ -94,6 +107,11 @@ const TrainersList = () => {
 
                 }
             </div>
+            <Pagination
+                currentPage={ currentPage }
+                totalPages={ totalPages }
+                onPageChange={ handlePageChange }
+            />
         </>
     );
 }

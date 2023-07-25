@@ -29,7 +29,7 @@ const FloatingButton = () => {
                 ref={ floatingButtonRef }
                 sx={ {
                     position: 'fixed',
-                    bottom: '20px',
+                    bottom: '100px',
                     right: '20px',
                     zIndex: '9999', // Higher z-index to ensure it's visible over other elements
                     '& > :not(style)': { m: 1 },

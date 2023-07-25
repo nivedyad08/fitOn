@@ -5,62 +5,68 @@
 body {
   margin: 0;
   background-color: #111225;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-.custom-blue{
-  background-color: #1F2044;
+.custom-blue {
+  background-color: #1f2044;
 }
 .text-white {
   color: #ffffff !important;
 }
 .bg-custom-yellow {
-  background-color: #D9A900;
+  background-color: #d9a900;
 }
-.border-custom-yellow{
-  border-color: #D9A900 !important;
+.border-custom-yellow {
+  border-color: #d9a900 !important;
 }
 .custom-yellow {
-  background-color: #D9A900 !important;
+  background-color: #d9a900 !important;
 }
-.custom-light-blue{
+.custom-light-blue {
   background-color: #414160;
 }
 .text-custom-yellow {
-  color: #D9A900;
+  color: #d9a900;
 }
-.inputBg{
+.inputBg {
   background-color: #414160;
 }
 .text-custom-slate {
   color: #6b7280;
 }
 .text-custom-whitish {
-  color: #CBCCD4;
+  color: #cbccd4;
 }
-.custom-dark-blue{
+.custom-dark-blue {
   background-color: #111225;
 }
-.custom-blue-shade1{
+.custom-blue-shade1 {
   background-color: #414160;
 }
-.custom-blue-grey{
-  background-color: #7D7E93;
+.custom-blue-grey {
+  background-color: #7d7e93;
 }
 
-.overflow{
+.overflow {
   overflow: hidden !important;
 }
 
-.instructors{
-  border-color: #7D7E93 !important;
+.instructors {
+  border-color: #7d7e93 !important;
   color: white !important;
+}
+
+.message-bubble {
+  max-width: 80%;
+  word-wrap: break-word;
+  white-space: pre-line;
 }

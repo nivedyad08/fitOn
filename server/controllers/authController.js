@@ -1,4 +1,5 @@
 const User = require("../models/usersMdl");
+const Level = require("../models/levelsMdl");
 const Workout = require("../models/workoutMdl");
 const Transaction = require("../models/transactionMdl");
 const bcrypt = require("bcrypt");
@@ -332,6 +333,29 @@ const popularWorkouts = async (req, res) => {
   }
 };
 
+const trainers = async (req, res) => {
+  try {
+    const level = await Level.findOne({ name: "Beginner" }, { _id: 1 })
+    let trainersList = ""
+    trainersList = await User.aggregate([
+      { $match: { isActive: true, role: TRAINER_ROLE } },
+      {
+        $lookup: {
+          from: "workouts",
+          localField: "_id",
+          foreignField: "trainerId",
+          as: "workouts",
+        }
+      },
+      { $limit: 10 },
+      { $sort: { createdAt: -1 } }
+    ])
+    return res.status(200).json({ trainers: trainersList });
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+}
+
 
 /****Logout*****/
 const logout = (req, res) => {
@@ -352,5 +376,6 @@ module.exports = {
   paymentUpdate,
   validateOtp,
   popularWorkouts,
-  logout
+  logout,
+  trainers
 };

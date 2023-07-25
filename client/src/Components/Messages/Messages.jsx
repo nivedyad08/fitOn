@@ -191,8 +191,9 @@ function Messages({ setNotifications, notifications, selectedChat }) {
                                             <div
                                                 className={ `px-7 py-4 rounded-md ${ msg.sender.firstName === user.firstName ? 'bg-green-400 text-gray-100' : 'bg-gray-100'
                                                     }` }
+                                                style={ { maxWidth: "60%" } }
                                             >
-                                                <span>{ msg.content }</span>
+                                                <span >{ msg.content }</span>
                                             </div>
                                         </div>
                                     ))

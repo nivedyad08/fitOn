@@ -15,7 +15,7 @@ const TrainersSlider = () => {
 
     useEffect(() => {
         (async () => {
-            const fetchTrainers = await axios.get(`api/user/trainers?userId=${ user._id }`)
+            const fetchTrainers = await axios.get(`api/auth/trainers`)
             setTrainers(fetchTrainers.data.trainers);
             console.log(trainers);
         })()
@@ -49,7 +49,7 @@ const TrainersSlider = () => {
                         <div className='w-[160px] sm:w-[200px] md:w-[240px] lg:w-[280px] inline-block cursor-pointer relative p-2' key={ index } onClick={ () => showTrainerDetails(trainer) }>
                             <img
                                 className='w-[252px] h-[220px] block'
-                                src={ `${ BASE_URL }/user/${ trainer.profilePic ? trainer.profilePic : trainer.user.profilePic }` }
+                                src={ trainer.profilePic ? trainer.profilePic : trainer.user.profilePic }
                                 alt={ trainer.firstName ? trainer.firstName : trainer.user.firstName }
                             />
                             <h2 className="mt-14 text-base font-semibold capitalize text-gray-300 dark:text-white">

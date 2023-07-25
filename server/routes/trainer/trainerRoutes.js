@@ -1,21 +1,30 @@
 const express = require("express");
+const multer = require("multer");
 const trainerRoute = express();
 const workoutController = require("../../controllers/trainer/workoutController");
 const trainerController = require("../../controllers/trainer/trainerController");
 const isTrainer = require("../../middlewares/isTrainer")
-const upload = require("../../config/multer").workoutVideoUpload
+// const upload = require("../../config/multer").workoutVideoUpload
 const workoutUpload = require("../../config/multer").workoutVideoUpload
-const thumbnailUpload = require("../../config/multer").userImageUpload;
 
-const userImageUpload = require("../../config/multer").userImageUpload;
-const userUpload = userImageUpload.fields([
+
+const imgUpload = require("../../utils/cloudinary").imageStorage
+const imageStorage = multer({ storage: imgUpload })
+
+const userUpload = multer({ storage: imgUpload }).fields([
   { name: "profilePic", maxCount: 1 },
   { name: "coverPhoto", maxCount: 1 },
 ]);
 
+
+const thumbnailUpload = require("../../config/multer").userImageUpload;
+
+const userImageUpload = require("../../config/multer").userImageUpload;
+
+
 trainerRoute.get('/workouts', isTrainer, workoutController.workouts);
 
-trainerRoute.post('/add-workout', isTrainer, thumbnailUpload.single('thumbnailImage'), workoutController.addWorkout);
+trainerRoute.post('/add-workout', isTrainer, imageStorage.single("thumbnailImage"), workoutController.addWorkout);
 
 trainerRoute.post('/upload-workout-video', isTrainer, workoutUpload.fields([
   {
@@ -40,5 +49,6 @@ trainerRoute.get('/subscribedUsers', isTrainer, trainerController.subscribedUser
 trainerRoute.post('/create/session', isTrainer, trainerController.createSession);
 trainerRoute.get('/sessions', trainerController.sessions);
 trainerRoute.get('/change/session-status', isTrainer, trainerController.changeSession);
+
 
 module.exports = trainerRoute

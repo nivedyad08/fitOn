@@ -18,7 +18,7 @@ export default function AddWorkout() {
         if (user.basicVideo) {
             setAddWorkout(true)
         }
-    },[])
+    }, [])
     useEffect(() => {
         axios.get("api/admin/categories").then((response) => {
             const list = response.data.categories

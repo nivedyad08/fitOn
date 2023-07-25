@@ -220,7 +220,7 @@ const EditUserAccount = () => {
                                                         <img
                                                             className="h-full w-full"
                                                             id="selected-image"
-                                                            src={ `http://localhost:8080/user/${ user.coverPhoto }` }
+                                                            src={ user.coverPhoto }
                                                             alt="Selected Image"
                                                         />
                                                     </div>
@@ -289,7 +289,7 @@ const EditUserAccount = () => {
                                     : (
                                         <img
                                             className="h-96 w-96 object-cover rounded-full"
-                                            src={ `http://localhost:8080/user/${ user.profilePic }` }
+                                            src={ user.profilePic }
                                             alt={ user.firstName }
                                         />
                                     ) }

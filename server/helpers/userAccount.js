@@ -14,10 +14,10 @@ const updateUserDetails = async (req, res) => {
         let coverPhoto = userDetails.coverPhoto
 
         if (req.files && req.files.profilePic) {
-            profilePic = req.files.profilePic[0].filename
+            profilePic = req.files.profilePic[0].path
         }
         if (req.files && req.files.coverPhoto) {
-            coverPhoto = req.files.coverPhoto[0].filename
+            coverPhoto = req.files.coverPhoto[0].path
         }
         const updateResult = await User.findByIdAndUpdate(userId, {
             firstName,
@@ -27,11 +27,9 @@ const updateUserDetails = async (req, res) => {
             profilePic,
             coverPhoto,
         });
-        if (!updateResult) {
-            return res.status(400).json({ message: "User not updated !!" });
-        }
-        const user = await User.findById(userId);
-        return res.status(200).json({ user });
+        const userInfo = await User.findById(userId);
+        console.log(userInfo);
+        return { user: updateResult };
     } catch (error) {
         return res.status(400).json({ message: error.message });
     }
@@ -64,7 +62,7 @@ const updateUserPassword = async (req, res) => {
         const hashedPassword = await bcrypt.hash(newPassword, 10);
         await User.findByIdAndUpdate(userId, {
             password: hashedPassword,
-            lastPasswordResetDate:moment().format("YYYY-MM-DD")
+            lastPasswordResetDate: moment().format("YYYY-MM-DD")
         });
 
         return res.status(200).json({ message: "Password updated successfully" });

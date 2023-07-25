@@ -10,8 +10,43 @@ const moment = require('moment');
 const ObjectId = mongoose.Types.ObjectId
 
 const editUser = async (req, res) => {
-    const userDetailsEdit = await updateUserDetails(req, res)
+    try {
+        const { firstName, lastName, userBio, userLocation } = req.body;
+        const { userId } = req.query;
+        const userDetails = await User.findById(userId);
+        if (!userDetails) {
+            return res.status(400).json({ message: "Invalid User" });
+        }
+
+        // Keep track of whether profilePic and coverPhoto have been updated
+        let profilePicUpdated = false;
+        let coverPhotoUpdated = false;
+
+        if (req.files && req.files.profilePic) {
+            userDetails.profilePic = req.files.profilePic[0].path;
+            profilePicUpdated = true;
+        }
+        if (req.files && req.files.coverPhoto) {
+            userDetails.coverPhoto = req.files.coverPhoto[0].path;
+            coverPhotoUpdated = true;
+        }
+
+        // Update other user details
+        userDetails.firstName = firstName;
+        userDetails.lastName = lastName;
+        userDetails.userBio = userBio;
+        userDetails.userLocation = userLocation;
+
+        // Save the updated user details
+        const updatedUser = await userDetails.save();
+
+        return res.status(200).json({ user: updatedUser, profilePicUpdated, coverPhotoUpdated });
+    } catch (error) {
+        return res.status(400).json({ message: error.message });
+    }
 };
+
+
 
 //Change Password
 const changePassword = async (req, res) => {
