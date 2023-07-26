@@ -3,10 +3,11 @@ import TrainersSlider from './TrainersSlider';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import PricingPlans from './PricingPlans';
-import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 
 const LandingPage = () => {
+    const navigate = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
     const closeMenu = () => {
         setIsOpen(false);
@@ -39,7 +40,7 @@ const LandingPage = () => {
                         <div x-cloak className="absolute p-20 inset-x-0 z-20 w-auto mx-auto bg-blue-950 py-4 shadow-md transition-all duration-300 ease-in-out dark:bg-gray-900 lg:relative lg:top-0 lg:mt-0 lg:flex lg:w-auto lg:translate-x-0 lg:items-center lg:bg-transparent lg:p-0 lg:opacity-100 lg:shadow-none lg:dark:bg-transparent">
                             <div className="lg:-px-8 flex flex-col space-y-4 lg:mt-0 lg:flex-row lg:space-y-0">
                             </div>
-                            <a className="mt-4 block w-96 rounded-lg custom-yellow px-6 py-2.5 text-center font-medium capitalize leading-5 text-white hover:bg-yellow-400 lg:mt-0 lg:w-auto" href="/login"> Get started </a>
+                            <a className="mt-4 block w-96 rounded-lg custom-yellow px-6 py-2.5 text-center font-medium capitalize leading-5 text-white hover:bg-yellow-400 lg:mt-0 lg:w-auto" onClick={ () => navigate("/login") }> Get started </a>
                         </div>
                     </div>
                 </nav>
