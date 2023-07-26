@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "../../config/axios";
 import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
-import { BASE_URL } from "../../constants/urls"
 import { useDispatch, useSelector } from "react-redux";
 import { trainerDetails } from "../../Components/redux-toolkit/slices/trainerSlice";
 import { useNavigate } from "react-router-dom";

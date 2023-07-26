@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { toast } from "react-toastify";
 import { getDashboardDetails } from "../../Services/AdminApi"
-import { BASE_URL } from '../../constants/urls';
 import StarIcon from '@mui/icons-material/Star';
 
 function AdminDashboard() {

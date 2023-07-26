@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Carousel from "../../Carousel";
 import { useSelector } from "react-redux";
-import { BASE_URL } from "../../../constants/urls";
 import { useNavigate, Link } from "react-router-dom";
 import { dateMonthYearStringFormat } from "../../../helpers/CommonFunctions";
 import StarIcon from '@mui/icons-material/Star';

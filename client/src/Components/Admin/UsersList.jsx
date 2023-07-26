@@ -2,7 +2,6 @@ import React, { useMemo, useState, useEffect } from "react";
 import Table from "./Table";
 import axios from "../../config/axios";
 import { Switch } from "@mui/material";
-import { BASE_URL } from "../../constants/urls";
 
 const UsersList = () => {
   const columns = useMemo(

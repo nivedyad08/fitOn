@@ -1,7 +1,6 @@
 import axios from "../config/axios"
 import { USER_BASE_URL } from "../constants/urls"
 import { CHAT_BASE_URL } from "../constants/urls"
-import { toast } from "react-toastify";
 
 //Subscription Report
 export const fetchUserSubscriptionDetails = async (userId) => {
@@ -60,30 +59,3 @@ export const searchTrainer = async (search) => {
     const res = await axios.post(`${ USER_BASE_URL }/trainer/search`, { search })
     return res.data;
 }
-
-// find my current frinends and seach user on chat box
-// export const findMyChatFriends = ({ searchQuery, setUsers }) => {
-//     axios.get(`${ CHAT_BASE_URL }/chats/users/find`, {
-//         params: {
-//             searchQuery
-//         },
-//     }).then((res) => {
-//         setUsers(res.data);
-//     }).catch((err) => {
-//         toast.error("Oops.! Something went wrong");
-//     })
-// }
-
-
-//searching users
-// export const searchChatUsers = ({ searchQuery, setUsers }) => {
-//     axios.get(`${ CHAT_BASE_URL }/chats/users`, {
-//         params: {
-//             searchQuery
-//         },
-//     }).then((res) => {
-//         setUsers(res.data)
-//     }).catch((err) => {
-//         toast.error("Something went wrong");
-//     })
-// }

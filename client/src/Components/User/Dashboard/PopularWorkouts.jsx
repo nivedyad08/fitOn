@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { popularWorkouts } from '../../../Services/UserApi';
 import { toast } from "react-toastify";
-import { BASE_URL } from '../../../constants/urls';
 
 const PopularWorkouts = () => {
     const [workouts, setWorkouts] = useState([])

@@ -7,7 +7,6 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { trainerDetails } from "../../redux-toolkit/slices/trainerSlice";
-import { BASE_URL } from "../../../constants/urls";
 
 const TrainersList = () => {
     const navigate = useNavigate()

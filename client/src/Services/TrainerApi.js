@@ -32,8 +32,3 @@ export const changeSessionStatus = async (sessionId, data) => {
     const res = await axios.get(`${ TRAINER_BASE_URL }/change/session-status?sessionId=${ sessionId }`, { data })
     return res.data;
 }
-//Reports
-// export const fetchUserTransactionDetails = async (trainerId) => {
-//     const res = await axios.get(`${ TRAINER_BASE_URL }/transaction/reports?trainerId=${ trainerId }`)
-//     return res.data;
-// }
