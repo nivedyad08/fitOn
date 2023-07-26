@@ -3,14 +3,13 @@ import Cookies from "js-cookie";
 
 const api = axios.create({
   baseURL: "http://localhost:8080/",
-  timeout: 2000,
 });
 
 // Add a request interceptor
 api.interceptors.request.use(
   function (config) {
     Object.assign(config.headers, {
-      authorization: `Bearer ${Cookies.get("accessToken")}`,
+      authorization: `Bearer ${ Cookies.get("accessToken") }`,
     });
     // Do something before request is sent
 
@@ -42,7 +41,7 @@ api.interceptors.response.use(
           Cookies.set("accessToken", accessToken);
           // Retry the original request with the updated access token
           const originalRequest = error.config;
-          originalRequest.headers.authorization = `Bearer ${accessToken}`;
+          originalRequest.headers.authorization = `Bearer ${ accessToken }`;
           return axios(originalRequest);
         }
       } catch (error) {

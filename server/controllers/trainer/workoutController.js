@@ -11,27 +11,24 @@ const { USER_ROLE, TRAINER_ROLE, ADMIN_ROLE, PENDING_TRAINER } = require("../../
 const ObjectId = mongoose.Types.ObjectId
 
 const addWorkout = async (req, res) => {
-    console.log(88888888);
-    // console.log(req.file.path);
-    console.log(req.file);
     try {
-        //     const { workoutTitle, description, category, difficultyLevel } = req.body
-        //     const { trainerId } = req.query
-        //     const thumbnailImage = req.file
-        //     if (!trainerId && !workoutTitle && !description && !category && !difficultyLevel && !thumbnailImage)
-        //         return res.status(400).json({ message: "All fields are required !!" });
-        //     const newWorkout = Workout({
-        //         trainerId,
-        //         workoutTitle,
-        //         description,
-        //         category,
-        //         difficultyLevel,
-        //         thumbnailImage: thumbnailImage.filename
-        //     })
-        //     const uploadWorkout = await newWorkout.save()
-        //     if (!uploadWorkout)
-        //         return res.status(400).json({ message: "Something went wrong" });
-        return res.status(200).json({ message: "Workout Uploaded", workout: req.file });
+        const { workoutTitle, description, category, difficultyLevel } = req.body
+        const { trainerId } = req.query
+        const thumbnailImage = req.url
+        if (!trainerId && !workoutTitle && !description && !category && !difficultyLevel && !thumbnailImage)
+            return res.status(400).json({ message: "All fields are required !!" });
+        const newWorkout = Workout({
+            trainerId,
+            workoutTitle,
+            description,
+            category,
+            difficultyLevel,
+            thumbnailImage: thumbnailImage
+        })
+        const uploadWorkout = await newWorkout.save()
+        if (!uploadWorkout)
+            return res.status(400).json({ message: "Something went wrong" });
+        return res.status(200).json({ message: "Workout Uploaded", workout: newWorkout });
 
     } catch (error) {
         return res.status(400).json({ message: error.message });
@@ -41,10 +38,11 @@ const addWorkout = async (req, res) => {
 const uploadWorkoutVideo = async (req, res) => {
     try {
         const { workoutId } = req.query
-        const { videos } = req.files
+        const videos = req.url
+        console.log(workoutId);
         if (!workoutId && !videos)
             return res.status(400).json({ message: "Something went wrong" });
-        const uploadVideo = await Workout.findByIdAndUpdate(workoutId, { video: videos[0].filename })
+        const uploadVideo = await Workout.findByIdAndUpdate(workoutId, { video: videos })
         if (!uploadVideo)
             return res.status(400).json({ message: "Video not uploaded! Something went wrong" });
         return res.status(200).json({ message: "Video Uploaded" });

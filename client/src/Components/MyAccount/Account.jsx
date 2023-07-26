@@ -7,7 +7,7 @@ import Favourites from './Favourites';
 import { useSelector } from 'react-redux';
 import { USER_ROLE, TRAINER_ROLE } from '../../constants/roles';
 
-const Account = () => {
+const Account = ({ setIsLoading }) => {
   const [activeMenu, setActiveMenu] = useState('edit')
   const user = useSelector((state) => state.loggedUser.userInfo)
 
@@ -15,7 +15,7 @@ const Account = () => {
     switch (activeMenu) {
       case 'edit':
         return (
-          <EditUserAccount />
+          <EditUserAccount setIsLoading={ setIsLoading } />
         )
       case 'change password':
         return (
@@ -24,10 +24,6 @@ const Account = () => {
       case 'favourites':
         return (
           <Favourites />
-        )
-      case 'reports':
-        return (
-          <Reports />
         )
       case 'subscriptions':
         return (
@@ -57,11 +53,7 @@ const Account = () => {
               </a>
             </li>
           ) : (
-            <li>
-              <a href="#" onClick={ () => setActiveMenu('reports') } className={ `text-slate-200 font-semibold text-sm ${ activeMenu === 'reports' ? 'text-custom-yellow' : '' }` }>
-                Reports
-              </a>
-            </li>
+            ""
           )
           }
           <li>

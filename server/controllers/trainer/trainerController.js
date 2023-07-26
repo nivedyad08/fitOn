@@ -11,6 +11,7 @@ const ObjectId = mongoose.Types.ObjectId
 
 const editUser = async (req, res) => {
     try {
+        console.log(889889);
         const { firstName, lastName, userBio, userLocation } = req.body;
         const { userId } = req.query;
         const userDetails = await User.findById(userId);
@@ -22,12 +23,12 @@ const editUser = async (req, res) => {
         let profilePicUpdated = false;
         let coverPhotoUpdated = false;
 
-        if (req.files && req.files.profilePic) {
-            userDetails.profilePic = req.files.profilePic[0].path;
+        if (req.profilePic) {
+            userDetails.profilePic = req.profilePic;
             profilePicUpdated = true;
         }
-        if (req.files && req.files.coverPhoto) {
-            userDetails.coverPhoto = req.files.coverPhoto[0].path;
+        if (req.coverPhoto) {
+            userDetails.coverPhoto = req.coverPhoto;
             coverPhotoUpdated = true;
         }
 

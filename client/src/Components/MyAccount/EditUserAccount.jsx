@@ -6,7 +6,7 @@ import { loggedUserDetails } from "../redux-toolkit/slices/userSlice";
 import { USER_ROLE } from "../../constants/roles";
 import { useForm } from "react-hook-form";
 
-const EditUserAccount = () => {
+const EditUserAccount = ({ setIsLoading }) => {
     const dispatch = useDispatch()
     const user = useSelector((state) => state.loggedUser.userInfo)
 
@@ -46,6 +46,7 @@ const EditUserAccount = () => {
     const onSubmit = async (data) => {
         try {
             if (data) {
+                setIsLoading(true);
                 const formData = new FormData();
                 // Append form fields to formData
                 formData.append("firstName", data.firstName);
@@ -67,6 +68,8 @@ const EditUserAccount = () => {
             } else {
                 toast.error("An error occurred. Please try again later");
             }
+        } finally {
+            setIsLoading(false); // Reset the loading state from the TrainerRoute component
         }
     }
     return (

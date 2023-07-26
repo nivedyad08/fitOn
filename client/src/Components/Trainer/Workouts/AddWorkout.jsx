@@ -8,7 +8,7 @@ import Alert from "./UploadBasicVideo";
 import { useDispatch } from "react-redux"
 import { loggedUserDetails } from "../../redux-toolkit/slices/userSlice";
 
-export default function AddWorkout() {
+export default function AddWorkout({ setIsLoading }) {
     const dispatch = useDispatch()
     const [categories, setCategories] = useState([])
     const [levels, setLevels] = useState([])
@@ -75,6 +75,7 @@ export default function AddWorkout() {
     const onSubmit = async (data) => {
         try {
             if (data) {
+                setIsLoading(true);
                 const formData = new FormData();
                 // Append form fields to formData
                 formData.append("workoutTitle", data.workoutTitle);
@@ -103,6 +104,8 @@ export default function AddWorkout() {
             } else {
                 toast.error("An error occurred. Please try again later");
             }
+        } finally {
+            setIsLoading(false); // Reset the loading state from the TrainerRoute component
         }
     };
 

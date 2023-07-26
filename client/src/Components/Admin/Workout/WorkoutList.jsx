@@ -7,7 +7,6 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { workoutDetails } from "../../redux-toolkit/slices/workoutSlice";
-import { BASE_URL } from "../../../constants/urls";
 
 const WorkoutList = () => {
     const navigate = useNavigate()
@@ -31,7 +30,7 @@ const WorkoutList = () => {
                             const data = row.original
                             return (
                                 <div className="flex items-center gap-x-6">
-                                    <img className="h-40 w-40 rounded-full" src={ row.original.thumbnailImage ? `${ BASE_URL }/user/${ row.original.thumbnailImage }` : "/images/user-plceholder.png" } alt="" />
+                                    <img className="h-40 w-40 rounded-full" src={ row.original.thumbnailImage ? row.original.thumbnailImage : "/images/user-plceholder.png" } alt="" />
                                     <h3 className="text-base leading-6 tracking-tight">{ row.original.workoutTitle }</h3>
                                 </div>
                             );

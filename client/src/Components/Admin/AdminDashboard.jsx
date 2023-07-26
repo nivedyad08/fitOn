@@ -117,7 +117,7 @@ function AdminDashboard() {
                 < tr className="border-b border-border-[#FBFBFB]" >
                   <th className="px-10 py-10 font-normal text-gray-700 whitespace-nowrap">
                     <div className="flex items-center gap-x-6">
-                      <img className="h-32 w-32 " src={ `${ BASE_URL }/user/${ workout.thumbnailImage }` } alt="" />
+                      <img className="h-32 w-32 " src={ workout.thumbnailImage } alt="" />
                       <h3 className="text-base leading-6 tracking-tight text-gray-700">{ workout.workoutTitle }</h3>
                     </div>
                   </th>

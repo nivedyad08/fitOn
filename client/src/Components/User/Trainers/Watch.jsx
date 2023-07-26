@@ -67,7 +67,6 @@ export default function Watch() {
             rating: rating,
         }
         const submitRating = rateWorkout(user._id, ratingDetails).then((response) => {
-            console.log(response.workout);
             dispatch(trainerDetails(response.workout[0]))
             setRatingPopup(false);
             if (response.isValid === true) {
@@ -90,13 +89,16 @@ export default function Watch() {
                     <span className="ml-1">Go back</span>
                 </div>
                 <div className="mt-2">
-                    <button
-                        type="button"
-                        className="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5"
-                        onClick={ handleStarRating }
-                    >
-                        Rate this Video
-                    </button>
+                    {
+                        workoutId !== '1' && (
+                            <button
+                                type="button"
+                                className="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5"
+                                onClick={ handleStarRating }
+                            >
+                                Rate this Video
+                            </button>
+                        ) }
                 </div>
                 { workoutId !== '1' && (
                     <div className="ml-auto mt-2">
@@ -111,7 +113,7 @@ export default function Watch() {
             <div className="relative">
                 <video className="mx-auto h-full md:h-screen" controls>
                     <source
-                        src={ `http://localhost:8080/workouts/${ workoutVideo }` }
+                        src={ workoutVideo }
                         type="video/mp4"
                     />
                 </video>

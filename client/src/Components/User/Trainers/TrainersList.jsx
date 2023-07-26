@@ -95,7 +95,7 @@ const TrainersList = () => {
                             <div className="flex justify-center px-5 -mt-12">
                                 <img
                                     className="w-full h-[134px] p-2 rounded-full"
-                                    src={ `${ BASE_URL }/user/${ trainer.profilePic ? trainer.profilePic : trainer.user.profilePic }` }
+                                    src={ trainer.profilePic ? trainer.profilePic : trainer.user.profilePic }
                                     alt=""
                                 />
                             </div>

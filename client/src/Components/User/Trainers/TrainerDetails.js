@@ -11,7 +11,7 @@ const TrainerDetails = () => {
     const navigate = useNavigate()
     const trainer = useSelector((state) => state.trainerDetails.trainerInfo)
     const user = useSelector((state) => state.loggedUser.userInfo)
-    const image1 = `${ BASE_URL }/user/${ trainer.coverPhoto ? trainer.coverPhoto : trainer.user.coverPhoto }`
+    const image1 = trainer.coverPhoto ? trainer.coverPhoto : trainer.user.coverPhoto
 
     const handleVideoAccess = (workoutVideo, workoutId) => {
         if (user.subscriptions.length > 0) {
@@ -42,7 +42,7 @@ const TrainerDetails = () => {
                     </div>
                     <div className="flex flex-col md:flex-row pb-8 md:-mt-96 md:pb-56 md:items-start md:space-x-4 md:mx-96">
                         <div className="flex flex-col md:flex-row md:items-start md:space-x-4 ">
-                            <img src={ `${ BASE_URL }/user/${ trainer.profilePic ? trainer.profilePic : trainer.user.profilePic }` } className="w-[230px] border-4 rounded-full" />
+                            <img src={ trainer.profilePic ? trainer.profilePic : trainer.user.profilePic } className="w-[230px] border-4 rounded-full" />
                             <div className="mt-4 md:mt-[120px]" >
                                 <div className="flex space-x-4">
                                     <p className="text-gray-400 text-justify text-base leading-8 tracking-wide
@@ -61,7 +61,7 @@ const TrainerDetails = () => {
                             { trainer.basicVideo && (
                                 <div className="shadow-lg overflow-hidden">
                                     <div className="relative">
-                                        <img className="w-sm w-[345px] h-[200px]" src={ `${ BASE_URL }/user/${ trainer.coverPhoto }` } alt="" />
+                                        <img className="w-sm w-[345px] h-[200px]" src={ trainer.coverPhoto } alt="" />
                                         <div className="absolute top-0 right-48 bg-pink-500 text-white px-2 py-1 rounded-tr-md">
                                             <p className="text-base font-semibold">Basic workout</p>
                                         </div>
@@ -84,7 +84,7 @@ const TrainerDetails = () => {
                             { trainer.workouts.map((workout, index) => (
                                 <div className="shadow-lg overflow-hidden" key={ index }>
                                     <div className="relative">
-                                        <img className="w-sm w-[345px] h-[200px]" src={ `${ BASE_URL }/user/${ workout.thumbnailImage }` } alt="" />
+                                        <img className="w-sm w-[345px] h-[200px]" src={ workout.thumbnailImage } alt="" />
                                         { workout.userRatings && workout.userRatings.length > 0 ? (
                                             <div className="absolute top-0 right-48 bg-[#414160] rounded-lg px-10 mt-2 rounded-tr-md">
                                                 <StarIcon className="text-yellow-500 w-[15px] mb-2" />

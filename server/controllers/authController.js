@@ -134,6 +134,8 @@ const login = async (req, res) => {
     if (email && password) {
       const user = await User.findOne({ email: email });
       if (user) {
+        if (!user.isActive)
+          return res.status(400).json({ message: "Please contact administrator" });
         if (await bcrypt.compare(password, user.password)) {
           //Gererate Token
           const { accessToken, refreshToken } = generateTokens(user);

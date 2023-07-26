@@ -24,14 +24,14 @@ const TopWorkouts = ({ workout }) => {
                         <tr className="border-b border-gray-700" key={ index }>
                             <td className="px-10 py-20 font-normal text-gray-200 whitespace-nowrap">
                                 <div className="flex items-center gap-x-6">
-                                    <img className="h-40 w-40 " src={ `${ BASE_URL }/user/${ item.thumbnailImage }` } alt="" />
+                                    <img className="h-40 w-40 " src={ item.thumbnailImage } alt="" />
                                     <h3 className="text-base leading-6 tracking-tight text-gray-200">{ item.workoutTitle }</h3>
                                 </div>
                             </td>
                             <td className="px-10 py-20">{ item.category }</td>
                             <td className="px-10 py-20">{ item.level }</td>
                             <td className="px-10 py-20">{ item.favourites }</td>
-                            <td className="px-10 py-20">{ item.averageRating.toFixed(2) }<span className='text-yellow-500 mr-6'><StarIcon /></span><span>({item.totalRatingsCount})</span></td>
+                            <td className="px-10 py-20">{ item.averageRating.toFixed(2) }<span className='text-yellow-500 mr-6'><StarIcon /></span><span>({ item.totalRatingsCount })</span></td>
                             <td className="px-10 py-20">{ dateMonthYear(item.createdAt) }</td>
                         </tr>
                     ))

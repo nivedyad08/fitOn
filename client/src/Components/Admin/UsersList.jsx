@@ -18,7 +18,7 @@ const UsersList = () => {
               const data = row.original
               return (
                 <div className="flex items-center gap-x-6">
-                  <img className="h-40 w-40 rounded-full" src={ row.original.profilePic ? `${ BASE_URL }/user/${ row.original.profilePic }` : "/images/user-plceholder.png" } alt="" />
+                  <img className="h-40 w-40 rounded-full" src={ row.original.profilePic ? row.original.profilePic : "/images/user-plceholder.png" } alt="" />
                   <h3 className="text-base leading-6 tracking-tight">{ row.original.firstName }</h3>
                 </div>
               );

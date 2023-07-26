@@ -168,7 +168,7 @@ function Messages({ setNotifications, notifications, selectedChat }) {
                                 onClick={ () => handleUserSelection(user) }
                             >
                                 <div className="flex items-center">
-                                    <img className="h-30 w-30 rounded-full object-cover" src={ `http://localhost:8080/user/${ user.profilePic }` } alt="" />
+                                    <img className="h-30 w-30 rounded-full object-cover" src={ user.profilePic } alt="" />
                                     <span>{ user.firstName }</span>
                                 </div>
                             </li>

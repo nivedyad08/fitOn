@@ -66,7 +66,7 @@ const SessionList = ({ data, setData }) => {
                                 <div className="flex items-center gap-x-6">
                                     {
                                         thumbnail ?
-                                            <img className="h-40 w-40 " src={ `http://localhost:8080/user/${ thumbnail }` } alt="" />
+                                            <img className="h-40 w-40 " src={ thumbnail } alt="" />
                                             :
                                             <img className="h-40 w-40 " src="/images/user-plceholder.png" alt="" />
 

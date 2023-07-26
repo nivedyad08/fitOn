@@ -11,7 +11,7 @@ const LandingPage = () => {
     const closeMenu = () => {
         setIsOpen(false);
     };
-    
+
     return (
         <main className='p-20 bg-gradient-to-r from-[#0a0b1a] via-[#141433] to-[#04040e]'>
             <section className="bg-white bg-gradient-to-r from-[#0a0b1a] via-[#141433] to-[#282843]">
@@ -38,8 +38,6 @@ const LandingPage = () => {
                     <div className='relative'>
                         <div x-cloak className="absolute p-20 inset-x-0 z-20 w-auto mx-auto bg-blue-950 py-4 shadow-md transition-all duration-300 ease-in-out dark:bg-gray-900 lg:relative lg:top-0 lg:mt-0 lg:flex lg:w-auto lg:translate-x-0 lg:items-center lg:bg-transparent lg:p-0 lg:opacity-100 lg:shadow-none lg:dark:bg-transparent">
                             <div className="lg:-px-8 flex flex-col space-y-4 lg:mt-0 lg:flex-row lg:space-y-0">
-                                {/* <a className="transform text-sm text-custom-whitish transition-colors duration-300 hover:text-yellow-500 dark:text-gray-200 dark:hover:text-yellow-400 lg:mx-8" href="#">Explore</a>
-                                <a className="transform text-sm text-custom-whitish transition-colors duration-300 hover:text-yellow-500 dark:text-gray-200 dark:hover:text-yellow-400 lg:mx-8" href="#">Instructors</a> */}
                             </div>
                             <a className="mt-4 block w-96 rounded-lg custom-yellow px-6 py-2.5 text-center font-medium capitalize leading-5 text-white hover:bg-yellow-400 lg:mt-0 lg:w-auto" href="/login"> Get started </a>
                         </div>
@@ -164,15 +162,7 @@ const LandingPage = () => {
                     </div>
                     <hr className="my-6 border-gray-500 dark:border-gray-700 md:my-10" />
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-1">
-                        {/* <div>
-                            <p className="font-semibold text-gray-800 dark:text-white">Contact Us</p>
-                            <div className="mt-5 gap-20 flex flex-row items-start space-y-2">
-                                <a href="#" className="text-gray-600 transition-colors mt-4 duration-300 hover:text-blue-500 hover:underline dark:text-gray-300 dark:hover:text-blue-400">+91 768 473 4978</a>
-                                <a href="#" className="text-gray-600 transition-colors duration-300 hover:text-blue-500 hover:underline dark:text-gray-300 dark:hover:text-blue-400">fiton@gmail.com</a>
-                            </div>
-                        </div> */}
                     </div>
-                    {/* <hr className="my-6 border-gray-200 dark:border-gray-700 md:my-10" /> */ }
                     <div className="flex items-center gap-x-6">
                         <img
                             className="w-40 mr-2 h-40"

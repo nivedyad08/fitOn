@@ -227,7 +227,7 @@ const EditWorkout = () => {
                                 ) : (
                                     <img
                                         className="h-96 w-96 object-cover "
-                                        src={ `http://localhost:8080/user/${ workout?.thumbnailImage }` }
+                                        src={ workout?.thumbnailImage }
                                         alt="Current profile photo"
                                     />
                                 ) }
@@ -269,7 +269,7 @@ const EditWorkout = () => {
                                 </label>
                                 <div className="mt-2 ">
                                     <video className="h-96" controls>
-                                        <source src={ `http://localhost:8080/workouts/${ workout.video }` } type="video/mp4" />
+                                        <source src={ workout.video } type="video/mp4" />
                                     </video>
                                     <input
                                         type="file"

@@ -38,11 +38,12 @@ const TrainerRoute = () => {
                             <div className="mx-auto max-w-7xl w-11/12 py-12 sm:px-6 lg:px-8">
                                 <Routes>
                                     <Route path="dashboard" element={ <Dashboard /> } />
-                                    <Route path="add-workout" element={ <AddWorkout /> } />
+                                    <Route path="add-workout" element={ <AddWorkout setIsLoading={ setIsLoading } /> } />
+
                                     <Route path="workouts" element={ <WorkoutList /> } />
                                     <Route path="workout/:workoutId" element={ <ViewWorkout /> } />
                                     <Route path="edit/:workoutId" element={ <EditWorkout /> } />
-                                    <Route path="account" element={ <Account /> } />
+                                    <Route path="account" element={ <Account setIsLoading={ setIsLoading } /> } />
                                     <Route path="sessions" element={ <Sessions /> } />
                                     <Route path="chats" element={ <Messages setNotifications={ setNotifications } notifications={ notifications } selectedChat={ selectedChat } /> } />
                                     <Route path="*" element={ <Error /> } />

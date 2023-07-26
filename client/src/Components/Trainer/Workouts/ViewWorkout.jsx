@@ -16,7 +16,7 @@ const ViewWorkout = () => {
                                 </label>
                                 <div className="mt-2">
 
-                                    <img className="h-auto max-w-lg mx-auto" src={ `http://localhost:8080/user/${ workout.thumbnailImage }` } alt="image description" />
+                                    <img className="h-auto max-w-lg mx-auto" src={ workout.thumbnailImage } alt="image description" />
 
                                 </div>
                             </div>
@@ -83,7 +83,7 @@ const ViewWorkout = () => {
                                 </label>
                                 <div className="mt-2">
                                     <video className="h-3/5" controls>
-                                        <source src={ `http://localhost:8080/workouts/${ workout.video }` } type="video/mp4" />
+                                        <source src={ workout.video } type="video/mp4" />
                                     </video>
                                 </div>
                             </div>

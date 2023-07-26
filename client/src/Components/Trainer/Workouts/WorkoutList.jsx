@@ -69,7 +69,7 @@ const WorkoutList = () => {
                             const thumbnail = row.original.thumbnailImage
                             return (
                                 <div className="flex items-center gap-x-6">
-                                    <img className="h-40 w-40 " src={ `http://localhost:8080/user/${ thumbnail }` } alt="" />
+                                    <img className="h-40 w-40 " src={ thumbnail } alt="" />
                                     <h3 className="text-base leading-6 tracking-tight text-gray-200">{ value }</h3>
                                 </div>
                             )

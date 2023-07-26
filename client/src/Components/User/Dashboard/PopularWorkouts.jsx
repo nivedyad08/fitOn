@@ -28,7 +28,7 @@ const PopularWorkouts = () => {
                             <div className='w-[160px] sm:w-[200px] md:w-[240px] lg:w-[280px] inline-block cursor-pointer relative p-2' key={ index }>
                                 <img
                                     className='w-[252px] h-[220px] block'
-                                    src={ `${ BASE_URL }/user/${ workout.thumbnailImage ? workout.thumbnailImage : workout.user.thumbnailImage }` }
+                                    src={ workout.thumbnailImage ? workout.thumbnailImage : workout.user.thumbnailImage }
                                     alt={ workout.workoutTitle ? workout.workoutTitle : workout.user.workoutTitle }
                                 />
                                 <h2 className="mt-14 text-base font-semibold capitalize text-gray-300 dark:text-white">
